@@ -1,0 +1,146 @@
+{
+    "favorites_keys": ["MLeaFwKqZDghlghmIL+bXihHerva", "Zr0H8nj7/ZEoNSUUxNhUoLOE5UUk"],
+    "categories_order": [
+        "Login", "Secure Note", "Credit Card", "Bank Account"
+    ], 
+    "categories_icon": {
+        "Login": "fa-key", 
+        "Secure Note": "fa-sticky-note", 
+        "Credit Card": "fa-credit-card",
+        "Bank Account": "fa-university"
+    },
+    "tags_order": [
+        "financial", "project Q", "work", "personal"
+    ], 
+    "tags_color": {
+        "financial": "#cb636c",
+        "project Q": "#ce8383",
+        "work": "#d0a299",
+        "personal": "#d0bfae"
+    },
+    "categories_keys": {
+        "Login": ["qw4BhTDoZgdqNWBeYzs1epU/suey", "Zr0H8nj7/ZEoNSUUxNhUoLOE5UUk", "MLeaFwKqZDghlghmIL+bXihHerva"],
+        "Secure Note": [],
+        "Credit Card": [],
+        "Bank Account": []
+    },
+    "tags_keys": {
+        "financial": ["Zr0H8nj7/ZEoNSUUxNhUoLOE5UUk"],
+        "project Q": ["MLeaFwKqZDghlghmIL+bXihHerva"],
+        "work":["qw4BhTDoZgdqNWBeYzs1epU/suey","MLeaFwKqZDghlghmIL+bXihHerva"],
+        "personal":["Zr0H8nj7/ZEoNSUUxNhUoLOE5UUk"]
+    },
+    "all_keys": ["MLeaFwKqZDghlghmIL+bXihHerva", "Zr0H8nj7/ZEoNSUUxNhUoLOE5UUk", "qw4BhTDoZgdqNWBeYzs1epU/suey"],
+    "trash_keys": [],
+    "entries": {
+        "MLeaFwKqZDghlghmIL+bXihHerva":
+        {   
+            "id": "MLeaFwKqZDghlghmIL+bXihHerva",
+            "title": "Gmail - Dev Account",
+            "snippet": "john.dev@gmail.com",
+            "category": "Login",
+            "favorite": true,
+            "tags": ["work", "project Q"],
+            "attachment_block": false,
+            "advanced": false,
+            "time_created": "1242412",
+            "time_modified": "1242412",
+            "sections_display": [true, false],
+            "sections_order": ["Basic Info", "extras"],
+            "sections": {
+                "Basic Info": ["asd", "asdas", "q212"],
+                "extras": ["as1d"]
+            },
+            "user_defined":
+            {
+                "asd": ["Account","john.dev@gmail.com","text"], 
+                "asdas": ["Password","[aq,]F?wK|9812(s","passcode"], 
+                "q212": ["Website","https://mail.google.com","url"],
+                "as1d": ["Note","Gmail account for work at XYZ corp.","note"]
+            }
+        },
+        "Zr0H8nj7/ZEoNSUUxNhUoLOE5UUk":
+        {   
+            "id": "Zr0H8nj7/ZEoNSUUxNhUoLOE5UUk",
+            "title": "Fastmail - Personal Account",
+            "snippet": "kunzhou@fastmail.com",
+            "category": "Login",
+            "favorite": true,
+            "tags": ["financial", "personal"],
+            "attachment_block": false,
+            "advanced": false,
+            "time_created": "1242413",
+            "time_modified": "1242413",
+            "sections_display": [true, false],
+            "sections_order": ["Basic Info", "extras"],
+            "sections": {
+                "Basic Info": ["asd", "asdas", "q212", "1a11r", "wa11r"],
+                "extras": ["as1d"]
+            },
+            "user_defined":
+            {
+                "asd": ["Account", "johndoe@fastmail.com", "text"], 
+                "asdas": ["Password","Ka|9[aq,]F?w812(s", "passcode"], 
+                "q212": ["Website","https://www.fastmail.com", "url"],
+                "1a11r": ["Security Question 1","Your favorite college professor?", "text"],
+                "wa11r": ["Security Answer 1","Leo Livshits", "text"],
+                "as1d": ["Note","Personal Account", "note"]
+            }                  
+        },
+        "qw4BhTDoZgdqNWBeYzs1epU/suey":
+        {
+            "id": "qw4BhTDoZgdqNWBeYzs1epU/suey",
+            "title": "Github - Work Account",
+            "snippet": "kunzhou@github.com",
+            "category": "Login",
+            "favorite": false,
+            "tags": ["work"],
+            "attachment_block": false,
+            "advanced": false,
+            "time_created": "1242415",
+            "time_modified": "1242415",
+            "sections_display": [true, false],
+            "sections_order": ["Basic Info", "extras"],
+            "sections": {
+                "Basic Info": ["asd", "asdas", "q212"],
+                "extras": ["as1d"]
+            },
+            "user_defined":
+            {
+                "asd": ["Account", "kunzhou@github.com", "text"], 
+                "asdas": ["Password","a81q,]F?wK|q9812(s", "passcode"], 
+                "q212": ["Website","https://www.github.com", "url"],
+                "as1d": ["Note"," This is another brilliant note", "note"]
+            }
+        }
+    },
+    "snapshots": {
+        "qw4BhTDoZgdqNWBeYzs1epU/suey": {
+            "1242415": {
+                "id": "qw4BhTDoZgdqNWBeYzs1epU/suey",
+                "title": "Github - Work Account",
+                "snippet": "kunzhou@github.com",
+                "category": "Login",
+                "favorite": false,
+                "tags": ["work"],
+                "attachment_block": false,
+                "advanced": false,
+                "time_created": "1242415",
+                "time_modified": "1242415",
+                "sections_display": [true, false],
+                "sections_order": ["Basic Info", "extras"],
+                "sections": {
+                    "Basic Info": ["asd", "asdas", "q212"],
+                    "extras": ["as1d"]
+                },
+                "user_defined":
+                {
+                    "asd": ["Account", "kunzhou@github.com", "text"], 
+                    "asdas": ["Password","a81q,]F?wK|q9812(s", "passcode"], 
+                    "q212": ["Website","https://www.github.com", "url"],
+                    "as1d": ["Note"," This is another brilliant note", "note"]
+                }
+            }
+        }
+    }
+}

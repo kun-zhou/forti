@@ -1,0 +1,38 @@
+.btn-add-entry {
+    position: absolute;
+    left: 8px;
+    bottom: 8px;
+}
+
+.btn-add {
+    width: 25px;
+    height: 25px;
+    background-color: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+}
+
+.dropup {
+    position: absolute;
+    left: 0;
+    bottom: 28px;
+    background-color: rgb(251, 251, 251);
+    border: 1px solid rgb(187, 187, 187);
+    box-shadow: 0 0 4px rgb(187, 187, 187);
+    border-radius: 4px;
+    z-index: 20
+}
+
+.entry-wrapper {
+    padding: 4px 5px 4px 18px;
+    height: 28px;
+    width: 160px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.entry-wrapper:hover {
+    background-color: rgb(239,239,239)
+}

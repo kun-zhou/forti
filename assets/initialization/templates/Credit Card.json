@@ -1,0 +1,14 @@
+{
+    "name": "Credit Card",
+    "sections_order": ["Basic Info"],
+    "sections": {
+        "Basic Info": ["QxPuaF+ms", "SmarjIEc", "A1di9Esc", "7CkiGDUc", "Hc5LMc8q"]
+    },
+    "user_defined": {
+        "QxPuaF+ms": ["Card Holder","","text"], 
+        "SmarjIEc": ["Card Type","", "text"], 
+        "A1di9Esc": ["Card Number", "","number"],
+        "7CkiGDUc": ["Expiration Date","","date"],
+        "Hc5LMc8q": ["CSV","","passcode"]
+    }
+}

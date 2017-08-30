@@ -1,0 +1,67 @@
+/* Global Settings for Desktop App */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+}
+
+input,
+textarea {
+    border: none;
+    background-color: inherit;
+    font-family: inherit;
+}
+
+input,
+button,
+textarea,
+ :focus {
+    outline: none;
+}
+
+:not(input):not(textarea),
+:not(input):not(textarea)::after,
+:not(input):not(textarea)::before {
+    -webkit-user-select: none;
+    user-select: none;
+    cursor: default;
+}
+
+html,
+body,
+:global(#root) {
+    font-size: 15px;
+    /*font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    */
+    font-family: Lato;
+    font-weight: 200;
+    height: 100%;
+    width: 100%;
+    background-color: white;
+    color: rgb(51, 51, 51)
+}
+
+:global(#app) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+:root {
+    --color-warning: rgb(206, 86, 84);
+    --color-bg-nav: rgb(47, 50, 53);
+    --color-bg-list: rgb(251, 251, 251);
+    --color-bg-info: rgb(251, 251, 251);
+    --color-border: rgb(222, 222, 222);
+    --color-selected-nav: rgb(66, 71, 71);
+    --color-active-nav: rgb(206, 86, 84);
+    --color-selected-bg-entry: rgb(239, 239, 239);
+    --color-active-bg-entry: rgb(255, 255, 255);
+    --color-selected-entry-filler: rgb(153, 153, 153);
+    --color-active-entry-filler: rgb(206, 86, 84);
+    --color-bg-dropdown: rgb(240, 240, 240)
+}

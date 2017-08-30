@@ -1,0 +1,13 @@
+{
+    "name": "Login",
+    "sections_order": ["Basic Info"],
+    "sections": {
+        "Basic Info": ["QxPuF+ms", "SmarjIEc", "7CkiGDUc", "Hc5LMc8q"]
+    },
+    "user_defined": {
+        "QxPuF+ms": ["Account", "", "text"], 
+        "SmarjIEc": ["Password","", "passcode"], 
+        "7CkiGDUc": ["Website","", "url"],
+        "Hc5LMc8q": ["Note","", "note"]
+    }
+}
