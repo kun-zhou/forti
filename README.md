@@ -4,7 +4,7 @@
 
 ## Warning
 
-This app is work in progress. Many bugs are known at this point, and will be resolved as the app progress to its first alpha release.
+This app is work in progress. Many bugs are known at this point, and will be resolved as the app progress to its first alpha release. Many more features in addition to those shown in the DEMO are being developed as we speak.
 
 ## Philosophy
 
@@ -12,16 +12,16 @@ I feel it is important to address the things this software hopes to achieve and 
 
 ### What it is
 
--It will help you memorize formatted data entries in a secure manner (read, more secure than plain textfiles).
--The process of logging and retrieving information are both inuititve and efficient.
--The software should be customizables. I plan to implement a plugin system so everyone can contribute to the functionalities they like for this software.
+* It will help you memorize formatted data entries in a secure manner (read, more secure than plain textfiles).
+* The process of logging and retrieving information are both inuititve and efficient.
+* The software should be customizables. I plan to implement a plugin system so everyone can contribute to the functionalities they like for this software.
 
 *In short, I hope the software serves as an inuititve and elegant formatted data manager for the general public with a reasonable level of security and extensibility.*
 
 ### What it is not
 
--Protect you agaist targeted attacks.
--Save big binary files.
+* Protect you agaist targeted attacks.
+* Save big binary files.
 
 ## Getting Started
 
