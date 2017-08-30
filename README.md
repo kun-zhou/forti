@@ -2,6 +2,10 @@
 
 **Lockit is an open source formatted content manager built with [Electron](https://github.com/atom/electron), [React](https://facebook.github.io/react/), [Redux](https://github.com/reactjs/redux), and [Immutable](https://github.com/facebook/immutable-js/)**
 
+<p align="center">
+  <img src="your_relative_path_here" style="width: 80%"/>
+</p>
+
 ## Warning
 
 This app is work in progress. Many bugs are known at this point, and will be resolved as the app progress to its first alpha release. Many more features in addition to those shown in the DEMO are being developed as we speak.
