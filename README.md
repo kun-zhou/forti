@@ -6,6 +6,9 @@
   <img src="https://www.kunzhou.me/lockit_shot.png" style="width: 80%"/>
 </p>
 
+### Video Demo
+<iframe width="560" height="315" src="https://www.youtube.com/embed/TZxJ-n1rRZs" frameborder="0" allowfullscreen></iframe>
+
 ## Warning
 
 This app is work in progress. Many bugs are known at this point, and will be resolved as the app progress to its first alpha release. Many more features in addition to those shown in the DEMO are being developed as we speak.
