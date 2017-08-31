@@ -75,18 +75,18 @@ If you are interested in my project and wish to join me in developing this appli
 
 ### First priorities
 
--Add support for multiple sections for content entries for easier organization.
--Implement cross linking of entries.
--Implement Drag and Drop reordering for sections, fields, and navigation pane.
--Inuititve default hotkeys binding with customizability
--Custom color schemes
--Historical snapshots of each entry
--One click export of content entry
--Drag and drop support for adding entry from file
--Application icon
--Manage to get a production build for Linux, macOS, and Windows.
+- Add support for multiple sections for content entries for easier organization.
+- Implement cross linking of entries.
+- Implement Drag and Drop reordering for sections, fields, and navigation pane.
+- Inuititve default hotkeys binding with customizability
+- Custom color schemes
+- Historical snapshots of each entry
+- One click export of content entry
+- Drag and drop support for adding entry from file
+- Application icon
+- Manage to get a production build for Linux, macOS, and Windows.
 
 ### In the more distant future
 
--Multiple database support
--Animation
+- Multiple database support
+- Animation
