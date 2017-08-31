@@ -5,7 +5,7 @@
 <p align="center">
   <a href="https://youtu.be/TZxJ-n1rRZs"><img src="https://www.kunzhou.me/lockit_shot.png" style="width: 80%"/></a>
 </p>
-*Click the image for a video demo!*
+**Click the image for a video demo!**
 
 ## Warning
 
