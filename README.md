@@ -34,13 +34,13 @@ I feel it is important to address the things this software hopes to achieve and 
 This app is to be bundled with webpack. To build and run, run
 
 ```shell
-npm start
+yarn start
 ```
 
-To build in watch mode with Webpack, run
+To build in watch mode with Webpack, and start the app, run
 
 ```shell
-npm run build
+yarn run build; electron .
 ```
 
 ## STATUS
