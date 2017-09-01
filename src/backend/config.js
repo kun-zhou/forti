@@ -32,7 +32,7 @@ const pathConfigDir = path.join(require('electron').remote.app.getPath('appData'
 const pathConfig = path.join(pathConfigDir, 'config.json')
 const pathInitialization = path.join('assets', 'initialization')
 // this is used when app is being pacakged with electron-packager; this is a hack
-const pathInitialization = path.join(process.resourcesPath,'app', 'assets', 'initialization')
+//const pathInitialization = path.join(process.resourcesPath,'app', 'assets', 'initialization')
 const pathThemes = path.join(pathConfigDir, 'themes')
 const pathTemplates = path.join(pathConfigDir, 'templates')
 
