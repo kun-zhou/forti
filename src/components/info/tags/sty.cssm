@@ -1,0 +1,34 @@
+.tags-wrapper {
+    padding: 0 60px 0 20px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.tag {
+    position: relative;
+    height: 22px;
+    line-height: 17px;
+    padding: 2px 4px 2px 4px;
+    border-radius: 3px;
+    font-size: 14px;
+    margin-right: 6px;
+    background-color: #318CE7;
+    color: white;
+}
+
+.tag-del {
+    position: absolute;
+    right: 2px;
+    top: 4px;
+    border-radius: 100%;
+    background-color: white;
+    opacity: 0.8;
+    color: var(--color-bg-nav)
+}
+
+.tag-input {
+    height: 100%;
+    border: none;
+    font-size: 14px;
+}

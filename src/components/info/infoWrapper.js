@@ -4,7 +4,6 @@ import Info from './info.jsx'
 import config from '../../backend/config'
 
 // Helper Functions
-
 const mapStateToProps = state => {
     return {
         info: state.getIn(['db', 'entries', state.getIn(['gui', 'activeEntry'])]),

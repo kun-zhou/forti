@@ -1,7 +1,7 @@
 import React from 'react'
-import sty from './info.cssm'
+import sty from './sty.cssm'
 class Dropdown extends React.PureComponent {
-    
+
 }
 
 class AddField extends React.PureComponent {

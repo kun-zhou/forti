@@ -1,5 +1,5 @@
 import React from 'react'
-import sty from './info.cssm'
+import sty from './sty.cssm'
 
 class Toolbar extends React.PureComponent {
     constructor(props) {

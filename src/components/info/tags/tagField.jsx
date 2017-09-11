@@ -1,5 +1,5 @@
 import React from 'react'
-import sty from './info.cssm'
+import sty from './sty.cssm'
 
 class Tag extends React.PureComponent {
     constructor(props) {

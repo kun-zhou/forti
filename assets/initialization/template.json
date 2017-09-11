@@ -54,8 +54,8 @@
             "user_defined":
             {
                 "asd": ["Account","john.dev@gmail.com","text"], 
-                "asdas": ["Password","[aq,]F?wK|9812(s","passcode"], 
-                "q212": ["Website","https://mail.google.com","url"],
+                "asdas": ["Password","[aq,]F?wK|9812(s","code"], 
+                "q212": ["Website","https://mail.google.com","link"],
                 "as1d": ["Note","Gmail account for work at XYZ corp.","note"]
             }
         },
@@ -80,8 +80,8 @@
             "user_defined":
             {
                 "asd": ["Account", "johndoe@fastmail.com", "text"], 
-                "asdas": ["Password","Ka|9[aq,]F?w812(s", "passcode"], 
-                "q212": ["Website","https://www.fastmail.com", "url"],
+                "asdas": ["Password","Ka|9[aq,]F?w812(s", "code"], 
+                "q212": ["Website","https://www.fastmail.com", "link"],
                 "1a11r": ["Security Question 1","Your favorite college professor?", "text"],
                 "wa11r": ["Security Answer 1","Leo Livshits", "text"],
                 "as1d": ["Note","Personal Account", "note"]
@@ -108,8 +108,8 @@
             "user_defined":
             {
                 "asd": ["Account", "kunzhou@github.com", "text"], 
-                "asdas": ["Password","a81q,]F?wK|q9812(s", "passcode"], 
-                "q212": ["Website","https://www.github.com", "url"],
+                "asdas": ["Password","a81q,]F?wK|q9812(s", "code"], 
+                "q212": ["Website","https://www.github.com", "link"],
                 "as1d": ["Note"," This is another brilliant note", "note"]
             }
         }
@@ -136,8 +136,8 @@
                 "user_defined":
                 {
                     "asd": ["Account", "kunzhou@github.com", "text"], 
-                    "asdas": ["Password","a81q,]F?wK|q9812(s", "passcode"], 
-                    "q212": ["Website","https://www.github.com", "url"],
+                    "asdas": ["Password","a81q,]F?wK|q9812(s", "code"], 
+                    "q212": ["Website","https://www.github.com", "link"],
                     "as1d": ["Note"," This is another brilliant note", "note"]
                 }
             }
