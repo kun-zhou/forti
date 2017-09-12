@@ -1,5 +1,5 @@
 /**
- * THIS IS AN HOC that adds auto hide on outside click functionality
+ * THIS IS AN HOC that adds autohide on outside click functionality to the passed in React Component.
  * All props passed to the WrapperComponent will be passed down to 
  * the WrappedComponent.
  * special props needed is onHide.
@@ -34,13 +34,14 @@ function makeAutohide(WrappedComponent) {
         }
 
         render() {
+            var _props = Object.assign({}, this.props)
+            delete _props.onHide
             return (
                 <div ref={(i) => { this.wrapperNode = i }}>
-                    <WrappedComponent {...this.props} />
+                    <WrappedComponent {..._props} />
                 </div>
             )
         }
     }
 }
-
 export default makeAutohide

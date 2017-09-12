@@ -7,7 +7,7 @@ import sty from '../sty.cssm'
  */
 export default makeField
 
-function makeField(WrappedComponent) {
+function makeField(NameField, ContentField) {
     return class extends React.Component {
         constructor(props) {
             super(props)
@@ -26,8 +26,6 @@ function makeField(WrappedComponent) {
 
             this.toggleNameEdit = this.toggleNameEdit.bind(this)
             this.toggleContentEdit = this.toggleContentEdit.bind(this)
-            this.showSetting = this.showSetting.bind(this)
-            this.hideSetting = this.hideSetting.bind(this)
 
             this.toggleTypeText = this.toggleTypeText.bind(this)
             this.toggleTypeCode = this.toggleTypeCode.bind(this)
@@ -43,20 +41,20 @@ function makeField(WrappedComponent) {
         }
 
         toggleNameEdit(e) {
-            if (e.target.tagName === 'INPUT') {
+            if (this.state.name_editing) {
                 this.props.editField(this.props.id, this.props.field_id, 'name', this.state.local_name)
             }
             this.setState({ name_editing: !this.state.name_editing })
         }
 
         toggleContentEdit(e) {
-            if (e.target.tagName === 'INPUT') {
+            if (this.state.content_editing) {
                 this.props.editField(this.props.id, this.props.field_id, 'content', this.state.local_content)
             }
-            this.setState({ 
+            this.setState({
                 content_editing: !this.state.content_editing,
                 setting_shown: !this.state.setting_shown
-             })
+            })
         }
 
         showSetting() {
@@ -94,7 +92,16 @@ function makeField(WrappedComponent) {
                 toggleTypeCode: this.toggleTypeCode,
                 toggleTypeLink: this.toggleTypeLink
             }
-            return <WrappedComponent {...Object.assign({}, passdownProps, this.state, this.props) } />
+            return (
+                <div className={sty['field']}>
+                    <div className={sty['field-name']}>
+                        <NameField {...Object.assign({}, passdownProps, this.state, this.props) } />
+                    </div>
+                    <div className={sty['field-content']}>
+                        <ContentField {...Object.assign({}, passdownProps, this.state, this.props) } />
+                    </div>
+                </div>
+            )
         }
     }
 }
