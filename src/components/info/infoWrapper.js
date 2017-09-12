@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { ENTRY_CLICK, CREATE_ENTRY, EDIT_TITLE, EDIT_FIELD, ADD_FIELD, MARK_FAV, UNMARK_FAV, DELETE_ENTRY, ADD_TAG, DEL_TAG } from 'actions'
+import { ENTRY_CLICK, CREATE_ENTRY, EDIT_TITLE, EDIT_SECTION_HEADER, EDIT_FIELD, ADD_FIELD, MARK_FAV, UNMARK_FAV, DELETE_ENTRY, ADD_TAG, DEL_TAG } from 'actions'
 import Info from './info.jsx'
 import config from '../../backend/config'
 
@@ -14,6 +14,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
     editTitle: (id, value) => {
         dispatch(EDIT_TITLE(id, value))
+    },
+    editSectionHeader: (id, section_header, new_header) => {
+        dispatch(EDIT_SECTION_HEADER(id, section_header, new_header))
     },
     editField: (id, field_id, property, value) => {
         dispatch(EDIT_FIELD(id, field_id, property, value))

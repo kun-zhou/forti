@@ -4,6 +4,8 @@ import { remote } from 'electron'
 
 const { Menu, MenuItem, dialog } = remote
 import { TwitterPicker } from 'react-color'
+import makeAutohide from 'public/components/Autohide/Autohide.jsx'
+const AutohideColorPicker = makeAutohide(TwitterPicker)
 
 class CategoryEntry extends React.PureComponent {
     constructor(props) {
@@ -67,15 +69,12 @@ class TagEntry extends React.PureComponent {
                 var picker = (
                     <div
                         style={{ position: 'fixed', zIndex: '10000', left: this.state.x - 7, top: this.state.y + 20 }}
-                        ref={el => this.handlePickerMount(el)}
                     >
-                        <TwitterPicker
-                            onChangeComplete={
-                                (color) => {
-                                    this.props.changeTagColor(props.name, color.hex)
-                                }
-                            }
-                        />
+                        <AutohideColorPicker 
+                            onChangeComplete={(color) => {this.props.changeTagColor(props.name, color.hex)}}
+                            onHide={ () => {this.props.toggleColorPicker(null, false)}}
+                            />
+                        
                     </div >)
                 this.props.toggleColorPicker(picker, true)
             }

@@ -14,6 +14,20 @@ export default function dataReducer(state, action) {
             return state.setIn(
                 ['entries', action.id, 'title'], action.value
             )
+        case 'EDIT_SECTION_HEADER':
+            return state
+                //update sections order
+                .updateIn(['entries', action.id, 'sections_order'], (sections) =>
+                    sections.set(sections.indexOf(action.section_header), action.new_header)
+                )
+                //update sections
+                .updateIn(['entries', action.id, 'sections'], (sections) => {
+                    return sections.mapKeys(s => {
+                        if (s === action.section_header)
+                            return action.new_header
+                        return s
+                    })
+                })
         case 'EDIT_FIELD':
             var propertyIdx = action.property === 'name' ? 0 : (action.property === 'content' ? 1 : 2)
             return state.setIn(

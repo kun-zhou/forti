@@ -9,16 +9,23 @@ import config from './backend/config'
 import { SAVE_DB } from 'actions'
 
 class App extends React.PureComponent {
+    constructor(props) {
+        super(props)
+        this.saveDB = this.saveDB.bind(this)
+    }
+
+    // Save Database on Exit
+    saveDB() {
+        if (this.props.status === 'UNLOCKED') {
+            this.props.saveDB()
+        }
+    }
     componentDidMount() { // Add a listener to save DB on unload
-        var props = this.props
-        window.addEventListener('beforeunload',
-            function onbeforeunload(e) {
-                props.saveDB()
-            })
+        window.addEventListener('beforeunload', this.saveDB)
     }
 
     render() {
-        if (this.props.status === "UNLOCKED") return (
+        if (this.props.status === 'UNLOCKED') return (
             <div id="app">
                 <ModalWrapper />
                 <NavWrapper />

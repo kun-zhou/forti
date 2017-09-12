@@ -1,3 +1,5 @@
 node_modules
 promo
 .DS_Store
+dist/bundle.js
+dist/fonts

@@ -31,6 +31,8 @@ class Info extends React.PureComponent {
                     fields={info.getIn(['sections', section])}
                     content={info.get('user_defined')}
                     editField={this.props.editField}
+                    addField={this.props.addField}
+                    editSectionHeader={this.props.editSectionHeader}
                 />
             )
         )
@@ -57,9 +59,6 @@ class Info extends React.PureComponent {
                 />
                 <div id={sty['content-wrapper']}>
                     {ListSections}
-                    <AddField
-                        addField={this.props.addField}
-                        id={id} />
                 </div>
                 {addEntryDropup}
             </div>

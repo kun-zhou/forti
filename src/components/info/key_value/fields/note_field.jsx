@@ -10,40 +10,38 @@ class NoteField extends React.Component {
                 className={sty['field-name-display']}
                 onClick={this.props.toggleNameEdit}
             >
-                {this.props.name !== '' ? this.props.name : <span className={sty['div-placeholder']}>field name</span>}
+                {this.props.local_name !== '' ? this.props.local_name : <span className={sty['div-placeholder']}>field name</span>}
             </div> :
             <input
                 className={sty['field-name-input']}
                 type='text'
-                value={this.props.name}
+                value={this.props.local_name}
                 placeholder={'field name'}
-                onChange={this.props.editName}
+                onChange={this.props.editLocalName}
                 ref={(input) => { input ? input.focus() : {} }}
                 onBlur={this.props.toggleNameEdit}
             />
 
         // Content Field Rendering
-        var setting_icon = this.props.setting_editing ?
+        var setting_icon = this.props.setting_shown ?
             <div className={sty['field-setting']}><i className='fal fa-cog fa-fw' /></div> :
             null
         var content_field = !this.props.content_editing ?
             <div
                 className={sty['field-content-display']}
                 onClick={this.props.toggleContentEdit}
-                onMouseEnter={this.props.toggleSetting}
-                onMouseLeave={this.props.toggleSetting}
             >
                 {
-                    this.props.content !== '' ? // if content is not empty
-                        this.props.content :
+                    this.props.local_content !== '' ? // if content is not empty
+                        this.props.local_content :
                         <span className={sty['div-placeholder']}>field content</span>
                 }
             </div> :
             <input
                 className={sty['field-content-input']}
-                value={this.props.content}
+                value={this.props.local_content}
                 placeholder={'field content'}
-                onChange={this.props.editContent}
+                onChange={this.props.editLocalContent}
                 onBlur={this.props.toggleContentEdit}
                 ref={(input) => { input ? input.focus() : {} }}
             />

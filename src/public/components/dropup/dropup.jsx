@@ -1,5 +1,7 @@
 import React from 'react'
 import sty from './dropup.cssm'
+import makeAutohide from 'public/components/Autohide/Autohide.jsx'
+
 function Entry({ entry, callback }) {
     return (
         <div className={sty['entry-wrapper']} onClick={() => { callback(entry) }}>
@@ -19,6 +21,8 @@ function Dropup({ entries, callback }) {
     )
 }
 
+const AutohideDropup = makeAutohide(Dropup)
+
 // Accept templates variable and a callback function with template as input
 class DropupWithBtn extends React.PureComponent {
     constructor(props) {
@@ -28,15 +32,18 @@ class DropupWithBtn extends React.PureComponent {
         }
         this.toggleDropup = this.toggleDropup.bind(this)
     }
-    toggleDropup(e) {
+
+    toggleDropup() {
         this.setState({ dropup_shown: !this.state.dropup_shown })
     }
+
     render() {
         if (this.state.dropup_shown)
             return (
-                <div className={sty['btn-add-entry']} tabIndex="0" onBlur={this.toggleDropup} ref={e => e ? e.focus() : {}}>
-                    <Dropup
-                        callback={(entry)=>{this.props.callback(entry);this.toggleDropup()}}
+                <div className={sty['btn-add-entry']} ref={e => e ? e.focus() : {}}>
+                    <AutohideDropup
+                        onHide={this.toggleDropup}
+                        callback={(entry) => { this.props.callback(entry); this.toggleDropup() }}
                         entries={this.props.entries}
                     />
                     <button

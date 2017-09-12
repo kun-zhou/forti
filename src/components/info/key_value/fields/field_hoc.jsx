@@ -14,49 +14,57 @@ function makeField(WrappedComponent) {
             this.state = {
                 name_editing: false,
                 content_editing: false,
-                setting_editing: false,
-                name: props.name,
-                content: props.content,
+                setting_shown: false,
+                local_name: props.name,
+                local_content: props.content,
                 type: props.type
             }
             // edit* is for local state updates, updated on each keystroke
             // toggle* update on field input status change and pushes the local data to redux store
-            this.editName = this.editName.bind(this)
-            this.editContent = this.editContent.bind(this)
+            this.editLocalName = this.editLocalName.bind(this)
+            this.editLocalContent = this.editLocalContent.bind(this)
 
             this.toggleNameEdit = this.toggleNameEdit.bind(this)
             this.toggleContentEdit = this.toggleContentEdit.bind(this)
-            this.toggleSettingEdit = this.toggleSettingEdit.bind(this)
+            this.showSetting = this.showSetting.bind(this)
+            this.hideSetting = this.hideSetting.bind(this)
 
             this.toggleTypeText = this.toggleTypeText.bind(this)
             this.toggleTypeCode = this.toggleTypeCode.bind(this)
             this.toggleTypeLink = this.toggleTypeLink.bind(this)
         }
 
-        editName(e) { //name, content, type
-            this.setState({ name: e.target.value })
+        editLocalName(e) { //name, content, type
+            this.setState({ local_name: e.target.value })
         }
 
-        editContent(e) {
-            this.setState({ content: e.target.value })
+        editLocalContent(e) {
+            this.setState({ local_content: e.target.value })
         }
 
         toggleNameEdit(e) {
             if (e.target.tagName === 'INPUT') {
-                this.props.editField(this.props.id, this.props.field_id, 'name', this.state.name)
+                this.props.editField(this.props.id, this.props.field_id, 'name', this.state.local_name)
             }
             this.setState({ name_editing: !this.state.name_editing })
         }
 
         toggleContentEdit(e) {
             if (e.target.tagName === 'INPUT') {
-                this.props.editField(this.props.id, this.props.field_id, 'content', this.state.content)
+                this.props.editField(this.props.id, this.props.field_id, 'content', this.state.local_content)
             }
-            this.setState({ content_editing: !this.state.content_editing })
+            this.setState({ 
+                content_editing: !this.state.content_editing,
+                setting_shown: !this.state.setting_shown
+             })
         }
 
-        toggleSettingEdit(e) {
-            this.setState({ setting_editing: !this.state.setting_editing })
+        showSetting() {
+            //this.setState({ setting_shown: true })
+        }
+
+        hideSetting() {
+            //this.setState({ setting_shown: false })
         }
 
         toggleTypeText(e) {
@@ -76,11 +84,12 @@ function makeField(WrappedComponent) {
 
         render() {
             var passdownProps = {
-                editName: this.editName,
-                editContent: this.editContent,
+                editLocalName: this.editLocalName,
+                editLocalContent: this.editLocalContent,
                 toggleNameEdit: this.toggleNameEdit,
                 toggleContentEdit: this.toggleContentEdit,
-                toggleSettingEdit: this.toggleSettingEdit,
+                showSetting: this.showSetting,
+                hideSetting: this.hideSetting,
                 toggleTypeText: this.toggleTypeText,
                 toggleTypeCode: this.toggleTypeCode,
                 toggleTypeLink: this.toggleTypeLink
