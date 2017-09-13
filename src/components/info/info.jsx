@@ -31,6 +31,7 @@ class Info extends React.PureComponent {
                     fields={info.getIn(['sections', section])}
                     content={info.get('user_defined')}
                     editField={this.props.editField}
+                    delField={this.props.delField}
                     addField={this.props.addField}
                     editSectionHeader={this.props.editSectionHeader}
                 />

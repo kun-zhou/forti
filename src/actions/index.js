@@ -11,7 +11,7 @@ import { genUniqueId, getKeysLoc } from './helper'
 // 0. SAVE_DB
 export const SAVE_DB = () => (dispatch, getState) => {
     config.saveDB(getState().get('db').toJS())
-    dispatch({status: 'DB_SAVED'})
+    dispatch({ status: 'DB_SAVED' })
 }
 
 /** 1. ATTEMPT_UNLOCK
@@ -127,25 +127,28 @@ export const EDIT_TITLE = (id, value) => (dispatch, getState) => {
 }
 
 export const EDIT_SECTION_HEADER = (id, section_header, new_header) => ({
-        type: 'EDIT_SECTION_HEADER',
-        id: id,
-        section_header,
-        new_header
+    type: 'EDIT_SECTION_HEADER',
+    id: id,
+    section_header,
+    new_header
 })
 
 
 // 6. Edit field
-export const EDIT_FIELD = (id, field_id, property, value) => (dispatch, getState) => {
-    // property is name, content, or type
-    var action = {
-        type: 'EDIT_FIELD',
-        id: getState().getIn(['gui', 'activeEntry']),
-        field_id: field_id,
-        property,
-        value
-    }
-    dispatch(action)
-}
+export const EDIT_FIELD = (id, field_id, property, value) => ({
+    type: 'EDIT_FIELD',
+    id,
+    field_id,
+    property,
+    value
+})
+
+export const DEL_FIELD = (id, section, field_id) => ({
+    type: 'DEL_FIELD',
+    id,
+    section,
+    field_id
+})
 
 export const ADD_FIELD = (id, section, type) => (dispatch, getState) => {
     var id = getState().getIn(['gui', 'activeEntry'])

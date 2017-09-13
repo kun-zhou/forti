@@ -26,10 +26,12 @@ function makeField(NameField, ContentField) {
 
             this.toggleNameEdit = this.toggleNameEdit.bind(this)
             this.toggleContentEdit = this.toggleContentEdit.bind(this)
+            this.delField = this.delField.bind(this)
 
             this.toggleTypeText = this.toggleTypeText.bind(this)
             this.toggleTypeCode = this.toggleTypeCode.bind(this)
             this.toggleTypeLink = this.toggleTypeLink.bind(this)
+            this.toggleTypeNote = this.toggleTypeNote.bind(this)
         }
 
         editLocalName(e) { //name, content, type
@@ -57,12 +59,9 @@ function makeField(NameField, ContentField) {
             })
         }
 
-        showSetting() {
-            //this.setState({ setting_shown: true })
-        }
-
-        hideSetting() {
-            //this.setState({ setting_shown: false })
+        delField() {
+            console.log('debug')
+            this.props.delField(this.props.id, this.props.section, this.props.field_id)
         }
 
         toggleTypeText(e) {
@@ -80,25 +79,32 @@ function makeField(NameField, ContentField) {
             this.props.editField(this.props.id, this.props.field_id, 'type', 'link')
         }
 
+        toggleTypeNote(e) {
+            // need to figure out how to get type
+            this.props.editField(this.props.id, this.props.field_id, 'type', 'note')
+        }
+
         render() {
             var passdownProps = {
                 editLocalName: this.editLocalName,
                 editLocalContent: this.editLocalContent,
                 toggleNameEdit: this.toggleNameEdit,
                 toggleContentEdit: this.toggleContentEdit,
-                showSetting: this.showSetting,
-                hideSetting: this.hideSetting,
+                delField: this.delField,
                 toggleTypeText: this.toggleTypeText,
                 toggleTypeCode: this.toggleTypeCode,
-                toggleTypeLink: this.toggleTypeLink
+                toggleTypeLink: this.toggleTypeLink,
+                toggleTypeNote: this.toggleTypeNote
             }
+            console.log(passdownProps.delField)
+            console.log(Object.assign({}, this.state, this.props, passdownProps))
             return (
                 <div className={sty['field']}>
                     <div className={sty['field-name']}>
                         <NameField {...Object.assign({}, passdownProps, this.state, this.props) } />
                     </div>
                     <div className={sty['field-content']}>
-                        <ContentField {...Object.assign({}, passdownProps, this.state, this.props) } />
+                        <ContentField {...Object.assign({}, this.props, this.state, passdownProps) } />
                     </div>
                 </div>
             )

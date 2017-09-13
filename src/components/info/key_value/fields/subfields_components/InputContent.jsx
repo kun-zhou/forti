@@ -9,7 +9,6 @@ class InputContent extends React.Component {
     }
 
     handleClick(e) {
-        console.log('target contained in input field?',e.target, this.wrapperNode, this.wrapperNode.contains(e.target))
         if (!this.wrapperNode.contains(e.target)) {
             this.props.toggleContentEdit()
         }
@@ -28,6 +27,7 @@ class InputContent extends React.Component {
     }
 
     render() {
+        
         return (
             <div ref={(i) => { this.wrapperNode = i }} style={{position: 'relative'}}>
                 <input

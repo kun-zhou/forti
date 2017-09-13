@@ -33,6 +33,18 @@ export default function dataReducer(state, action) {
             return state.setIn(
                 ['entries', action.id, 'user_defined', action.field_id, propertyIdx], action.value
             )
+        case 'DEL_FIELD':
+            return state
+                // delete field in the sections
+                .updateIn(['entries', action.id, 'sections', action.section], fields => {
+                    var idx = fields.indexOf(action.field_id)
+                    if (action.field_id !== -1) { return fields.splice(idx, 1) }
+                    console.log('field to be deleted does not exist')
+                    return fields
+                })
+                // delete field in userdefined
+                .deleteIn(['entries', action.id, 'user_defined', action.field_id])
+        // delete section if empty
         case 'ADD_FIELD':
             return state
                 .updateIn(['entries', action.id, 'sections', action.section],

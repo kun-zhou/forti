@@ -52,9 +52,11 @@ class Section extends React.PureComponent {
                     id: this.props.id,
                     field_id: field,
                     name: content.getIn([field, 0]),
+                    section: this.props.name,
                     content: content.getIn([field, 1]),
                     type: content.getIn([field, 2]),
-                    editField: this.props.editField
+                    editField: this.props.editField,
+                    delField: this.props.delField,
                 }
                 /*
                     switch (data.type) {
