@@ -3,11 +3,7 @@ const { app, BrowserWindow } = require('electron')
 const path = require('path')
 // Keep a reference to mainWindow to avoid window object being garbadged collected
 let mainWindow
-/*
-require('electron-debug')({
-  enabled: true
-})
-*/
+
 /* * * * * * * * * * *
  * * Bootstrapping * *
  * * * * * * * * * * */
