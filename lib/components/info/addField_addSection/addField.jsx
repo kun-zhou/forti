@@ -1,17 +1,9 @@
 import React from 'react'
 import sty from './sty.cssm'
-class Dropdown extends React.PureComponent {
-
-}
 
 class AddField extends React.PureComponent {
     constructor(props) {
         super(props)
-        this.addField = this.addField.bind(this)
-    }
-
-    addField(e) {
-        this.props.addField(this.props.id, 'Basic Info', 'text')
     }
 
     render() {
@@ -19,8 +11,10 @@ class AddField extends React.PureComponent {
             <div className={sty['add-field']}>
                 <div
                     className={sty['btn-add-field']}
-                    onClick={this.addField}
-                >+ Field</div>
+                    onClick={this.props.addField}
+                >
+                    + Field
+                </div>
             </div>
         )
     }

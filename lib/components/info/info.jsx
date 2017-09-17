@@ -22,20 +22,25 @@ class Info extends React.PureComponent {
             return <div id={sty['info']}>{addEntryDropup}</div>
         }
         var id = info.get('id')
-        var ListSections = info.get('sections_order').map(
-            (section) => (
-                <Section
-                    key={id + section}
-                    name={section}
-                    id={id}
-                    fields={info.getIn(['sections', section])}
-                    content={info.get('user_defined')}
-                    editField={this.props.editField}
-                    delField={this.props.delField}
-                    addField={this.props.addField}
-                    editSectionHeader={this.props.editSectionHeader}
-                />
-            )
+        var ListSections = info.get('sections').map(
+            (section, idx) => {
+                var lastSection = idx === (info.get('sections').size - 1)
+                return (
+                    <Section
+                        sec_name={section.get('name')}
+                        id={id}
+                        idx={idx}
+                        fields={section.get('fields')}
+                        content={info.get('user_defined')}
+                        editField={this.props.editField}
+                        delField={this.props.delField}
+                        addField={this.props.addField}
+                        addSection={this.props.addSection}
+                        editSectionHeader={this.props.editSectionHeader}
+                        lastSection={lastSection}
+                    />
+                )
+            }
         )
         return (
             <div id={sty['info']}  >

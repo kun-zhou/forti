@@ -12,12 +12,11 @@ class SectionHeader extends React.Component {
                 <AutosizeInput
                     inputClassName={sty['section-name']}
                     minWidth={'10px'}
-                    value={this.props.name}
+                    value={this.props.sec_name}
                     placeholder={'field name'}
                     onChange={this.props.editLocalSecTitle}
                     onBlur={this.props.toggleSecTitleEdit}
                 />
-                
             </div>
         )
     }

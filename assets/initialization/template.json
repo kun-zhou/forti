@@ -1,5 +1,5 @@
 {
-    "favorites_keys": ["MLeaFwKqZDghlghmIL+bXihHerva", "Zr0H8nj7/ZEoNSUUxNhUoLOE5UUk"],
+    "favorites_keys": ["MLeaFwKqZDghlghmIL+bXihHerva"],
     "categories_order": [
         "Login", "Secure Note", "Credit Card", "Bank Account"
     ], 
@@ -19,7 +19,7 @@
         "personal": "#d0bfae"
     },
     "categories_keys": {
-        "Login": ["qw4BhTDoZgdqNWBeYzs1epU/suey", "Zr0H8nj7/ZEoNSUUxNhUoLOE5UUk", "MLeaFwKqZDghlghmIL+bXihHerva"],
+        "Login": ["qw4BhTDoZgdqNWBeYzs1epU/suey", "MLeaFwKqZDghlghmIL+bXihHerva"],
         "Secure Note": [],
         "Credit Card": [],
         "Bank Account": []
@@ -30,7 +30,7 @@
         "work":["qw4BhTDoZgdqNWBeYzs1epU/suey","MLeaFwKqZDghlghmIL+bXihHerva"],
         "personal":["Zr0H8nj7/ZEoNSUUxNhUoLOE5UUk"]
     },
-    "all_keys": ["MLeaFwKqZDghlghmIL+bXihHerva", "Zr0H8nj7/ZEoNSUUxNhUoLOE5UUk", "qw4BhTDoZgdqNWBeYzs1epU/suey"],
+    "all_keys": ["MLeaFwKqZDghlghmIL+bXihHerva", "qw4BhTDoZgdqNWBeYzs1epU/suey"],
     "trash_keys": [],
     "entries": {
         "MLeaFwKqZDghlghmIL+bXihHerva":
@@ -45,12 +45,10 @@
             "advanced": false,
             "time_created": "1242412",
             "time_modified": "1242412",
-            "sections_display": [true, false],
-            "sections_order": ["Basic Info", "extras"],
-            "sections": {
-                "Basic Info": ["asd", "asdas", "q212"],
-                "extras": ["as1d"]
-            },
+            "sections": [
+                {"name": "Basic Info", "fields": ["asd", "asdas", "q212"]},
+                {"name": "extras", "fields": ["as1d"]}
+            ],
             "user_defined":
             {
                 "asd": ["Account","john.dev@gmail.com","text"], 
@@ -58,34 +56,6 @@
                 "q212": ["Website","https://mail.google.com","link"],
                 "as1d": ["Note","Gmail account for work at XYZ corp.","note"]
             }
-        },
-        "Zr0H8nj7/ZEoNSUUxNhUoLOE5UUk":
-        {   
-            "id": "Zr0H8nj7/ZEoNSUUxNhUoLOE5UUk",
-            "title": "Fastmail - Personal Account",
-            "snippet": "kunzhou@fastmail.com",
-            "category": "Login",
-            "favorite": true,
-            "tags": ["financial", "personal"],
-            "attachment_block": false,
-            "advanced": false,
-            "time_created": "1242413",
-            "time_modified": "1242413",
-            "sections_display": [true, false],
-            "sections_order": ["Basic Info", "extras"],
-            "sections": {
-                "Basic Info": ["asd", "asdas", "q212", "1a11r", "wa11r"],
-                "extras": ["as1d"]
-            },
-            "user_defined":
-            {
-                "asd": ["Account", "johndoe@fastmail.com", "text"], 
-                "asdas": ["Password","Ka|9[aq,]F?w812(s", "code"], 
-                "q212": ["Website","https://www.fastmail.com", "link"],
-                "1a11r": ["Security Question 1","Your favorite college professor?", "text"],
-                "wa11r": ["Security Answer 1","Leo Livshits", "text"],
-                "as1d": ["Note","Personal Account", "note"]
-            }                  
         },
         "qw4BhTDoZgdqNWBeYzs1epU/suey":
         {
@@ -99,12 +69,10 @@
             "advanced": false,
             "time_created": "1242415",
             "time_modified": "1242415",
-            "sections_display": [true, false],
-            "sections_order": ["Basic Info", "extras"],
-            "sections": {
-                "Basic Info": ["asd", "asdas", "q212"],
-                "extras": ["as1d"]
-            },
+            "sections": [
+                {"name": "Basic Info", "fields": ["asd", "asdas", "q212"]},
+                {"name": "extras", "fields": ["as1d"]}
+            ],
             "user_defined":
             {
                 "asd": ["Account", "kunzhou@github.com", "text"], 
@@ -127,12 +95,10 @@
                 "advanced": false,
                 "time_created": "1242415",
                 "time_modified": "1242415",
-                "sections_display": [true, false],
-                "sections_order": ["Basic Info", "extras"],
-                "sections": {
-                    "Basic Info": ["asd", "asdas", "q212"],
-                    "extras": ["as1d"]
-                },
+                "sections": [
+                    {"name": "Basic Info", "fields": ["asd", "asdas", "q212"]},
+                    {"name": "extras", "fields": ["as1d"]}
+                ],
                 "user_defined":
                 {
                     "asd": ["Account", "kunzhou@github.com", "text"], 

@@ -1,3 +1,8 @@
+.btn-wrapper {
+    width: 100%;
+    display: flex;
+}
+
 .add-field {
     width: 30%;
     height: 20px;
@@ -6,6 +11,16 @@
     color: white;
     display: flex;
     justify-content: flex-end;
+}
+
+.add-section {
+    width: 70%;
+    height: 20px;
+    display: flex;
+    font-size: 12px;
+    color: white;
+    display: flex;
+    justify-content: flex-start;
 }
 
 .btn-add-field {
@@ -18,9 +33,19 @@
     justify-content: center;
 }
 
-.btn-add-section {
+.btn-add-left {
+    background-color: rgb(67, 160, 71);
+    width: 50px;
+    height: 100%;
+    border-radius: 3px 0 0 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-add-right {
     background-color: rgb(83, 25, 231);
-    width: 40%;
+    width: 60px;
     height: 100%;
     border-radius: 0 3px 3px 0;
     display: flex;
