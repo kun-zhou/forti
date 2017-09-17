@@ -7,7 +7,7 @@ module.exports = {
         app: path.join(__dirname, 'lib', 'index.js')
     },
     output: {
-        path: path.join(__dirname, 'app', 'render'),
+        path: path.join(__dirname, 'app', 'renderer'),
         filename: 'bundle.js'
     },
     module: {
@@ -46,7 +46,8 @@ module.exports = {
                 test: /\.woff2?/,
                 loader: 'file-loader',
                 options: {
-                    name: './fonts/[name].[ext]'
+                    name: 'fonts/[name].[ext]',
+                    publicPath: 'renderer/', // fix css lookup of fonts
                 }
             }
         ],
@@ -58,12 +59,5 @@ module.exports = {
             public: path.resolve(__dirname, 'lib/public')
         }
     },
-    plugins: [
-        new Copy([
-            {
-                from: './assets',
-                to: './assets'
-            }
-        ])
-    ],
+    //plugins: [ ],
 }

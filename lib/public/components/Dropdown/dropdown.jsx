@@ -36,7 +36,6 @@ class DropdownWithBtn extends React.PureComponent {
 
     toggleDropdown(e) {
         e.nativeEvent.stopImmediatePropagation()
-        console.log('dropdown shown')
         this.setState({ dropdown_shown: !this.state.dropdown_shown })
     }
 

@@ -60,7 +60,6 @@ function makeField(NameField, ContentField) {
         }
 
         delField() {
-            console.log('debug')
             this.props.delField(this.props.id, this.props.section, this.props.field_id)
         }
 
@@ -96,8 +95,6 @@ function makeField(NameField, ContentField) {
                 toggleTypeLink: this.toggleTypeLink,
                 toggleTypeNote: this.toggleTypeNote
             }
-            console.log(passdownProps.delField)
-            console.log(Object.assign({}, this.state, this.props, passdownProps))
             return (
                 <div className={sty['field']}>
                     <div className={sty['field-name']}>

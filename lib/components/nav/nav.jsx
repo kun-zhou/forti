@@ -19,13 +19,12 @@ class CategoryEntry extends React.PureComponent {
         this.menu.append(new MenuItem({
             label: 'Change Icon',
             click: () => {
-                console.log(this)
             }
         }))
     }
 
     handleNavEntryContext(e) {
-        this.setState({ x: e.pageX, y: e.pageY })
+        this.setStaxte({ x: e.pageX, y: e.pageY })
         this.menu.popup(remote.getCurrentWindow())
     }
 
@@ -70,11 +69,11 @@ class TagEntry extends React.PureComponent {
                     <div
                         style={{ position: 'fixed', zIndex: '10000', left: this.state.x - 7, top: this.state.y + 20 }}
                     >
-                        <AutohideColorPicker 
-                            onChangeComplete={(color) => {this.props.changeTagColor(props.name, color.hex)}}
-                            onHide={ () => {this.props.toggleColorPicker(null, false)}}
-                            />
-                        
+                        <AutohideColorPicker
+                            onChangeComplete={(color) => { this.props.changeTagColor(props.name, color.hex) }}
+                            onHide={() => { this.props.toggleColorPicker(null, false) }}
+                        />
+
                     </div >)
                 this.props.toggleColorPicker(picker, true)
             }
@@ -88,7 +87,6 @@ class TagEntry extends React.PureComponent {
                     title: 'Deletion Confirmation',
                     message: 'Are you sure you want to delete the tag "' + props.name + '" ?'
                 })
-                console.log('response', response)
                 if (response === 1) {
                     this.deleteTagFromNav()
                 }
