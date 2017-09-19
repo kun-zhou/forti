@@ -13,7 +13,7 @@ class SectionHeader extends React.Component {
                     inputClassName={sty['section-name']}
                     minWidth={'10px'}
                     value={this.props.sec_name}
-                    placeholder={'field name'}
+                    placeholder={'untitled section'}
                     onChange={this.props.editLocalSecTitle}
                     onBlur={this.props.toggleSecTitleEdit}
                 />

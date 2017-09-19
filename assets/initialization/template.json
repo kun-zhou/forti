@@ -21,16 +21,16 @@
     "categories_keys": {
         "Login": ["qw4BhTDoZgdqNWBeYzs1epU/suey", "MLeaFwKqZDghlghmIL+bXihHerva"],
         "Secure Note": [],
-        "Credit Card": [],
+        "Credit Card": ["KqZDghlghmIL+bXi"],
         "Bank Account": []
     },
     "tags_keys": {
-        "financial": ["Zr0H8nj7/ZEoNSUUxNhUoLOE5UUk"],
+        "financial": ["KqZDghlghmIL+bXi"],
         "project Q": ["MLeaFwKqZDghlghmIL+bXihHerva"],
         "work":["qw4BhTDoZgdqNWBeYzs1epU/suey","MLeaFwKqZDghlghmIL+bXihHerva"],
-        "personal":["Zr0H8nj7/ZEoNSUUxNhUoLOE5UUk"]
+        "personal":[]
     },
-    "all_keys": ["MLeaFwKqZDghlghmIL+bXihHerva", "qw4BhTDoZgdqNWBeYzs1epU/suey"],
+    "all_keys": ["MLeaFwKqZDghlghmIL+bXihHerva", "qw4BhTDoZgdqNWBeYzs1epU/suey", "KqZDghlghmIL+bXi"],
     "trash_keys": [],
     "entries": {
         "MLeaFwKqZDghlghmIL+bXihHerva":
@@ -55,6 +55,28 @@
                 "asdas": ["Password","[aq,]F?wK|9812(s","code"], 
                 "q212": ["Website","https://mail.google.com","link"],
                 "as1d": ["Note","Gmail account for work at XYZ corp.","note"]
+            }
+        },
+        "KqZDghlghmIL+bXi":
+        {
+            "id": "KqZDghlghmIL+bXi",
+            "title": "BOA",
+            "snippet": "kunzhou@fire.com",
+            "category": "Credit Card",
+            "favorite": false,
+            "tags": ["work"],
+            "attachment_block": false,
+            "advanced": false,
+            "time_created": "1242415",
+            "time_modified": "1242415",
+            "sections": [
+                {"name": "Basic Info", "fields": ["asd", "asdas", "q212"]}
+            ],
+            "user_defined":
+            {
+                "asd": ["Card Holder", "Kun Zhou", "text"], 
+                "asdas": ["Card No.","5124 1386 1214 2483", "code"], 
+                "q212": ["Website","https://www.boa.com", "link"]
             }
         },
         "qw4BhTDoZgdqNWBeYzs1epU/suey":

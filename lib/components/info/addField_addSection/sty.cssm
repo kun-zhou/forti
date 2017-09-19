@@ -1,6 +1,9 @@
 .btn-wrapper {
     width: 100%;
     display: flex;
+    min-height: 26px;
+    align-items: center;
+    margin: 5px 0 5px 0;
 }
 
 .add-field {

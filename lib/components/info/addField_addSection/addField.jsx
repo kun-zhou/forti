@@ -8,12 +8,14 @@ class AddField extends React.PureComponent {
 
     render() {
         return (
-            <div className={sty['add-field']}>
-                <div
-                    className={sty['btn-add-field']}
-                    onClick={this.props.addField}
-                >
-                    + Field
+            <div className={sty['btn-wrapper']}>
+                <div className={sty['add-field']}>
+                    <div
+                        className={sty['btn-add-field']}
+                        onClick={this.props.addField}
+                    >
+                        + Field
+                    </div>
                 </div>
             </div>
         )

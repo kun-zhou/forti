@@ -7,7 +7,7 @@ import AddFieldSection from '../addField_addSection/AddFieldSection.jsx'
     import CodeField from './fields/code_field.jsx'
     import LinkField from './fields/link_field.jsx'
 */
-import NoteField from './fields/note_field.jsx'
+import Field from './fields/field.jsx'
 
 import sty from './sty.cssm'
 import SectionHeader from './sectionHeader.jsx'
@@ -57,6 +57,7 @@ class Section extends React.PureComponent {
                     key: field,
                     id: this.props.id,
                     field_id: field,
+                    idx: this.props.idx,
                     name: content.getIn([field, 0]),
                     section: this.props.sec_name,
                     content: content.getIn([field, 1]),
@@ -64,19 +65,7 @@ class Section extends React.PureComponent {
                     editField: this.props.editField,
                     delField: this.props.delField,
                 }
-                /*
-                    switch (data.type) {
-                        case 'text':
-                            return <TextField {...data} />
-                        case 'code':
-                            return <CodeField {...data} />
-                        case 'link':
-                            return <LinkField {...data} />
-                        case 'note':
-                            return <NoteField {...data} />
-                    }
-                */
-                return <NoteField {...data} />
+                return <Field {...data} />
             }
         )
         if (this.props.lastSection) {

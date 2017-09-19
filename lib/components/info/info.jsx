@@ -43,7 +43,7 @@ class Info extends React.PureComponent {
             }
         )
         return (
-            <div id={sty['info']}  >
+            <div id={sty['info']}  key={id}>
                 <Toolbar
                     id={id}
                     favorite={info.get('favorite')}

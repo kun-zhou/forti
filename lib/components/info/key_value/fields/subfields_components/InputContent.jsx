@@ -27,7 +27,6 @@ class InputContent extends React.Component {
     }
 
     render() {
-        
         return (
             <div ref={(i) => { this.wrapperNode = i }} style={{position: 'relative'}}>
                 <input

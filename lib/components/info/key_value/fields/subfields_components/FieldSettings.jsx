@@ -10,7 +10,7 @@ function Entry({ entry, callback }) {
     )
 }
 
-function Dropdown({ entries_callbacks }) {
+function Dropdown({ entries_callbacks, toggleDropdown }) {
     var entriesNodes = entries_callbacks.map(
         (entry_callback) => (<Entry entry={entry_callback[0]} callback={entry_callback[1]} />)
     )
@@ -31,42 +31,40 @@ class FieldSettings extends React.PureComponent {
             dropdown_shown: false
         }
         this.toggleDropdown = this.toggleDropdown.bind(this)
+        this.entries_callbacks = [
+            ['delete', () => { props.delField(); this.toggleDropdown() }],
+            ['to text', () => { props.toggleTypeText; this.toggleDropdown() }],
+            ['to code', () => { props.toggleTypeCode; this.toggleDropdown() }],
+            ['to link', () => { props.toggleTypeLink; this.toggleDropdown() }],
+            ['to note', () => { props.toggleTypeNote; this.toggleDropdown() }],
+        ]
     }
 
     toggleDropdown(e) {
-        e.nativeEvent.stopImmediatePropagation()
         this.setState({ dropdown_shown: !this.state.dropdown_shown })
     }
 
     render() {
-        var entries_callbacks = [
-            ['delete', this.props.delField],
-            ['to text', this.props.toggleTypeText],
-            ['to code', this.props.toggleTypeCode],
-            ['to link', this.props.toggleTypeLink],
-            ['to note', this.props.toggleTypeNote],
-        ]
-        if (this.state.dropdown_shown)
-            return (
-                <div className={sty['field-setting']}>
-                    <AutohideDropdown
-                        onHide={this.toggleDropdown}
-                        entries_callbacks={entries_callbacks}
-                    />
-                    <button
-                        className={sty['btn-add']}
-                        onClick={this.toggleDropdown}
-                    >
-                        <i className='fas fa-fw fa-lg fa-cog' />
-                    </button>
-                </div>)
+
+        var dropdown = null
+        var boldness = 'fal'
+        if (this.state.dropdown_shown) {
+            dropdown = (
+                <AutohideDropdown
+                    onHide={this.toggleDropdown}
+                    entries_callbacks={this.entries_callbacks}
+                />
+            )
+            boldness = 'fas'
+        }
         return (
             <div className={sty['field-setting']}>
+                {dropdown}
                 <button
                     className={sty['btn-add']}
                     onClick={this.toggleDropdown}
                 >
-                    <i className='fal fa-fw fa-lg fa-cog' />
+                    <i className={boldness + ' fa-fw fa-lg fa-cog'} />
                 </button>
             </div>
         )

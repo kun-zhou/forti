@@ -93,8 +93,9 @@ input.section-name:focus{
     padding-left: 5px;
     padding-bottom: 3px;
     overflow: hidden;
-    display: block;
+    display: flex;
     white-space: pre-wrap;
+    position: relative;
 }
 
 .field-setting {
@@ -102,6 +103,11 @@ input.section-name:focus{
     right: 0;
     top: 4px;
     color: grey;
+}
+
+.field-content-display-btns {
+    position: absolute;
+    right: 5px;
 }
 
 .div-placeholder {
@@ -131,8 +137,8 @@ input.section-name:focus{
 }
 
 .entry-wrapper {
-    padding: 2px 3px 2px 8px;
-    width: 80px;
+    padding: 2px 3px 2px 10px;
+    width: 60px;
     font-size: 12px;
     font-weight: 500;
 }
