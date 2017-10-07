@@ -14,20 +14,24 @@ This app is work in progress. Many bugs are known at this point, and will be res
 
 ## Philosophy
 
-I feel it is important to address the things this software hopes to achieve and the things it does not.
+This software is targeted at people who would like to have a place for their key-value pairs with reasonable security and usability. It will be a robust information manager (could be a password manager) that works on Desktop, so all your key-value pairs find a place to go, rather than lying around in your notes app (which you sometimes forget to include what account that password is related to). By building the app with key-value pair concept in mind, the UX provides an easy interface to input these information and enforces the format of the information you are saving.
 
 ### What it is
 
-* It will help you memorize formatted data entries in a secure manner (read, more secure than plain textfiles).
+* It will help you memorize formatted data entries in a resonably manner (read, more secure than plain textfiles).
 * The process of logging and retrieving information are both inuititve and efficient.
-* The software should be customizables. I plan to implement a plugin system so everyone can contribute to the functionalities they like for this software.
+* The software should be customizable.
 
-*In short, I hope the software serves as an inuititve and elegant formatted data manager for the general public with a reasonable level of security and extensibility.*
+*In short, I hope the software serves as an inuititve and elegant formatted information manager for the general public with a reasonable level of security and extensibility.*
 
 ### What it is not
 
 * Protect you agaist targeted attacks.
+* A place to write your diary.
 * Save big binary files.
+* Auto-input passwords to browsers
+
+*In short, it is not the fanciest, most convenient, and most secure password manager lying around, but it works, and satistifies our needs to store key-value pairs in a database that can be later retrieved easily and reliably.*
 
 ## Getting Started
 
@@ -37,7 +41,7 @@ This app is to be bundled with webpack. To build and run, run
 yarn start
 ```
 
-To build in watch mode with Webpack, and start the app, run
+To build in watch mode with webpack, and start the app, run
 
 ```shell
 yarn run build; electron .

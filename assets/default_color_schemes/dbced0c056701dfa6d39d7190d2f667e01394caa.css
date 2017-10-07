@@ -1,0 +1,14 @@
+:root {
+    --color-warning: rgb(206, 86, 84);
+    --color-bg-nav: rgb(47, 50, 53);
+    --color-bg-list: rgb(251, 251, 251);
+    --color-bg-info: rgb(251, 251, 251);
+    --color-border: rgb(222, 222, 222);
+    --color-selected-nav: rgb(66, 71, 71);
+    --color-active-nav: rgb(206, 86, 84);
+    --color-selected-bg-entry: rgb(239, 239, 239);
+    --color-active-bg-entry: rgb(255, 255, 255);
+    --color-selected-entry-filler: rgb(153, 153, 153);
+    --color-active-entry-filler: rgb(206, 86, 84);
+    --color-bg-dropdown: rgb(240, 240, 240)
+}

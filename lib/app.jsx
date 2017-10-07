@@ -5,7 +5,6 @@ import NavWrapper from './components/nav/navWrapper'
 import EntriesWrapper from './components/entries/entriesWrapper'
 import InfoWrapper from './components/info/infoWrapper'
 import { connect } from 'react-redux'
-import config from './backend/config'
 import { SAVE_DB } from 'actions'
 
 class App extends React.PureComponent {
@@ -50,7 +49,6 @@ const mapDispatchToProps = dispatch => ({
         dispatch(SAVE_DB())
     }
 })
-
 
 const AppWrapper = connect(
     mapStateToProps,
