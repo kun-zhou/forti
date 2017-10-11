@@ -1,3 +1,63 @@
+.setup-wrapper {
+    width: 80%;
+    margin: 15% 0 15% 0;
+    display: flex;
+}
+
+.header-setup {
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 30px 10px 0;
+    border-right: 1px solid hsl(0, 0%, 88%);
+}
+
+.app-title {
+    font-size: 26pt;
+    margin-bottom: 10px;
+}
+
+.app-title-footnote {
+    text-align: justify;
+    font-size: 12px;
+    max-width: 120px;
+}
+
+.body-setup {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 30px;
+}
+
+.setup-section {
+    margin: 10px;
+}
+
+.setup-section p {
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.about-vault h2 {
+    text-align: center;
+    color: hsl(222, 53%, 50%);
+    font-size: 18px;
+    margin: 12px;
+}
+
+.getting-started h2 {
+    text-align: center;
+    color: hsl(330, 65%, 55%);
+    font-size: 18px;
+    margin: 12px;
+}
+
+.setup-notice {
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
 #container {
     height: 100%;
     width: 100%;
