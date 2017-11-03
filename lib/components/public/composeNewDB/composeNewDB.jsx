@@ -51,7 +51,7 @@ export default class composeNewDB extends React.Component {
                     onClick={this.onSubmit}
                 >
                     SUBMIT
-            </button>
+                </button>
             </div>
         )
     }

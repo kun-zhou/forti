@@ -6,13 +6,13 @@ import WelcomePage from './welcomePage.jsx'
 
 class Setup extends React.PureComponent {
     render() {
-        console.log(this.props.status.toJS())
-        switch (this.props.status.get('context')) { // i.e., LOCKED
-            case 'NO_CONFIG':
-                return <WelcomePage {...this.props}/>
+        console.log(this.props.status)
+        switch (this.props.status) { // i.e., LOCKED
             case 'WELCOME':
+                return <WelcomePage {...this.props} />
+            case 'SELECT_DB':
+            default:
                 return <SelectDB {...this.props} />
-            default: return null
         }
     }
 }

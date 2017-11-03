@@ -1,68 +1,79 @@
 import React from 'react'
 import sty from './setup.cssm'
+import config from '../../utils/config'
+import ComposeNewDB from '../public/composeNewDB/composeNewDB.jsx'
 
-class DB extends React.PureComponent {
-    constructor() {
-        super()
-        this.handleClick = this.handleClick(this)
-    }
 
-    handleClick() {
-        //this.props.selectDB(this.props.idx)
+function DB({ db, highlighted_db, handleDBClick }) {
+    var classNameList = [sty['db-block']]
+    if (highlighted_db === db.location) {
+        classNameList.push(sty['highlight'])
     }
-
-    render() {
-        return (
-            <div
-                className={sty['db-block']}
-                onClick={this.handleClick}
-            >
-                {this.props.name}
-            </div>
-        )
-    }
+    return (
+        <div
+            className={classNameList.join(' ')}
+            onClick={() => { handleDBClick(db.location) }}
+        >
+            {db.name}
+        </div>
+    )
 }
 
 class SelectDB extends React.PureComponent {
-    render() {
-        var listOfDB = this.props.status.get('dbList').map(
-            (db) => <DB name={db.get('name')} location={db.get('location')}  />
-        )
-        /*
-        switch (this.props.status.get('status')) {
-            //case 'DEFAULT_DB_MISSING':
-            //case 'DB_MISSING:
-            
+    constructor() {
+        super()
+        this.state = { highlighted_db: null, passwd: '', toggle_new_db: false }
+        this.handleDBClick = this.handleDBClick.bind(this)
+        this.unlockDB = this.unlockDB.bind(this)
+        this.updatePassword = this.updatePassword.bind(this)
+        this.setupDB = this.setupDB.bind(this)
+    }
+
+    handleDBClick(location) {
+        this.setState({ highlighted_db: location })
+    }
+
+    unlockDB(e) {
+        if (this.state.highlighted_db) {
+            console.log(this.state.highlighted_db, this.state.passwd)
+            this.props.unlockDB(this.state.highlighted_db, this.state.passwd)
+        } else {
+            console.log('Please choose a db')
         }
-        */
-        /*
-        const unlockTemplate = (
-            <div id={sty['container']} style={{ justifyContent: 'center' }}>
-                <div id={sty['password-input-wrapper']}>
-                    <input
-                        id={sty['password-input']}
-                        placeholder='master password please'
-                        value={this.state.value}
-                        type='password'
-                        onChange={this.handleChange}
-                    />
-                    <div
-                        id={sty['submit']}
-                        onClick={this.handleSubmit}
-                    >
-                        Confirm
-                            </div>
-                </div>
-            </div>
+    }
+
+    updatePassword(e) {
+        this.setState({ passwd: e.target.value })
+    }
+
+    setupDB(name, passwd) {
+        this.props.setupDB(name, passwd)
+        this.forceUpdate()
+    }
+    render() {
+        var listOfDB = config.getDBList().map(
+            (db) => <DB db={db} highlighted_db={this.state.highlighted_db} handleDBClick={this.handleDBClick} />
         )
-        if (this.props.status.get('status') === 'DB_SELECTED') {
-            var content = unlockTemplate
-        } else { // DB MISSING
-            content = null
-        }*/
+        var message = this.props.status
+        var newDBPrompt = this.state.toggle_new_db ?
+            <ComposeNewDB onSubmit={this.setupDB} />
+            :
+            <div onClick={() => { this.setState({ toggle_new_db: true }) }}>
+                Create new DB
+            </div>
+
         return (
-            <div id={sty['container']}>
-                {listOfDB}
+            <div className={sty['wrapper-row']}>
+                <div className={sty['database-list']}>
+                    {listOfDB}
+                    {newDBPrompt}
+                </div>
+                <div className={sty['unlock-panel']}>
+                    Unlock your DB
+                    <input style={{ width: '100px' }} value={this.state.passwd} onChange={this.updatePassword} type='password' />
+                    <button onClick={this.unlockDB}>Submit</button>
+                    {message}
+                </div>
             </div>
         )
     }

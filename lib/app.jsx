@@ -41,7 +41,7 @@ class App extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
-    status: state.getIn(['gui', 'status']),
+    status: state.getIn(['status', 'status']),
 })
 
 const mapDispatchToProps = dispatch => ({
