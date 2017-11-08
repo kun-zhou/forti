@@ -1,6 +1,7 @@
 :root {
     --color-warning: rgb(206, 86, 84);
-    --color-bg-nav: rgb(47, 50, 53);
+    --color-bg-nav: rgb(247, 188, 65);
+    --color-font-nav: rbg(0,0,0)
     --color-bg-list: rgb(251, 251, 251);
     --color-bg-info: rgb(251, 251, 251);
     --color-border: rgb(222, 222, 222);

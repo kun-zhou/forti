@@ -1,0 +1,13 @@
+{
+    "categories": [
+        ["Login","fa-key"],
+        ["Secure Note", "fa-sticky-note"],
+        ["Credit Card", "fa-credit-card"],
+        ["Bank Account", "fa-university"]
+
+    ],
+    "tags": [
+        ["work", "#d0a299"],
+        ["personal", "#d0bfae"]
+    ]
+}

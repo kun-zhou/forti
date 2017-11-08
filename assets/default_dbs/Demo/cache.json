@@ -1,0 +1,47 @@
+{
+    "favorites": [
+        "MLeaFwKqZDgh"
+    ],
+    "categories": {
+        "Login": [
+            "qw4BhTDoZgdq"
+        ]
+    },
+    "tags": {
+        "personal": [
+            "MLeaFwKqZDgh"
+        ],
+        "work": [
+            "qw4BhTDoZgdq"
+        ]
+    },
+    "trash": [],
+    "all": [
+        "MLeaFwKqZDgh",
+        "qw4BhTDoZgdq"
+    ],
+    "abstracts": {
+        "MLeaFwKqZDgh": {
+            "id": "MLeaFwKqZDgh",
+            "title": "Gmail Clowindy Account",
+            "attachment": false,
+            "snippet": "clowindy.kun@gmail.com",
+            "category": "Login",
+            "tags": [
+                "work"
+            ],
+            "favorite": true
+        },
+        "qw4BhTDoZgdq": {
+            "id": "qw4BhTDoZgdq",
+            "title": "Fastmail Account",
+            "attachment": false,
+            "snippet": "kunzhou@fastmail.com",
+            "category": "Login",
+            "tags": [
+                "personal"
+            ],
+            "favorite": false
+        }
+    }
+}

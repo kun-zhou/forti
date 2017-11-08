@@ -4,7 +4,7 @@ const Copy = require('copy-webpack-plugin');
 module.exports = {
     target: 'electron-renderer',
     entry: {
-        app: path.join(__dirname, 'lib', 'index.js')
+        app: path.join(__dirname, 'browser', 'index.js')
     },
     output: {
         path: path.join(__dirname, 'app', 'renderer'),
@@ -15,10 +15,7 @@ module.exports = {
             {
                 test: /\.jsx$|\.js$/,
                 loader: 'babel-loader',
-                query: {
-                    presets: ['es2015', 'react']
-                },
-                include: path.join(__dirname, 'lib')
+                include: path.join(__dirname, 'browser')
             },
             // Load Global CSS Modules
             {
@@ -54,9 +51,9 @@ module.exports = {
     },
     resolve: {
         alias: {
-            actions: path.resolve(__dirname, 'lib/actions'),
-            reducers: path.resolve(__dirname, 'lib/reducers'),
-            public: path.resolve(__dirname, 'lib/public')
+            actions: path.resolve(__dirname, 'browser/actions'),
+            reducers: path.resolve(__dirname, 'browser/reducers'),
+            public: path.resolve(__dirname, 'browser/public')
         }
     },
     //plugins: [ ],
