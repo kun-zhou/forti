@@ -10,7 +10,7 @@ const mapStateToProps = state => {
         visibleEntries: state.gui.activeEntries,
         activeEntry: state.gui.activeEntry,
         activePane: state.gui.activePane,
-        tags: state.manifest.tags
+        tags: state.gui.nav.tags
     }
 }
 

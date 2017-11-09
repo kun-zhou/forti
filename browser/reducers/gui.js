@@ -3,13 +3,14 @@
  */
 export default function guiReducer(state, action) {
     switch (action.type) {
-        // UPDATE active navTab
+        case 'ATTEMPT_UNLOCK':
+            if (action.success) {
+                return Object.assign({}, state, { nav: action.manifest })
+            }
+            return state
         case 'NAV_ENTRY_CLICK':
             var newStateDiff = {}
-            if (!action.entries.includes(state.activeEntry)) {
-                newStateDiff.activeEntry = null
-            }
-            return Object.assign({}, state, newStateDiff, {
+            return Object.assign({}, state, {
                 activePane: 'nav',
                 activeNavTab: action.sNavTab, // s shorthand for selected
                 activeNavTabType: action.sNavTabType,

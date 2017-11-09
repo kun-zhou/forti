@@ -4,8 +4,9 @@
 const { clipboard } = require('electron')
 import React from 'react'
 import sty from '../../sty.cssm'
-import InputContent from './InputContent.jsx'
+import FieldSettings from './FieldSettings.jsx'
 import { toCode, toLink } from './defaultContentDisplay'
+import OutsideAlerter from '../../../../public/outsideAlerter.jsx'
 
 
 class ContentToolbar extends React.PureComponent {
@@ -75,7 +76,18 @@ class ContentField extends React.PureComponent {
                 </div>
             )
         } else {
-            return <InputContent {...this.props} />
+            return (
+                <OutsideAlerter handleClickOutside={this.props.toggleContentEdit}>
+                    <input
+                        className={sty['field-content-input']}
+                        value={this.props.local_content}
+                        placeholder={'field content'}
+                        onChange={this.props.editLocalContent}
+                        ref={(e) => e ? e.focus() : {}}
+                    />
+                    <FieldSettings {...this.props} />
+                </OutsideAlerter>
+            )
         }
     }
 }

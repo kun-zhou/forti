@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { ENTRY_CLICK, CREATE_ENTRY, EDIT_TITLE, EDIT_SECTION_HEADER, EDIT_FIELD, DEL_FIELD, ADD_FIELD, ADD_SECTION, MARK_FAV, UNMARK_FAV, DELETE_ENTRY, ADD_TAG, DEL_TAG } from 'actions'
+import { CREATE_SECRET, DELETE_SECRET, UPDATE_TITLE, ADD_SECTION, UPDATE_SECTION_TITLE, UPDATE_FIELD, UPDATE_FAV, ADD_TAG, DEL_TAG } from 'actions'
 import Info from './info.jsx'
 import config from '../../utils/config'
 
@@ -12,40 +12,31 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
-    editTitle: (id, value) => {
-        dispatch(EDIT_TITLE(id, value))
+    updateTitle: (id, value) => {
+        dispatch(UPDATE_TITLE(id, value))
     },
-    editSectionHeader: (id, section_header, new_header) => {
-        dispatch(EDIT_SECTION_HEADER(id, section_header, new_header))
+    updateSectionTitle: (id, section_header, new_header) => {
+        dispatch(UPDATE_SECTION_TITLE(id, section_header, new_header))
     },
-    editField: (id, field_id, property, value) => {
-        dispatch(EDIT_FIELD(id, field_id, property, value))
+    updateField: (id, section_idx, field_idx, content, operation) => {
+        dispatch(UPDATE_FIELD(id, field_id, property, content, operation))
     },
-    delField: (id, idx, field_id) => {
-        dispatch(DEL_FIELD(id, idx, field_id))
+    addSection: (id) => {
+        dispatch(ADD_SECTION(id))
     },
-    addField: (id, section, type) => {
-        dispatch(ADD_FIELD(id, section, type))
+    createSecret: (category) => {
+        dispatch(CREATE_SECRET(category))
     },
-    addSection: (id, idx) => {
-        dispatch(ADD_SECTION(id, idx))
+    updateFav: (id, operation) => {
+        dispatch(UPDATE_FAV(id, operation))
     },
-    createEmptyEntry: (category) => {
-        dispatch(CREATE_ENTRY(category))
-    },
-    markFav: (id) => {
-        dispatch(MARK_FAV(id))
-    },
-    unmarkFav: (id) => {
-        dispatch(UNMARK_FAV(id))
-    },
-    deleteEntry: (id) => {
-        dispatch(DELETE_ENTRY(id))
+    deleteSecret: (id) => {
+        dispatch(DELETE_SECRET(id))
     },
     addTag: (id, tag) => {
         dispatch(ADD_TAG(id, tag))
     },
-    delTag: (tag) => {
+    deleteTag: (tag) => {
         dispatch(DEL_TAG(tag))
     }
 })

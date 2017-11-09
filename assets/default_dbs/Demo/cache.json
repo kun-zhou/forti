@@ -1,10 +1,22 @@
 {
+    "manifest": {
+        "categories": [
+            ["Login","fa-key"],
+            ["Secure Note", "fa-sticky-note"],
+            ["Credit Card", "fa-credit-card"],
+            ["Bank Account", "fa-university"]
+        ],
+        "tags": [
+            ["work", "#d0a299"],
+            ["personal", "#d0bfae"]
+        ]
+    },
     "favorites": [
         "MLeaFwKqZDgh"
     ],
     "categories": {
         "Login": [
-            "qw4BhTDoZgdq"
+            "qw4BhTDoZgdq", "MLeaFwKqZDgh"
         ]
     },
     "tags": {
@@ -23,6 +35,7 @@
     "abstracts": {
         "MLeaFwKqZDgh": {
             "id": "MLeaFwKqZDgh",
+            "trash": false,
             "title": "Gmail Clowindy Account",
             "attachment": false,
             "snippet": "clowindy.kun@gmail.com",
@@ -34,6 +47,7 @@
         },
         "qw4BhTDoZgdq": {
             "id": "qw4BhTDoZgdq",
+            "trash": false,
             "title": "Fastmail Account",
             "attachment": false,
             "snippet": "kunzhou@fastmail.com",

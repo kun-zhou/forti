@@ -12,7 +12,7 @@ class SectionHeader extends React.Component {
                 <AutosizeInput
                     inputClassName={sty['section-name']}
                     minWidth={'10px'}
-                    value={this.props.sec_name}
+                    value={this.props.title}
                     placeholder={'untitled section'}
                     onChange={this.props.editLocalSecTitle}
                     onBlur={this.props.toggleSecTitleEdit}

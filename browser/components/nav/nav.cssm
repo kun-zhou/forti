@@ -1,5 +1,6 @@
 #nav {
-    width: 30%;
+    min-width:170px;
+    width: 16%;
     height: 100%;
     overflow: hidden;
     background-color: var(--color-bg-nav);
@@ -18,12 +19,8 @@
 
 .section-header {
     margin-top: 20px;
-    display:flex;
+    display: flex;
     justify-content: space-between;
-}
-
-.entry-fixed {
-    padding: 4px 0 4px 24px;
 }
 
 .section-header {
@@ -34,17 +31,21 @@
 }
 
 .entry,
+.entry-fixed,
 .entry-category,
 .entry-tag {
-    margin: 3px 0 3px 20px;
+    padding: 5px;
+    margin: 3px 15px 3px 15px;
     position: relative;
 }
 
 .is-active {
+    border-radius: 3px;
     background-color: var(--color-active-nav)
 }
 
 .is-selected {
+    border-radius: 3px;
     background-color: var(--color-selected-nav)
 }
 
@@ -58,7 +59,7 @@
     align-items: center;
 }
 
-.color-picker{
+.color-picker {
     position: absolute;
     left: 100px;
     top: 30px;

@@ -4,8 +4,9 @@
 
 import config from '../utils/config'
 import dataAPI from '../lib/dataAPI'
-import cacheStore from '../lib/cacheManager'
+import cacheManager from '../lib/cacheManager'
 import { genUniqueId, getKeysLoc } from './helper'
+import { debounce } from 'lodash'
 
 /// CONFIGURATION & DATABASE ACTIONS
 // 0. SAVE_DB
@@ -28,13 +29,12 @@ export const ATTEMPT_UNLOCK = (location, password) => { //idx signals which data
         action.status = message
         return action
     }
-    var { manifest } = dataAPI.readManifest()
     var { cache } = dataAPI.readCache()
-    cacheStore.init(cache)
+    cacheManager.init(cache)
     action.key = key
     action.manifest = {
-        categories: new Map(manifest.categories),
-        tags: new Map(manifest.tags)
+        categories: new Map(cache.manifest.categories),
+        tags: new Map(cache.manifest.tags)
     }
     action.status = 'UNLOCKED'
     return action
@@ -57,7 +57,7 @@ export const CREATE_DB = (name, passwd) => {
  * And if active entry is not in the currnet nav tab, visibleInfo is set to null. 
  */
 export const NAV_ENTRY_CLICK = (navTab, navTabType) => (dispatch, getState) => {
-    var entries = cacheStore.getEntries(navTabType, navTab)
+    var entries = cacheManager.getEntries(navTabType, navTab)
     dispatch({
         type: 'NAV_ENTRY_CLICK',
         sNavTab: navTab,
@@ -126,7 +126,17 @@ export const DELETE_ENTRY = (id) => ({
     type: 'DELETE_ENTRY',
     id
 })
-
+// 6. UPDATE_INFO
+export const UPDATE_INFO = (info) => (dispatch, getState) => {
+    // 1. write to file
+    dataAPI.saveSecret(info)
+    // 2. update cache
+    cacheManager.updateSecret(info)
+    var action = {
+        type: 'UPDATE_INFO',
+    }
+    dispatch(action)
+}
 
 // 5. Edit Title
 export const EDIT_TITLE = (id, value) => (dispatch, getState) => {
@@ -225,21 +235,11 @@ export const CHANGE_TAG_COLOR = (tag, color) => ({
     color
 })
 
-// MODAL OPERATIONS
-
-export const DISPLAY_MODAL = (modal) => ({
-    type: 'DISPLAY_MODAL',
-    modal
-})
-
-export const MODAL_STATUS_UPDATE = (status) => ({
-    type: 'MODAL_STATUS_UPDATE',
-    status
-})
-
-export const CLOSE_MODAL = (status) => ({
-    type: 'CLOSE_MODAL'
-})
+// SAVE_SECRET
+export const SAVE_SECRET = (info) => {
+    dataAPI.saveSecret(info)
+    return { type: 'SAVE_SECRET' }
+}
 
 // COLOR SCHEME
 export const SET_COLOR_SCHEME = (scheme) => (dispatch) => {

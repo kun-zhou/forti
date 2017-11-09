@@ -28,18 +28,15 @@ var initialState = {
     activeVaultPasswd: null,
     activeVaultKey: null,
   },
-  manifest: {},
   gui: {
+    nav: null,
     activePane: null, // {string}
     activeNavTab: null, // {string}
     activeNavTabType: null,
-    activeEntries: [],
+    activeEntries: null,
     activeEntry: null, // id string
     searchActive: false,
-    entries_rerender: true,
     activeInfo: null,
-    modal: null,
-    modalResponse: null,
   },
   logger: {}
 }

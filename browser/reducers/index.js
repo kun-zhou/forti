@@ -19,10 +19,9 @@ export default combineReducers({
 })
 */
 export default function reducer(state, action) {
-    console.log('action', action)
+    console.log('action', action, state)
     return {
         status: statusReducer(state.status, action),
-        manifest: manifestReducer(state.manifest, action),
         gui: guiReducer(state.gui, action),
     }
 }

@@ -18,10 +18,12 @@ import { readCryptSync, writeCryptSync, generateNewKeys } from './crypto'
 import path from 'path'
 import fs from 'fs-extra'
 import * as app_path from '../utils/paths'
+import { debounce } from 'lodash'
 
 var vault_path = null,
     passwd = null,
     key = null
+var debouncedFuncs = {}
 
 function init(_vault_path, _passwd) { //return abstracts of notes
     // decrypt keyfile and verify
@@ -31,6 +33,17 @@ function init(_vault_path, _passwd) { //return abstracts of notes
     validateCache(vault_path, passwd)
 
     return { success: true, message: 'UNLOCKED', key: '' }
+}
+
+function closeVault() {
+    flushDebouncedFuncs()
+}
+
+function flushDebouncedFuncs() {
+    for (var func in debouncedFuncs) {
+        func.flush()
+        delete debouncedFuncs.func
+    }
 }
 
 function readManifest() {
@@ -44,21 +57,27 @@ function readCache() {
 }
 
 function readSecret(uid) {
+    flushDebouncedFuncs()
     return { secret: JSON.parse(fs.readFileSync(path.join(vault_path, 'secrets', String(uid)), 'utf8')) }
     //return JSON.parse(readCryptSync(path.join(vault_path, 'secrets', uid), passwd))
 }
 
-function saveSecret(uid, secret) {
+function saveSecret(secret) {
     if (!secretIsValid()) {
         return { success: 1, message: 'secret is invalid' }
     }
     try {
-        fs.writeFileSync(path.join(vault_path, 'secrets', uid), JSON.stringify(secret))
+        !debouncedFuncs[secret.id] ? debouncedFuncs[secret.id] = debounce(writeSecretToFile, 1000) : {}
+        debouncedFuncs[secret.id](secret)
         //writeCryptSync(path.join(vault_path, 'secrets', uid), JSON.stringify(secret), passwd)
     } catch (e) {
         return { success: 1, message: e }
     }
     return { success: 0 }
+}
+
+function writeSecretToFile(secret) {
+    fs.writeFileSync(path.join(vault_path, 'secrets', String(secret.id)), JSON.stringify(secret))
 }
 
 function createManifest(path, _manifest, passwd) {
