@@ -36,9 +36,9 @@
         "MLeaFwKqZDgh": {
             "id": "MLeaFwKqZDgh",
             "trash": false,
-            "title": "Gmail Clowindy Account",
+            "title": "Gmail Development Account",
             "attachment": false,
-            "snippet": "clowindy.kun@gmail.com",
+            "snippet": "john.dev@gmail.com",
             "category": "Login",
             "tags": [
                 "work"
@@ -50,7 +50,7 @@
             "trash": false,
             "title": "Fastmail Account",
             "attachment": false,
-            "snippet": "kunzhou@fastmail.com",
+            "snippet": "johnk@fastmail.com",
             "category": "Login",
             "tags": [
                 "personal"
