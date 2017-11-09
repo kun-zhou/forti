@@ -3,7 +3,7 @@
 **Lockit is an open source formatted content manager built with [Electron](https://github.com/atom/electron), [React](https://facebook.github.io/react/), [Redux](https://github.com/reactjs/redux), and [Immutable](https://github.com/facebook/immutable-js/)**
 
 <p align="center">
-  <a href="https://youtu.be/TZxJ-n1rRZs"><img src="https://misc.kunzhou.me/lockit_shot.png" style="width: 60%"/></a>
+  <a href="https://youtu.be/TZxJ-n1rRZs"><img src="https://misc.kunzhou.me/lockit.png" style="width: 60%"/></a>
 </p>
 
 *Click the image for a video demo!*
