@@ -1,13 +1,15 @@
 {
-    "name": "Bank Account",
-    "sections": [
-        {"name": "Basic Info", "fields":["QxPuF+ms", "SmarjIEc", "A1di9Esc", "7CkiGDUc", "Hc5LMc8q"]}
-    ],
-    "user_defined": {
-        "QxPuF+ms": ["Bank Name","","text"], 
-        "SmarjIEc": ["Account Holder","", "text"], 
-        "A1di9Esc": ["Routing Number", "","number"],
-        "7CkiGDUc": ["Account Number","","number"],
-        "Hc5LMc8q": ["PIN","","passcode"]
-    }
+    "category": "Bank Account",
+    "user_defined": [
+       {
+           "title":"Basic Info",
+           "fields": [
+               ["Bank Name","","text"],  
+               ["Account Holder","", "text"],  
+               ["Routing Number", "","number"],
+               ["Account Number","","number"],
+               ["PIN","","passcode"]
+            ]
+       }
+    ]
 }

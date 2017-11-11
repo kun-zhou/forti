@@ -1,13 +1,16 @@
+
 {
-    "name": "Credit Card",
-    "sections": [
-        {"name": "Basic Info", "fields":["QxPuF+ms", "SmarjIEc", "A1di9Esc", "7CkiGDUc", "Hc5LMc8q"]}
-    ],
-    "user_defined": {
-        "QxPuF+ms": ["Card Holder","","text"], 
-        "SmarjIEc": ["Card Type","", "text"], 
-        "A1di9Esc": ["Card Number", "","number"],
-        "7CkiGDUc": ["Expiration Date","","date"],
-        "Hc5LMc8q": ["CSV","","passcode"]
-    }
+    "category": "Credit Card",
+    "user_defined": [
+       {
+           "title":"Basic Info",
+           "fields": [
+               ["Card Holder","","text"],
+               ["Card Type","", "text"], 
+               ["Card Number", "","number"],
+               ["Expiration Date","","date"],
+               ["CVV","","passcode"]
+            ]
+       }
+    ]
 }

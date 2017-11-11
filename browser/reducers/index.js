@@ -9,19 +9,10 @@ import statusReducer from './status'
 import manifestReducer from './manifest'
 import guiReducer from './gui'
 import logger from './logger'
-import { combineReducers } from 'redux'
-/*
+import { combineReducers } from 'redux-immutable'
+
+
 export default combineReducers({
     status: statusReducer,
-    manifest: manifestReducer,
     gui: guiReducer,
-    logger: logger
 })
-*/
-export default function reducer(state, action) {
-    console.log('action', action, state)
-    return {
-        status: statusReducer(state.status, action),
-        gui: guiReducer(state.gui, action),
-    }
-}

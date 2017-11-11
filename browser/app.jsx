@@ -49,7 +49,7 @@ class App extends React.PureComponent {
             </div>} state 
  */
 const mapStateToProps = state => ({
-    status: state.status.status
+    status: state.getIn([status,status])
 })
 
 const mapDispatchToProps = dispatch => ({

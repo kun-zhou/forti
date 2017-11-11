@@ -1,32 +1,47 @@
-import _ from 'lodash'
+// Uses immutbale data types
 import hashbow from 'hashbow'
-
+import { Map } from 'immutable'
 var cache = null
 var lastBumped = null
 
 function init(_cache) {
     cache = _cache
+    console.log(cache.toJS())
 }
 // Accepts list of tags or singleton
-
-function addTagToManifest(tags) { // receive array of tag
-    if (tags.constructor === Array) {
-        for (var tag of tags) {
-            cache.manifest.tags.set(tag, hashbow(tag))
-        }
-    } else { // tags really just tag
-        cache.manifest.tags.set(tags, hashbow(tags))
+function getCategoryCounts() {
+    var categories_count = Map()
+    for (let category of cache.get('categories').keys()) {
+        categories_count.set(category, cache.getIn('categories', category).size)
     }
+    return categories_count
 }
 
-function addCategoryToManifest(category, icon) { // receive array of tag
-    cache.categories.set(category, icon)
-
+function getTags() {
+    return cache.get('tags').keys()
 }
 
+function addSecret(secret) {
+    // 1. Update Listing
+    cache.all.unshift(secret.id)
+    if (!cache.categories[secret.category])
+        cache.categories[secret.category] = []
+    cache.categories[secret.category].unshift(secret.id)
+    // 2. Add to abstracts
+    cache.abstracts[secret.id] = _.pick(secret, ['id', 'trash', 'title', 'attchment', 'snippet', 'tags', 'category', 'favorite'])
+}
+
+function updateMeta(secret) {
+    cache.abstracts[secret.id] = _.pick(secret, ['id', 'trash', 'title', 'attchment', 'snippet', 'tags', 'category', 'favorite'])
+}
 // Return tags, categories added
 function updateSecret(info) { // add or modify
-
+    cache.setIn(['abstracts', info.get('id')],
+        info.filter((value, key) => {
+            ['id', 'trash', 'title', 'attchment', 'snippet', 'tags', 'category', 'favorite'].includes(key)
+        })
+    )
+    /*
     var prev_abstract = cache.abstracts[info.id]
     // 1. UPDATING LIST
     // 1. If from all to trash (trash)
@@ -88,7 +103,8 @@ function updateSecret(info) { // add or modify
             }
             cache.tags[tag].unshift(info.id)
         }
-    }
+    }*/
+
 }
 // This function does not change the list
 function updateSecretInfoOnly(info) {
@@ -106,40 +122,46 @@ function getCache() {
 function getEntries(type, name, sort) {
     switch (type) {
         case 'all':
-            return appendAbstracts(cache.all)
+            return appendAbstracts(cache.get('all'))
         case 'favorite':
-            return appendAbstracts(cache.favorites)
+            return appendAbstracts(cache.get('favorites'))
         case 'category':
-            return appendAbstracts(cache.categories[name])
+            return appendAbstracts(cache.getIn(['categories', name]))
         case 'tag':
-            return appendAbstracts(cache.tags[name])
+            return appendAbstracts(cache.getIn(['tags', name]))
         case 'trash':
-            return appendAbstracts(cache.trash)
+            return appendAbstracts(cache.get('trash'))
         default:
             return null
     }
 }
 
 function appendAbstracts(keys) {
-    if (!keys) {
-        return [[], []]
+    var secrets = Map({ favorites: List(), others: List() })
+    if (!keys) { // if undefined
+        return secrets
     }
-    var secrets = [[], []]
     var abstract
-    for (var key of keys) {
-        abstract = cache.abstracts[key]
-        if (abstract.favorite)
-            secrets[0].push(abstract)
-        else
-            secrets[1].push(abstract)
-    }
+    secrets.withMutations((secrets) => {
+        for (var key of keys) {
+            abstract = cache.getIn(['abstracts', key])
+            if (abstract.get('favorite'))
+                secrets.update('favorites', favs => favs.push(abstract))
+            else
+                secrets.update('favorites', favs => favs.push(abstract))
+        }
+    })
     return secrets
 }
 
 export default {
     init,
+    updateMeta,
+    getTags,
+    getCategoryCounts,
     updateSecret,
     trashSecret,
     getEntries,
-    getCache
+    getCache,
+    addSecret
 }

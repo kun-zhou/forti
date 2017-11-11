@@ -1,25 +1,31 @@
 import { connect } from 'react-redux'
-import { CREATE_SECRET, DELETE_SECRET, UPDATE_TITLE, ADD_SECTION, UPDATE_SECTION_TITLE, UPDATE_FIELD, UPDATE_FAV, ADD_TAG, DEL_TAG } from 'actions'
+import { CREATE_SECRET, DELETE_SECRET, UPDATE_META, UPDATE_CUSTOM } from 'actions'
 import Info from './info.jsx'
 import config from '../../utils/config'
 
 // Helper Functions
 const mapStateToProps = state => {
     return {
-        info: state.gui.activeInfo,
-        entries: config.getTemplateList()
+        info: state.getIn('gui', 'activeInfo'),
+        categories: state.getIn('gui', 'nav', 'categories'),
     }
 }
 
 const mapDispatchToProps = dispatch => ({
+    updateMeta: (id, field, new_field) => {
+        dispatch(UPDATE_META(id, field, new_field))
+    },
+    updateCustom: (id, operation, params) => {
+        dispatch(UPDATE_CUSTOM(id, operation, params))
+    },
     updateTitle: (id, value) => {
         dispatch(UPDATE_TITLE(id, value))
     },
-    updateSectionTitle: (id, section_header, new_header) => {
-        dispatch(UPDATE_SECTION_TITLE(id, section_header, new_header))
+    updateSectionTitle: (id, sec_idx, new_title) => {
+        dispatch(UPDATE_SECTION_TITLE(id, sec_idx, new_title))
     },
-    updateField: (id, section_idx, field_idx, content, operation) => {
-        dispatch(UPDATE_FIELD(id, field_id, property, content, operation))
+    updateField: (id, sec_idx, field_idx, content, operation) => {
+        dispatch(UPDATE_FIELD(id, sec_idx, field_idx, content, operation))
     },
     addSection: (id) => {
         dispatch(ADD_SECTION(id))

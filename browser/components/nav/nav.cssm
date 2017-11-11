@@ -1,6 +1,6 @@
 #nav {
-    min-width:170px;
-    width: 16%;
+    min-width: 190px;
+    width: 20%;
     height: 100%;
     overflow: hidden;
     background-color: var(--color-bg-nav);

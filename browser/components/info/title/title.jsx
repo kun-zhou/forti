@@ -8,16 +8,14 @@ class Title extends React.PureComponent {
             title_editing: false,
             title: props.title
         }
-        this.toggleTitleEdit = this.toggleTitleEdit.bind(this)
-        this.editTitle = this.editTitle.bind(this)
     }
 
-    editTitle(e) {
+    editTitle = (e) => {
         this.setState({ title: e.target.value })
     }
 
-    toggleTitleEdit() {
-        this.props.editTitle(this.props.id, this.state.title)
+    toggleTitleEdit = () => {
+        this.props.updateTitle(this.state.title)
         this.setState({ title_editing: !this.state.title_editing })
     }
 

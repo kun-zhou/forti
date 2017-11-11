@@ -10,11 +10,13 @@ export default {
     setDefaultDB: setDefaultDB,
     getDefaultDBLocation: getDefaultDBLocation,
     // color schemes related
+    appendTagColors: appendTagColors,
     getDefaultColorScheme: getDefaultColorScheme,
     setDefaultColorScheme: setDefaultColorScheme,
     getColorSchemeList: getColorSchemeList,
     getColorScheme: getColorScheme,
     // templates related
+    getCategories: getCategories,
     getTemplate: getTemplate,
     getTemplateList: getTemplateList,
 }
@@ -22,11 +24,12 @@ export default {
  * For both color schemes and templates,
  * defaults are pulled and appended by user-added entries.
  */
+import hashbow from 'hashbow'
 const uuid = require('uuid/v4');
 const fs = require('fs-extra')
 const path = require('path')
 const crypto = require('crypto')
-
+import _ from 'lodash'
 const lockit_crypto = require('./lockit_crypto')
 
 const pathConfigDir = path.join(require('electron').remote.app.getPath('appData'), 'lockit')
@@ -142,26 +145,36 @@ function addTemplate() {
 
 }
 
+// append colors for tags
+function appendTagColors(tags) { //tags is an iterator
+    var tag_and_color = []
+    for (var tag of tags) {
+        tag_and_color.push([tag,hashbow(tag)])
+    }
+    return new Map(tag_and_color)
+}
+
+// get Manifest
+function getCategories() {
+    return defaultTemplates.map((template) => [template.name, template.icon])
+}
 // Get Templates List
 function getTemplateList() {
     return defaultTemplates.concat(config.templates)
 }
 
-function getTemplate(template_file_name) {
-    // Check default color schemes first
-    defaultTemplates.forEach((_template) => {
-        if (_template.file_name === template_file_name) {
-            return JSON.parse(fs.readFileSync(path.join(pathDefaultTemplates, template_file_name), 'utf8'))
+function getTemplate(template_name) { // NEED to ADD USER TEMPLATE
+    var template_file_name = null
+    for (var template of defaultTemplates) {
+        if (template.name === template_name) {
+            console.log('matched')
+            return JSON.parse(fs.readFileSync(path.join(pathDefaultTemplates, template.file_name), 'utf8'))
+            break;
         }
-    })
-    config.templates.forEach((_template) => {
-        if (_template.file_name === template_file_name) {
-            return JSON.parse(fs.readFileSync(path.join(pathTemplates, template_file_name), 'utf8'))
-        }
-    })
+    }
+
     return null
 }
-
 /***********************
  ** private functions **
  ***********************/

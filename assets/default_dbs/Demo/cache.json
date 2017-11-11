@@ -1,22 +1,13 @@
 {
-    "manifest": {
-        "categories": [
-            ["Login","fa-key"],
-            ["Secure Note", "fa-sticky-note"],
-            ["Credit Card", "fa-credit-card"],
-            ["Bank Account", "fa-university"]
-        ],
-        "tags": [
-            ["work", "#d0a299"],
-            ["personal", "#d0bfae"]
-        ]
-    },
     "favorites": [
         "MLeaFwKqZDgh"
     ],
     "categories": {
         "Login": [
             "qw4BhTDoZgdq", "MLeaFwKqZDgh"
+        ],
+        "Bank Account": [
+            "qw4BhTDoZgda"
         ]
     },
     "tags": {
@@ -25,12 +16,16 @@
         ],
         "work": [
             "qw4BhTDoZgdq"
+        ],
+        "financial": [
+            "qw4BhTDoZgda"
         ]
     },
     "trash": [],
     "all": [
         "MLeaFwKqZDgh",
-        "qw4BhTDoZgdq"
+        "qw4BhTDoZgdq",
+        "qw4BhTDoZgda"
     ],
     "abstracts": {
         "MLeaFwKqZDgh": {
@@ -54,6 +49,18 @@
             "category": "Login",
             "tags": [
                 "personal"
+            ],
+            "favorite": false
+        },
+        "qw4BhTDoZgda":{
+            "id":"qw4BhTDoZgda",
+            "trash": false,
+            "title": "Bank of America",
+            "attachment": false,
+            "snippet": "BOA Personal Account",
+            "category": "Bank Account",
+            "tags": [
+                "financial"
             ],
             "favorite": false
         }

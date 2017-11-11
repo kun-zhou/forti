@@ -1,9 +1,26 @@
 import React from 'react'
 import sty from './sty.cssm'
 import AutosizeInput from './AutosizeInput.jsx'
-class SectionHeader extends React.Component {
+class SectionTitle extends React.PureComponent {
     constructor(props) {
         super(props)
+        this.state = {
+            title_editing: false,
+            title: props.title,
+        }
+    }
+
+    editLocalSecTitle = (e) => {
+        this.setState({ title: e.target.value })
+    }
+
+    toggleSecTitleEdit = (e) => {
+        if (e.target.tagName === 'INPUT') {
+            if (this.props.title !== this.state.title) {
+                this.props.editSectionTitle(this.state.title)
+            }
+        }
+        this.setState({ title_editing: !this.state.title_editing })
     }
 
     render() {
@@ -12,9 +29,9 @@ class SectionHeader extends React.Component {
                 <AutosizeInput
                     inputClassName={sty['section-name']}
                     minWidth={'10px'}
-                    value={this.props.title}
+                    value={this.state.title}
                     placeholder={'untitled section'}
-                    onChange={this.props.editLocalSecTitle}
+                    onChange={this.editLocalSecTitle}
                     onBlur={this.props.toggleSecTitleEdit}
                 />
             </div>
@@ -44,4 +61,4 @@ class SectionHeader extends React.Component {
                         />
                 }
                 */
-export default SectionHeader
+export default SectionTitle

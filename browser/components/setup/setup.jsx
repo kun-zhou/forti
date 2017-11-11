@@ -6,7 +6,6 @@ import WelcomePage from './welcomePage.jsx'
 
 class Setup extends React.PureComponent {
     render() {
-        console.log(this.props.status)
         switch (this.props.status) { // i.e., LOCKED
             case 'WELCOME':
                 return <WelcomePage {...this.props} />

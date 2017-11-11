@@ -1,11 +1,9 @@
 {
-    "name": "Login",
-    "sections": [
-        {"name": "Basic Info", "fields":["QxPuF+ms", "SmarjIEc", "A1di9Esc"]}
-    ],
-    "user_defined": {
-        "QxPuF+ms": ["Account","","text"], 
-        "SmarjIEc": ["Password","", "code"], 
-        "A1di9Esc": ["Website", "","link"]
-    }
+    "category": "Login",
+    "user_defined": [
+       {
+           "title":"Basic Info",
+           "fields": [["Account","","text"], ["Password","", "code"], ["Website", "","link"]]
+       }
+    ]
 }

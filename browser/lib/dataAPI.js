@@ -1,13 +1,14 @@
 /**
- * This API manages data IO and database initialization
+ * This API manages data IO and database initialization.
  */
 export default {
     init,
     readSecret,
+    createSecret,
+    deleteSecret,
     saveSecret,
     readAttachment,
     saveAttachment,
-    readManifest,
     readCache,
     saveCache,
     createVault,
@@ -17,6 +18,7 @@ import uuid from 'uuid/v4'
 import { readCryptSync, writeCryptSync, generateNewKeys } from './crypto'
 import path from 'path'
 import fs from 'fs-extra'
+import crypto from 'crypto'
 import * as app_path from '../utils/paths'
 import { debounce } from 'lodash'
 
@@ -35,20 +37,26 @@ function init(_vault_path, _passwd) { //return abstracts of notes
     return { success: true, message: 'UNLOCKED', key: '' }
 }
 
+function getUID() {
+    flushDebouncedFuncs()// flushing is necessary so UID of the pending write does not get obtained
+    var ids = fs.readdirSync(path.join(vault_path, 'secrets')),
+        length = 5
+    id = crypto.randomBytes(length).toString('hex')
+    while (ids.includes(id)) {
+        length++
+        id = crypto.randomBytes(length).toString('hex')
+    }
+}
+
 function closeVault() {
     flushDebouncedFuncs()
 }
 
 function flushDebouncedFuncs() {
     for (var func in debouncedFuncs) {
-        func.flush()
+        debouncedFuncs[func].flush()
         delete debouncedFuncs.func
     }
-}
-
-function readManifest() {
-    return { manifest: JSON.parse(fs.readFileSync(path.join(vault_path, 'manifest.json'), 'utf8')) }
-    //var manifest = readCryptSync(vault_path, crypto.pbkdf2(passwd, 'salt', 100000, 256, 'sha512'))
 }
 
 function readCache() {
@@ -62,7 +70,15 @@ function readSecret(uid) {
     //return JSON.parse(readCryptSync(path.join(vault_path, 'secrets', uid), passwd))
 }
 
-function saveSecret(secret) {
+function createSecret(secret) {
+    var current_time = (new Date()).getTime()
+    secret.date_modified = current_time
+    secret.date_created = current_time
+    writeSecretToFile(secret)
+    return { success: 0, secret: secret }
+}
+
+function saveSecret(secret) { // create id if not exist
     if (!secretIsValid()) {
         return { success: 1, message: 'secret is invalid' }
     }
@@ -77,7 +93,12 @@ function saveSecret(secret) {
 }
 
 function writeSecretToFile(secret) {
-    fs.writeFileSync(path.join(vault_path, 'secrets', String(secret.id)), JSON.stringify(secret))
+    console.log('secret wrote to file')
+    fs.writeFileSync(path.join(vault_path, 'secrets', secret.id), JSON.stringify(secret))
+}
+
+function deleteSecret(id) {
+    fs.unlinkSync(path.join(vault_path, 'secrets', id))
 }
 
 function createManifest(path, _manifest, passwd) {

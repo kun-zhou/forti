@@ -1,13 +1,9 @@
 {
-    "name": "Software License",
-    "sections": [
-        {"name": "Basic Info", "fields":["QxPuF+ms", "SmarjIEc", "A1di9Esc", "7CkiGDUc", "Hc5LMc8q"]}
-    ],
-    "user_defined": {
-        "QxPuF+ms": ["Software Name","","text"], 
-        "SmarjIEc": ["Licensed to","", "text"], 
-        "A1di9Esc": ["Registered Email", "","number"],
-        "7CkiGDUc": ["License","","text"],
-        "Hc5LMc8q": ["Website","","code"]
-    }
+    "category": "Software License",
+    "user_defined": [
+       {
+           "title":"Basic Info",
+           "fields": [["Software Name","","text"], ["Licensed to","", "text"], ["Registered Email", "","number"],["License","","text"],["Website","","code"]]
+       }
+    ]
 }

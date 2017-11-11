@@ -1,94 +1,60 @@
 /**
  * Manages the GUI, and anything that does not directly change the database itself.
  */
+import _ from 'lodash'
 export default function guiReducer(state, action) {
     switch (action.type) {
         case 'ATTEMPT_UNLOCK':
             if (action.success) {
-                return Object.assign({}, state, { nav: action.manifest })
+                return state.set('nav', action.manifest)
             }
             return state
         case 'NAV_ENTRY_CLICK':
-            var newStateDiff = {}
-            return Object.assign({}, state, {
+            return state.merge({
                 activePane: 'nav',
                 activeNavTab: action.sNavTab, // s shorthand for selected
                 activeNavTabType: action.sNavTabType,
                 activeEntries: action.entries
             })
         case 'ENTRY_CLICK':
-            return Object.assign({}, state, {
+            return state.merge({
                 activePane: 'entries',
                 activeEntry: action.sEntryId,
                 activeInfo: action.info
             })
-        case 'UNMARK_FAV':
-            if (state.get('activeNavTabType') !== 'favorites') {
-                return state
-            } else { //if we are looking at favorites
-                // then remove the entry being unmarked from the list and clear info
-                var del_idx = state.get('activeEntries').indexOf(action.id)
-                if (del_idx !== -1) {
-                    return state.withMutations((state) => {
-                        state.update('activeEntries', list => list.splice(del_idx, 1))
-                        if (del_idx < state.get('activeEntries').size) { // if there is an entry after the deleted entry
-                            state.set('activeEntry', state.getIn(['activeEntries', del_idx]))
-                        } else { // if the deleted entry is the last entry
-                            // if there is no more entries
-                            if (state.get('activeEntries').size === 0) {
-                                state.set('activeEntry', null)
-                                state.set('activePane', 'nav')
-                            } else { // if there are more entries before the deleted entry
-                                state.set('activeEntry', state.getIn(['activeEntries', del_idx - 1]))
-                            }
-                        }
-                    })
-                } else {
-                    throw 'ENTRY TO BE UNMARKED DOES NOT ALREADY EXIST IN THE FAVORITES LIST'
-                }
-            }
-        case 'SEARCH_ENTRIES_LOADING':
-            return state.set('activeEntries', 'loading')
-                .set('activePane', 'search')
-        case 'SEARCH_ENTRIES_DONE':
-            return state.set('activeEntries', action.entries)
-        case 'CREATE_ENTRY':
+        case 'CREATE_SECRET':
+            return state.setIn(['nav', 'categories_count'], action.categories_count)
+        case 'DELETE_SECRET':
+            return state.setIn(['nav', 'categories_count'], action.categories_count)
+        case 'UPDATE_META':
             return state
-                .set('activePane', 'entries')
-                .set('activeNavTabType', 'categories')
-                .set('activeNavTab', action.category)
-                .set('activeEntries', action.entries === undefined ? List([action.newId]) : action.entries.unshift(action.newId))
-                .set('activeEntry', action.newId)
-        case 'DELETE_ENTRY':
-            var del_idx = state.get('activeEntries').indexOf(action.id)
-            if (del_idx !== -1) {
-                return state.withMutations((state) => {
-                    state.update('activeEntries', list => list.splice(del_idx, 1))
-                    if (del_idx < state.get('activeEntries').size) { // if there is an entry after the deleted entry
-                        state.set('activeEntry', state.getIn(['activeEntries', del_idx]))
-                    } else { // if the deleted entry is the last entry
-                        // if there is no more entries
-                        if (state.get('activeEntries').size === 0) {
-                            state.set('activeEntry', null)
-                            state.set('activePane', 'nav')
-                        } else { // if there are more entries before the deleted entry
-                            state.set('activeEntry', state.getIn(['activeEntries', del_idx - 1]))
-                        }
+                .updateIn(['activeEntries', action.id, action.key], action.new_value)
+                .updateIn(['activeInfo', action.key], action.new_value)
+        case 'UPDATE_CUSTOM':
+            action = action.params
+            switch (action.operation) {
+                case 'ADD_SECTION':
+                    return state
+                        .updateIn(['activeInfo', 'user_defined'], sections => sections.push(Map({ name: '', fields: List() })))
+                case 'UPDATE_SECTION_TITLE':
+                    return state
+                        .updateIn(['activeInfo', 'user_defined', action.sec_idx, 'name'],
+                        action.new_value)
+                case 'UPDATE_FIELD':
+                    return state
+                        .setIn(['activeInfo', 'user_defined', action.sec_idx, 'fields', action.field_idx, action.content_idx],
+                        action.new_value)
+                case 'DELETE_FIELD':
+                    var newState = state.deleteIn(['activeInfo', 'user_defined', action.sec_idx, 'fields', action.field_idx],
+                        action.new_value)
+                    if (newState.getIn(['activeInfo', 'user_defined', action.sec_idx, 'fields']).size === 0) {
+                        newState.deleteIn(['activeInfo', 'user_defined', action.sec_idx])
                     }
-                })
-            } else {
-                throw 'ENTRY TO BE DELETED DOES NOT ALREADY EXIST IN THE FAVORITES LIST'
+                    return newState
+                case 'ADD_FIELD':
+                    return state
+                        .updateIn(['activeInfo', 'user_defined', action.sec_idx], fields => fields.push(List(['', '', ''])))
             }
-
-        case 'DISPLAY_MODAL':
-            return state.set('modal', action.modal)
-        case 'MODAL_STATUS_UPDATE':
-            return state
-                .set('modalResponse', action.response)
-        case 'CLOSE_MODAL':
-            return state
-                .set('modal', null)
-                .set('modalResponse', null)
         default:
             return state
     }

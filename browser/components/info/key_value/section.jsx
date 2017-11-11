@@ -4,58 +4,51 @@ import AddField from '../addField_addSection/addField.jsx'
 import AddFieldSection from '../addField_addSection/AddFieldSection.jsx'
 import Field from './fields/field.jsx'
 import sty from './sty.cssm'
-import SectionHeader from './sectionHeader.jsx'
+import sectionTitle from './sectionTitle.jsx'
 
 export default class Section extends React.PureComponent {
     constructor(props) {
         super(props)
-        this.state = {
-            title_editing: false,
-            title: props.title,
-        }
         // edit* is for local state updates, updated on each keystroke
         // toggle* update on field input status change and pushes the local data to redux store
     }
 
-    updateField = (field_idx, content, operation) => {
-        this.props.updateField(this.props.sec_idx, field_idx, content, operation)
+    updateField = (section_idx, field_idx, content_idx) => {
+        this.props.udpateCustom(this.props.info.id, 'UPDATE_FIELD', { section_idx, field_idx, content_idx })
     }
 
-    addSection = () => {
-        this.props.addSection(this.props.id, this.props.idx)
+    deleteField = (section_idx, field_idx) => {
+        this.props.udpateCustom(this.props.info.id, 'DELETE_FIELD', { section_idx, field_idx })
     }
 
-    editLocalSecTitle = (e) => {
-        this.setState({ title: e.target.value })
+    addField = (section_idx, field_idx) => {
+        this.props.udpateCustom(this.props.info.id, 'ADD_FIELD', { section_idx })
     }
-    // let section title flow to redux state
-    flowTitle = (e) => {
-        if (e.target.tagName === 'INPUT') {
-            if (this.props.title !== this.state.title) {
-                this.props.editSectionHeader(this.props.id, this.props.idx, this.state.title)
-            }
-        }
-        this.setState({ title_editing: !this.state.title_editing })
+
+    updateSectionTitle = (title) => {
+        this.props.updateSectionTitle(this.props.sec_idx, title)
     }
 
     render() {
         var fields_jsx = this.props.fields.map(
-            (field) => {
+            (field, idx) => {
                 return (
                     <Field
+                        key={idx}
+                        field_idx={idx}
                         field={field}
                         updateField={this.updateField}
+                        deleteField={this.deleteField}
+                        addField={this.addField}
                     />
                 )
             }
         )
         return (
             <div>
-                <SectionHeader
-                    title={this.state.title}
-                    editing={this.state.title_editing}
-                    editLocalSecTitle={this.editLocalSecTitle}
-                    toggleSecTitleEdit={this.toggleSecTitleEdit}
+                <sectionTitle
+                    title={this.props.title}
+                    toggleSecTitleEdit={this.updateSectionTitle}
                 />
                 {fields_jsx}
                 {this.props.addSection ?

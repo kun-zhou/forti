@@ -5,17 +5,11 @@
 import config from '../utils/config'
 import dataAPI from '../lib/dataAPI'
 import cacheManager from '../lib/cacheManager'
-import { genUniqueId, getKeysLoc } from './helper'
 import { debounce } from 'lodash'
+import { Map, List, OrderedMap, fromJS } from 'immutable'
 
 /// CONFIGURATION & DATABASE ACTIONS
 // 0. SAVE_DB
-export const SAVE_DB = () => (dispatch, getState) => {
-    dispatch({ status: 'DB_BEING_SAVED' })
-    var state = getState()
-    config.saveDB(state.get('db').toJS(), state.getIn(['status', 'activeDBLoc']), state.getIn(['status', 'password']))
-    dispatch({ status: 'DB_SAVED' })
-}
 
 /** 1. ATTEMPT_UNLOCK
  * STATUS, [db]
@@ -29,13 +23,14 @@ export const ATTEMPT_UNLOCK = (location, password) => { //idx signals which data
         action.status = message
         return action
     }
-    var { cache } = dataAPI.readCache()
-    cacheManager.init(cache)
+    cacheManager.init(fromJS(dataAPI.readCache().cache))
     action.key = key
-    action.manifest = {
-        categories: new Map(cache.manifest.categories),
-        tags: new Map(cache.manifest.tags)
-    }
+    // Create categories_count item
+    action.manifest = Map({
+        categories: OrderedMap(fromJS(config.getCategories())), // key is cateogyr and value is icon
+        categories_count: cacheManager.getCategoryCounts(),
+        tags: OrderedMap(config.appendTagColors(cacheManager.getTags()))// will be a orderedmap
+    })
     action.status = 'UNLOCKED'
     return action
 }
@@ -106,139 +101,84 @@ export const SEARCH_ENTRIES = (ids, keywords) => (dispatch, getState) => {
 }
 
 // 4. Create Entry
-export const CREATE_ENTRY = (category) => (dispatch, getState) => {
+export const CREATE_SECRET = (category) => (dispatch, getState) => {
     // Switch to category view
-    var location = getKeysLoc('categories', category)
-    var entries = getState().getIn(location)
-    var existingIds = getState().getIn(['db', 'entries']).keySeq().toArray()
-    var action = {
-        type: 'CREATE_ENTRY',
-        category: category,
-        newId: genUniqueId(9, existingIds),
-        template: config.getTemplate(category),
-        currentTime: (new Date()).getTime(),
-        entries
+    var secret = {
+        "title": "",
+        "attachment": false,
+        "snippet": "",
+        "tags": [],
+        "favorite": false,
+        "user_defined": [],
+        "snapshots": {}
     }
-    dispatch(action)
-}
-
-export const DELETE_ENTRY = (id) => ({
-    type: 'DELETE_ENTRY',
-    id
-})
-// 6. UPDATE_INFO
-export const UPDATE_INFO = (info) => (dispatch, getState) => {
-    // 1. write to file
-    dataAPI.saveSecret(info)
-    // 2. update cache
-    cacheManager.updateSecret(info)
-    var action = {
-        type: 'UPDATE_INFO',
-    }
-    dispatch(action)
-}
-
-// 5. Edit Title
-export const EDIT_TITLE = (id, value) => (dispatch, getState) => {
-    var action = {
-        type: 'EDIT_TITLE',
-        id: getState().getIn(['gui', 'activeEntry']),
-        value: value
-    }
-    dispatch(action)
-}
-
-export const EDIT_SECTION_HEADER = (id, idx, new_header) => ({
-    type: 'EDIT_SECTION_HEADER',
-    id,
-    idx,
-    new_header
-})
-
-
-// 6. Edit field
-export const EDIT_FIELD = (id, field_id, property, value) => ({
-    type: 'EDIT_FIELD',
-    id,
-    field_id,
-    property,
-    value
-})
-
-export const DEL_FIELD = (id, idx, field_id) => ({
-    type: 'DEL_FIELD',
-    id,
-    idx,
-    field_id
-})
-
-export const ADD_FIELD = (id, idx, type) => (dispatch, getState) => {
-    var action = {
-        type: 'ADD_FIELD',
-        id,
-        idx,
-        field_type: type,
-        field_id: genUniqueId(6, getState().getIn(['db', 'entries', id, 'user_defined']).keySeq().toArray())
-    }
-    dispatch(action)
-}
-
-export const ADD_SECTION = (id, idx) => (dispatch, getState) => {
-    // idx is the section index the action is dispacthed from
+    template = Object.assign(template, config.getTemplate(category))
+    var { secret, message } = dataAPI.createSecret(template) // return secret with dates and id
+    // Add to cache
+    cacheManager.addSecret(secret)
+    //return action
     dispatch({
-        type: 'ADD_SECTION',
+        type: 'CREATE_SECRET',
+        categories_count: cacheManager.getCategoryCounts(), // updates categories_count in case things have changed
+    })
+    dispatch(NAV_ENTRY_CLICK(secret.category, 'category'))
+    dispatch(ENTRY_CLICK(secret.id))
+}
+
+export const TRASH_SECRET = (secret) => { // move to trash
+    dataAPI.saveSecret
+}
+
+export const DELETE_SECRET = (id) => { // permenantly delete
+    // dataAPi
+    dataAPI.deleteSecret(id)
+    dispath({
+        type: 'DELETE_SECRET',
         id
     })
-    dispatch(ADD_FIELD(id, idx + 1, 'text')) // idx+1 represents the new section
 }
 
-// 1. ADD/DEL TO/FROM FAV
-export const MARK_FAV = (entry_id) => ({
-    type: 'MARK_FAV',
-    id: entry_id
-})
+// 6. UPDATE_INFO
+// Maybe implement two methods, one is update meta, another is update user_defined.
 
-export const UNMARK_FAV = (entry_id) => ({
-    type: 'UNMARK_FAV',
-    id: entry_id
-})
-
-// 2. ADD/DEL TAG
-export const ADD_TAG = (id, tag) => (dispatch, getState) => {
+// UPDATE_META writes to both cache and file
+// UPDATE_USER_DEFINED writes to only file and NOT cache
+// in both cases, I need date_updated returned.
+//  1. from dataAPI
+//  2. directly written in action creators
+export const UPDATE_META = (id, field, new_value) => (dispatch, getState) => {
     var action = {
-        type: 'ADD_TAG',
-        id: getState().getIn(['gui', 'activeEntry']),
-        tag,
-        color: '#d0bfae'
+        type: 'UPDATE_META',
+        id,
+        field,
+        new_value
     }
     dispatch(action)
+    var new_info = getState.getIn(['gui', 'activeInfo'])
+    dispatch(SAVE_SECRET(new_info))
+    cacheManager.updateSecret(new_info)
 }
 
-
-export const DEL_TAG = (tag) => (dispatch, getState) => {
+// updates user_defined custom data
+export const UPDATE_CUSTOM = (id, operation, params) => (dispatch, getState) => {
     var action = {
-        type: 'DEL_TAG',
-        id: getState().getIn(['gui', 'activeEntry']),
-        tag,
+        type: 'UPDATE_CUSTOM',
+        operation,
+        params
     }
     dispatch(action)
+    dispatch(SAVE_SECRET(getState.getIn(['gui', 'activeInfo'])))
 }
-
-export const DELETE_TAG_FROM_NAV = (tag) => ({
-    type: 'DELETE_TAG_FROM_NAV',
-    tag
-})
-
-export const CHANGE_TAG_COLOR = (tag, color) => ({
-    type: 'CHANGE_TAG_COLOR',
-    tag,
-    color
-})
 
 // SAVE_SECRET
 export const SAVE_SECRET = (info) => {
+    // cahnge immutable to mutable
     dataAPI.saveSecret(info)
     return { type: 'SAVE_SECRET' }
+}
+
+export const SAVE_DB = () => (dispatch, getState) => {
+
 }
 
 // COLOR SCHEME
@@ -251,7 +191,6 @@ export const SET_COLOR_SCHEME = (scheme) => (dispatch) => {
         sheet.type = 'text/css';
         sheet.id = 'color-scheme'
     }
-    console.log('css', css)
     sheet.innerHTML = css
     head.appendChild(sheet)
     dispatch({ type: 'COLOR_SCHEME_UPDATE' })

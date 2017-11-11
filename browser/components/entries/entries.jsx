@@ -11,12 +11,10 @@ class Entry extends React.Component {
     render() {
         var entryClassNames = [sty['entry']]
         // 1. Highlight
-        console.log(this.props.activeEntry, this.props.entry.id, 'entry')
-        if (this.props.activeEntry === this.props.entry.id) {
+        if (this.props.activeEntry === this.props.entry.get('id')) {
             if (this.props.activePane === 'entries') {
                 entryClassNames.push(sty['is-active'])
             } else {
-                console.log('else reached')
                 entryClassNames.push(sty['is-selected'])
             }
         }
@@ -24,7 +22,7 @@ class Entry extends React.Component {
 
         // 2. Tags
         var tag_field = []
-        for (let tag of this.props.entry.tags) {
+        for (let tag of this.props.entry.get('tags')) {
             tag_field.push(
                 <div className={sty['tag']} style={{ 'backgroundColor': this.props.tag_colors.get(tag) }}>
                     {tag}
@@ -54,7 +52,7 @@ class Entry extends React.Component {
 }
 
 class Search extends React.PureComponent {
-    search=(e)=> {
+    search = (e) => {
         // Only executes search if the last keyup has occured 0.8 second ago
         clearTimeout(this.state.current_timeout)
         var props = this.props
@@ -137,15 +135,15 @@ class SearchBar extends React.PureComponent {
 class AbstractList extends React.PureComponent {
     render() {
         // 1. List of Entries
-        var ListEntries = !this.props.list ? [] :
-            this.props.list.map((entry) => {
+        var ListEntries =
+            this.props.list.map((abstract) => {
                 return <Entry
-                    key={entry.id}
+                    key={abstract.get('id')}
                     entryClick={this.props.entryClick}
                     activeEntry={this.props.activeEntry}
                     activePane={this.props.activePane}
-                    entry={entry}
                     tag_colors={this.props.tags}
+                    entry={abstract}
                 />
             })
         return (
@@ -165,24 +163,20 @@ class AbstractView extends React.PureComponent {
     render() {
         // 1. Search Bar
         //var searchBar = <SearchBar search={this.props.search} ids={Object.keys(this.props.allEntries.toJS())} />
-        if (this.props.visibleEntries === 'loading') {
-            return <div id={sty['entries']}>
-                {searchBar}
-            </div>
-        }
+
         // 2. List of Entries
-        var passDown = _.omit(this.props, ['visibleEntries'])
-        var AbstractLists = []
+        var passDown = this.props // need to be finer
+        var AbstractLists = List()
         var otherListTitle = 'Others'
         if (this.props.visibleEntries) {// If entries are defined
-            if (this.props.visibleEntries[0].length === 0 && this.props.visibleEntries[1].length !== 0) {
+            if (this.props.visibleEntries.get('favorites').size === 0 && this.props.get('others').size !== 0) {
                 otherListTitle = 'All'
             }
-            if (this.props.visibleEntries[0].length !== 0) { // if  favorites
-                AbstractLists.push(<AbstractList {...Object.assign(passDown, { list: this.props.visibleEntries[0], title: 'Favorites' }) } />)
+            if (this.props.visibleEntries.get('favorites').size !== 0) { // if  favorites
+                AbstractLists.push(<AbstractList {...Object.assign(passDown, { list: this.props.visibleEntries.get('favorites'), title: 'Favorites' }) } />)
             }
-            if (this.props.visibleEntries[1].length !== 0) {
-                AbstractLists.push(<AbstractList {...Object.assign(passDown, { list: this.props.visibleEntries[1], title: otherListTitle }) } />)
+            if (this.props.visibleEntries.get('others').size !== 0) {
+                AbstractLists.push(<AbstractList {...Object.assign(passDown, { list: this.props.visibleEntries.get('others'), title: otherListTitle }) } />)
             }
         }
         return (

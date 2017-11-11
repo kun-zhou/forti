@@ -6,11 +6,12 @@ import Nav from './nav.jsx'
 // Functions
 const mapStateToProps = state => {
     return {
-        categories: state.gui.nav.categories,
-        tags: state.gui.nav.tags,
-        activeNavTab: state.gui.activeNavTab,
-        activeNavTabType: state.gui.activeNavTabType,
-        activePane: state.gui.activePane
+        categories: state.getIn(['gui', 'nav', 'categories']),
+        categories_count: state.getIn(['gui', 'nav', 'categories_count']),
+        tags: state.getIn(['gui', 'nav', 'tags']),
+        activeNavTab: state.getIn(['gui', 'activeNavTab']),
+        activeNavTabType: state.getIn(['gui', 'activeNavTabType']),
+        activePane: state.getIn(['gui', 'activePane']),
     }
 }
 

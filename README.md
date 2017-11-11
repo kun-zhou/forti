@@ -1,6 +1,6 @@
 # Lockit, an open-source sensitive content manager with an elegant UI and effortless workflow
 
-**Lockit is an open source formatted content manager built with [Electron](https://github.com/atom/electron), [React](https://facebook.github.io/react/), [Redux](https://github.com/reactjs/redux), and [Immutable](https://github.com/facebook/immutable-js/)**
+**Lockit is an open source formatted content manager built with [Electron](https://github.com/atom/electron), [React](https://facebook.github.io/react/), and [Redux](https://github.com/reactjs/redux)**
 
 <p align="center">
   <a href="https://youtu.be/TZxJ-n1rRZs"><img src="https://misc.kunzhou.me/lockit.png" style="width: 60%"/></a>

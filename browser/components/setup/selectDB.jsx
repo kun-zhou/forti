@@ -27,7 +27,6 @@ class NewDBDialog extends React.PureComponent {
     }
 
     createVault() {
-        console.log(this.state.name + this.state.password)
         if ((this.state.name + this.state.password)) {
             this.props.setupDB(this.state.name, this.state.password)
             this.props.handleRequestClose()
@@ -102,7 +101,6 @@ class SelectDB extends React.PureComponent {
 
     unlockDB = (e) => {
         if (this.state.highlighted_db) {
-            console.log(this.state.highlighted_db, this.state.passwd)
             this.props.unlockDB(this.state.highlighted_db, this.state.passwd)
         } else {
             console.log('Please choose a db')

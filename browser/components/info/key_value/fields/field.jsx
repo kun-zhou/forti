@@ -14,9 +14,9 @@ class Field extends React.Component {
             name_editing: false,
             content_editing: false,
             setting_shown: false,
-            local_name: props.field[0],
-            local_content: props.field[1],
-            type: props.field[2]
+            local_name: props.field.get(0),
+            local_content: props.field.get(1),
+            type: props.field.get(2)
         }
         // edit* is for local state updates, updated on each keystroke
         // toggle* update on field input status change and pushes the local data to redux store
@@ -38,14 +38,14 @@ class Field extends React.Component {
 
     toggleNameEdit(e) {
         if (this.state.name_editing) {
-            // this.props.updateField(this.props.id, this.props.field_id, 'name', this.state.local_name)
+            this.props.updateField(this.props.field_idx, 0, this.state.local_name)
         }
         this.setState({ name_editing: !this.state.name_editing })
     }
 
     toggleContentEdit(e) {
         if (this.state.content_editing) {
-            //this.props.editField(this.props.id, this.props.field_id, 'content', this.state.local_content)
+            this.props.updateField(this.props.field_idx, 1, this.state.local_name)
         }
         this.setState({
             content_editing: !this.state.content_editing,
@@ -54,7 +54,7 @@ class Field extends React.Component {
     }
 
     delField() {
-        this.props.delField(this.props.id, this.props.idx, this.props.field_id)
+        this.props.deleteField(this.props.field_idx)
     }
 
     render() {

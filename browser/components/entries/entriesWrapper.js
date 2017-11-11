@@ -5,12 +5,11 @@ import Entries from './entries.jsx'
 // Helper Functions
 
 const mapStateToProps = state => {
-    console.log(state.gui.activeEntries, 'active entries')
     return {
-        visibleEntries: state.gui.activeEntries,
-        activeEntry: state.gui.activeEntry,
-        activePane: state.gui.activePane,
-        tags: state.gui.nav.tags
+        visibleEntries: state.getIn(['gui', 'activeEntries']),
+        activeEntry: state.getIn(['activeInfo']) ? state.getIn(['activeInfo', id]) : null,
+        activePane: state.getIn(['gui', 'activePane']),
+        tags: state.getIn(['gui', 'nav', 'tags']),
     }
 }
 
