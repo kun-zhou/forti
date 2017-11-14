@@ -6,41 +6,26 @@ import config from '../../utils/config'
 // Helper Functions
 const mapStateToProps = state => {
     return {
-        info: state.getIn('gui', 'activeInfo'),
-        categories: state.getIn('gui', 'nav', 'categories'),
+        info: state.getIn(['gui', 'activeInfo']),
+        categories: state.getIn(['gui', 'nav', 'categories']),
     }
 }
 
 const mapDispatchToProps = dispatch => ({
-    updateMeta: (id, field, new_field) => {
-        dispatch(UPDATE_META(id, field, new_field))
+    updateMeta: (operation, params) => {
+        dispatch(UPDATE_META(operation, params))
     },
-    updateCustom: (id, operation, params) => {
-        dispatch(UPDATE_CUSTOM(id, operation, params))
-    },
-    updateTitle: (id, value) => {
-        dispatch(UPDATE_TITLE(id, value))
-    },
-    updateSectionTitle: (id, sec_idx, new_title) => {
-        dispatch(UPDATE_SECTION_TITLE(id, sec_idx, new_title))
-    },
-    updateField: (id, sec_idx, field_idx, content, operation) => {
-        dispatch(UPDATE_FIELD(id, sec_idx, field_idx, content, operation))
-    },
-    addSection: (id) => {
-        dispatch(ADD_SECTION(id))
+    updateCustom: (operation, params) => {
+        dispatch(UPDATE_CUSTOM(operation, params))
     },
     createSecret: (category) => {
         dispatch(CREATE_SECRET(category))
     },
-    updateFav: (id, operation) => {
-        dispatch(UPDATE_FAV(id, operation))
+    deleteSecret: () => {
+        dispatch(DELETE_SECRET())
     },
-    deleteSecret: (id) => {
-        dispatch(DELETE_SECRET(id))
-    },
-    addTag: (id, tag) => {
-        dispatch(ADD_TAG(id, tag))
+    addTag: (tag) => {
+        dispatch(ADD_TAG(tag))
     },
     deleteTag: (tag) => {
         dispatch(DEL_TAG(tag))

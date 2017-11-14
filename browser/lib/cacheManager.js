@@ -1,20 +1,23 @@
 // Uses immutbale data types
 import hashbow from 'hashbow'
-import { Map } from 'immutable'
+import { Map, List, fromJS, toJS } from 'immutable'
 var cache = null
 var lastBumped = null
 
 function init(_cache) {
     cache = _cache
-    console.log(cache.toJS())
 }
 // Accepts list of tags or singleton
 function getCategoryCounts() {
     var categories_count = Map()
     for (let category of cache.get('categories').keys()) {
-        categories_count.set(category, cache.getIn('categories', category).size)
+        categories_count = categories_count.set(category, cache.getIn(['categories', category]).size)
     }
     return categories_count
+}
+
+function updateTagsListing() {
+    cache = cache.update('tags', tags => tags.filter((list, tag) => list.size > 0))
 }
 
 function getTags() {
@@ -23,92 +26,43 @@ function getTags() {
 
 function addSecret(secret) {
     // 1. Update Listing
-    cache.all.unshift(secret.id)
-    if (!cache.categories[secret.category])
-        cache.categories[secret.category] = []
-    cache.categories[secret.category].unshift(secret.id)
+    cache = cache.update('all', all => all.unshift(secret.get('id')))
+    if (!cache.getIn(['categories', secret.get('category')]))
+        cache = cache.setIn(['categories', secret.get('category')], List())
+    cache = cache.updateIn(['categories', secret.get('category')], list => list.unshift(secret.get('id')))
     // 2. Add to abstracts
-    cache.abstracts[secret.id] = _.pick(secret, ['id', 'trash', 'title', 'attchment', 'snippet', 'tags', 'category', 'favorite'])
+    cache = cache.setIn(['abstracts', secret.get('id')], secret.filter((value, key) =>
+        ['id', 'trash', 'title', 'attchment', 'snippet', 'tags', 'category', 'favorite'].includes(key)
+    ))
 }
 
-function updateMeta(secret) {
-    cache.abstracts[secret.id] = _.pick(secret, ['id', 'trash', 'title', 'attchment', 'snippet', 'tags', 'category', 'favorite'])
-}
 // Return tags, categories added
-function updateSecret(info) { // add or modify
-    cache.setIn(['abstracts', info.get('id')],
-        info.filter((value, key) => {
-            ['id', 'trash', 'title', 'attchment', 'snippet', 'tags', 'category', 'favorite'].includes(key)
-        })
-    )
-    /*
-    var prev_abstract = cache.abstracts[info.id]
-    // 1. UPDATING LIST
-    // 1. If from all to trash (trash)
-    if (!prev_abstract.trash && info.trash) {
-        // remove the entry from all listings and add to trash listing
-        // when trashes, favorite is deleted
-        _.remove(cache.favorites, (id) => id === info.id)
-        _.remove(cache.all, (id) => id === info.id)
-        _.remove(cache.categories[prev_abstract.category], (id) => id === info.id)
-        for (let tag of prev_abstract.tags) {
-            _.remove(cache.tags[tag], (id) => id === info.id)
-            if (cache.tags[tag].length === 0) {
-                cache.manifest.tags.delete(tag)
-            }
-        }
-        cache.trash.unshift(info.id)
+function updateSecret(id, action) { // add or modify
+    // update listings
+    // update tags if necessary
+    var new_value = action.params.new_value
+    switch (action.operation) {
+        // need to handle the sepcial case of tags since it is a List but only the tag updated or delested is reported
+        case 'ADD_TAG':
+            cache = cache.updateIn(['abstracts', id, 'tags'], tags => tags.push(new_value))
+            cache = cache.updateIn(['tags', new_value], (tag) => {
+                return !tag ? List([id]) : tag.push(id)
+            })
+            updateTagsListing()
+            break
+        case 'DELETE_TAG':
+            cache = cache.updateIn(['abstracts', id, 'tags'], tags => tags.filter((tag) => tag !== new_value))
+            cache = cache.updateIn(['tags', new_value], (tag) => {
+                return !tag ? List([id]) : tag.filter((key) => key !== id)
+            })
+            updateTagsListing()
+            break
+        default:
+            cache = cache.setIn(['abstracts', id, action.params.key], new_value)
     }
-    // 2. If recovers from trash
-    if (prev_abstract.trash && !info.trash) {
-        // 1. Update favorite
-        if (prev_abstract.favorite) {
-            cache.favorites.unshift(info.id)
-        }
-        // 2. update categories
-        // add category if not existent
-        if (!cache.categories[prev_abstract.category]) {
-            cache.categories[prev_abstract.category] = []
-        }
-        // 3. update tags
-        for (let tag of prev_abstract.tags) {
-            if (!cache.tags[tag]) { // if tag does not exit
-                cache.tags[tag] = []
-            }
-            cache.tags[tag].unshift(info.id)
-        }
-        cache.categories[prev_abstract.category].unshift(info.id)
+    if (action.operation === 'UPDATE_FAV') {
+        cache = new_value ? cache.update('favorites', favs => favs.unshift(id)) : cache.update('favorites', favs => favs.filter(key => key !== id))
     }
-    // 3. If trash to trash, do noting about lists
-    // 4. If all to all
-    if (!prev_abstract.trash && !info.trash) {
-        // update favorites if necessary
-        if (prev_abstract.favorite !== info.favorite) {
-            if (prev_abstract.favorite) {
-                _.remove(cache.favorites, (id) => id === info.id)
-            } else {
-                cache.favorites.unshift(info.id)
-            }
-        }
-        // update tags
-        var removedTags = _.difference(prev_abstract.tags, info.tags)
-        for (let tag of removedTags) {
-            _.remove(cache.tags[tag], (id) => id === info.id)
-        }
-        var addedTags = _.difference(info.tags, prev_abstract.tags)
-        for (let tag of addedTags) {
-            if (!cache.tags[tag]) { // if tag does not exit
-
-                cache.tags[tag] = []
-            }
-            cache.tags[tag].unshift(info.id)
-        }
-    }*/
-
-}
-// This function does not change the list
-function updateSecretInfoOnly(info) {
-    var prev_abstract = cache.abstracts[info.id]
 }
 
 function trashSecret() {
@@ -136,31 +90,93 @@ function getEntries(type, name, sort) {
     }
 }
 
+function deleteSecret(_id) {
+    // update listing
+    cache = cache.withMutations((cache) => {
+        var favorite = cache.getIn(['abstracts', _id, 'favorite'])
+        var category = cache.getIn(['abstracts', _id, 'category'])
+        var tags = cache.getIn(['abstracts', _id, 'tags'])
+
+        // all
+        cache.update('all', all => all.filter((id) => id !== _id))
+        // favorite
+        if (favorite) {
+            cache.update('favorites', favs => favs.filter((id) => id !== _id))
+        }
+        // category
+        cache.updateIn(['categories', category], keys => keys.filter(id => id !== _id))
+        //tag
+        tags.forEach((tag) => {
+            cache.updateIn(['tags', tag], keys => keys.filter(id => id !== _id))
+        })
+        // delete tags if they have disappeared
+        updateTagsListing()
+    })
+    // delete tag and category if no more
+
+    // delete entry
+    cache = cache.deleteIn(['abstracts', _id])
+}
+
+function searchInTab(type, name, keywords) {
+    switch (type) {
+        case 'all':
+            return search(cache.get('all'), keywords)
+        case 'favorite':
+            return search(cache.get('favorites'), keywords)
+        case 'category':
+            return search(cache.getIn(['categories', name]), keywords)
+        case 'tag':
+            return search(cache.getIn(['tags', name]), keywords)
+        case 'trash':
+            return search(cache.get('trash'), keywords)
+        default:
+            return null
+    }
+}
+
+function search(ids, keywords) {
+    var keywords = keywords.split(/\s+/)
+    var results = []
+    ids.forEach((id) => {
+        var match = keywords.reduce((acc, keyword) => {
+            var abstract = cache.getIn(['abstracts', id])
+            return acc + Number(abstract.get('title').includes(keyword) || abstract.get('snippet').includes(keyword))
+        }, 0)
+
+        if (match === keywords.length) {
+            results.push(id)
+        }
+    })
+    return appendAbstracts(results)
+}
+
 function appendAbstracts(keys) {
     var secrets = Map({ favorites: List(), others: List() })
     if (!keys) { // if undefined
         return secrets
     }
     var abstract
-    secrets.withMutations((secrets) => {
-        for (var key of keys) {
+    secrets = secrets.withMutations((secrets) => {
+        return keys.map((key) => {
             abstract = cache.getIn(['abstracts', key])
             if (abstract.get('favorite'))
                 secrets.update('favorites', favs => favs.push(abstract))
             else
-                secrets.update('favorites', favs => favs.push(abstract))
-        }
+                secrets.update('others', others => others.push(abstract))
+        })
     })
     return secrets
 }
 
 export default {
     init,
-    updateMeta,
     getTags,
     getCategoryCounts,
+    searchInTab,
     updateSecret,
     trashSecret,
+    deleteSecret,
     getEntries,
     getCache,
     addSecret

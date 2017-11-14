@@ -5,7 +5,7 @@ import NavWrapper from './components/nav/navWrapper'
 import EntriesWrapper from './components/entries/entriesWrapper'
 import InfoWrapper from './components/info/infoWrapper'
 import { connect } from 'react-redux'
-import { SAVE_DB } from 'actions'
+import { CLOSE_DB } from 'actions'
 
 class App extends React.PureComponent {
     constructor(props) {
@@ -15,7 +15,7 @@ class App extends React.PureComponent {
     // Save Cache on Exit
     cleanupBeforeUnload = () => {
         if (this.props.status === 'UNLOCKED') {
-            this.props.saveDB()
+            this.props.closeDB()
         }
     }
 
@@ -39,22 +39,14 @@ class App extends React.PureComponent {
     }
 }
 
-/**
- * 
-            <div id="app">
-                <ModalWrapper />
-                <NavWrapper />
-                <EntriesWrapper />
-                <InfoWrapper />
-            </div>} state 
- */
+
 const mapStateToProps = state => ({
-    status: state.getIn([status,status])
+    status: state.getIn(['status', 'status'])
 })
 
 const mapDispatchToProps = dispatch => ({
-    saveDB: () => {
-        dispatch(SAVE_DB())
+    closeDB: () => {
+        dispatch(CLOSE_DB())
     }
 })
 

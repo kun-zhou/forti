@@ -77,7 +77,7 @@ class ContentField extends React.PureComponent {
             )
         } else {
             return (
-                <OutsideAlerter handleClickOutside={this.props.toggleContentEdit}>
+                <OutsideAlerter handleClickOutside={this.props.toggleContentEdit} bindOnMount={true}>
                     <input
                         className={sty['field-content-input']}
                         value={this.props.local_content}

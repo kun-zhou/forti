@@ -3,6 +3,7 @@
  */
 export default {
     init,
+    getUID,
     readSecret,
     createSecret,
     deleteSecret,
@@ -12,7 +13,8 @@ export default {
     readCache,
     saveCache,
     createVault,
-    createDemoVault
+    createDemoVault,
+    closeVault
 }
 import uuid from 'uuid/v4'
 import { readCryptSync, writeCryptSync, generateNewKeys } from './crypto'
@@ -41,15 +43,17 @@ function getUID() {
     flushDebouncedFuncs()// flushing is necessary so UID of the pending write does not get obtained
     var ids = fs.readdirSync(path.join(vault_path, 'secrets')),
         length = 5
-    id = crypto.randomBytes(length).toString('hex')
+    var id = crypto.randomBytes(length).toString('hex')
     while (ids.includes(id)) {
         length++
         id = crypto.randomBytes(length).toString('hex')
     }
+    return id
 }
 
-function closeVault() {
+function closeVault(cache) {
     flushDebouncedFuncs()
+    saveCache(cache)
 }
 
 function flushDebouncedFuncs() {
@@ -66,11 +70,14 @@ function readCache() {
 
 function readSecret(uid) {
     flushDebouncedFuncs()
-    return { secret: JSON.parse(fs.readFileSync(path.join(vault_path, 'secrets', String(uid)), 'utf8')) }
+    return { secret: JSON.parse(fs.readFileSync(path.join(vault_path, 'secrets', uid), 'utf8')) }
     //return JSON.parse(readCryptSync(path.join(vault_path, 'secrets', uid), passwd))
 }
 
 function createSecret(secret) {
+    if (!secret.id) {
+        throw 'Secret has not been assigned id'
+    }
     var current_time = (new Date()).getTime()
     secret.date_modified = current_time
     secret.date_created = current_time
@@ -93,7 +100,6 @@ function saveSecret(secret) { // create id if not exist
 }
 
 function writeSecretToFile(secret) {
-    console.log('secret wrote to file')
     fs.writeFileSync(path.join(vault_path, 'secrets', secret.id), JSON.stringify(secret))
 }
 
@@ -101,10 +107,6 @@ function deleteSecret(id) {
     fs.unlinkSync(path.join(vault_path, 'secrets', id))
 }
 
-function createManifest(path, _manifest, passwd) {
-    var { prekey } = generateNewKeys(passwd)
-    writeCryptSync(path, JSON.stringify(_manifest), preKey)
-}
 
 function readAttachment(vault_path, uid, passwd) {
     return JSON.parse(readCryptSync(path.join(vault_path, 'secrets', uid), passwd))
@@ -115,7 +117,7 @@ function saveAttachment(vault_path, uid, attachment_loc, passwd) {
 }
 
 function saveCache(cache) {
-    writeCryptSync(path.join(vault_path, 'cache.cjson'), JSON.stringify(cache), passwd)
+    fs.writeFileSync(path.join(vault_path, 'cache.json'), JSON.stringify(cache))
 }
 
 function createDemoVault(name, passwd) {

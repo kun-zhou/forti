@@ -3,10 +3,13 @@ import sty from './entries.cssm'
 import _ from 'lodash'
 //import AddEntryDropdown from './addEntry.jsx'
 import Input, { InputAdornment } from 'material-ui/Input';
+import { List } from 'immutable'
+import OutsideAlerter from '../public/outsideAlerter.jsx'
+import Clear from 'material-ui-icons/Clear';
 
 class Entry extends React.Component {
     handleEntryClick = () => {
-        this.props.entryClick(this.props.entry.id)
+        this.props.entryClick(this.props.entry.get('id'))
     }
     render() {
         var entryClassNames = [sty['entry']]
@@ -36,11 +39,11 @@ class Entry extends React.Component {
                 <div className={sty['entry-filler']}></div>
                 <div className={sty['entry-content']}>
                     <div className={sty['entry-content-title']} >
-                        <span className={sty['entry-content-title-icon']}><i className='fal fa-fw fa-key' /> </span>
-                        {this.props.entry.title}
+                        <span className={sty['entry-content-title-icon']}><i className={'fal fa-fw ' + this.props.category_icons.get(this.props.entry.get('category'))} /> </span>
+                        {this.props.entry.get('title')}
                     </div>
                     <div className={sty['entry-content-snippet']}>
-                        {this.props.entry.snippet}
+                        {this.props.entry.get('snippet')}
                     </div>
                     <div className={sty['entry-content-tags']}>
                         {tag_field}
@@ -52,85 +55,67 @@ class Entry extends React.Component {
 }
 
 class Search extends React.PureComponent {
-    search = (e) => {
-        // Only executes search if the last keyup has occured 0.8 second ago
-        clearTimeout(this.state.current_timeout)
-        var props = this.props
-        this.setState(Object.assign({}, this.state, {
-            current_timeout: setTimeout(
-                function (keywords) {
-                    props.search(props.ids, keywords)
-                }, 400, e.target.value
-            )
-        }))
+    constructor(props) {
+        super()
+        this.debouncedSearch = _.debounce(props.search, 600)
+        this.state = {
+            focused: false,
+            search_string: ''
+        }
     }
+
+    handleChange = (e) => {
+        var value = e.target.value
+        this.setState({ search_string: value })
+        if (value !== '') {
+            this.debouncedSearch(value)
+        } else {
+            this.props.deactivateSearch()
+        }
+    }
+
+    handleFocus = () => {
+        this.setState({ focused: true })
+    }
+
+    handleBlur = () => { // not really blur
+        if (this.state.search_string === '') {
+            this.setState({ focused: false })
+            this.setState({ search_string: '' })
+            this.props.deactivateSearch()
+        }
+    }
+
+    handleCancel = () => {
+        console.log('cacelled')
+        this.setState({ focused: false })
+        this.setState({ search_string: '' })
+        this.props.deactivateSearch()
+    }
+
     render() {
+        var cancelIconClassName = ['fal', 'fa-fw', 'fal', 'fa-search', 'fa-times-circle', sty['cancel-icon']]
+        !this.state.focused ? cancelIconClassName.push('is-hidden') : {}
         return (
-            <div className={sty['search-wrapper']}>
-                <Input
-                    fullWidth
-                    startAdornment={
-                        <InputAdornment position="start">
-                            <i className={'far fa-search' + ' ' + sty['search-icon']} />
-                        </InputAdornment>
-                    }
+            <OutsideAlerter handleClickOutside={this.handleBlur} className={sty['search-wrapper']}>
+                <i className={'far fa-search' + ' ' + sty['search-icon']} />
+                <input
+                    type='text'
+                    value={this.state.search_string}
+                    className={sty['search-input']}
+                    placeholder='Search Secrets'
+                    onFocus={this.handleFocus}
+                    onChange={this.handleChange}
                 />
-            </div>
+                <i
+                    className={cancelIconClassName.join(' ')}
+                    onClick={this.handleCancel}
+                />
+            </OutsideAlerter>
         )
     }
 }
 
-class SearchBar extends React.PureComponent {
-    constructor(props) {
-        super(props)
-        this.state = { search_focus: false, current_timeout: 0 }
-        this.toggleFocus = this.toggleFocus.bind(this)
-        this.search = this.search.bind(this)
-    }
-
-    toggleFocus() {
-        this.setState(Object.assign({}, this.state, { search_focus: !this.state.search_focus }))
-    }
-
-    search(e) {
-        // Only executes search if the last keyup has occured 0.8 second ago
-        clearTimeout(this.state.current_timeout)
-        var props = this.props
-        this.setState(Object.assign({}, this.state, {
-            current_timeout: setTimeout(
-                function (keywords) {
-                    props.search(props.ids, keywords)
-                }, 400, e.target.value
-            )
-        }))
-    }
-
-    render() {
-        var input = <input
-            type='text'
-            className={sty['search-input']}
-            placeholder='Search Secrets'
-            onFocus={this.toggleFocus}
-            onBlur={this.toggleFocus}
-            onKeyUp={this.search}
-        />
-        if (this.state.search_focus) {
-            return (
-                <div className={[sty['search-wrapper'], sty['search-focus']].join(' ')}>
-                    <i className={'far fa-search' + ' ' + sty['search-icon']} />
-                    {input}
-                </div>
-            )
-        } else {
-            return (
-                <div className={sty['search-wrapper']}>
-                    <i className={'far fa-search' + ' ' + sty['search-icon']} />
-                    {input}
-                </div>
-            )
-        }
-    }
-}
 
 class AbstractList extends React.PureComponent {
     render() {
@@ -142,7 +127,8 @@ class AbstractList extends React.PureComponent {
                     entryClick={this.props.entryClick}
                     activeEntry={this.props.activeEntry}
                     activePane={this.props.activePane}
-                    tag_colors={this.props.tags}
+                    tag_colors={this.props.tag_colors}
+                    category_icons={this.props.category_icons}
                     entry={abstract}
                 />
             })
@@ -166,23 +152,22 @@ class AbstractView extends React.PureComponent {
 
         // 2. List of Entries
         var passDown = this.props // need to be finer
-        var AbstractLists = List()
+        var AbstractLists = []
         var otherListTitle = 'Others'
         if (this.props.visibleEntries) {// If entries are defined
-            if (this.props.visibleEntries.get('favorites').size === 0 && this.props.get('others').size !== 0) {
+            if (this.props.visibleEntries.get('favorites').size === 0 && this.props.visibleEntries.get('others').size !== 0) {
                 otherListTitle = 'All'
             }
             if (this.props.visibleEntries.get('favorites').size !== 0) { // if  favorites
-                AbstractLists.push(<AbstractList {...Object.assign(passDown, { list: this.props.visibleEntries.get('favorites'), title: 'Favorites' }) } />)
+                AbstractLists.push(<AbstractList {...Object.assign({}, passDown, { list: this.props.visibleEntries.get('favorites'), title: 'Favorites' }) } />)
             }
             if (this.props.visibleEntries.get('others').size !== 0) {
-                AbstractLists.push(<AbstractList {...Object.assign(passDown, { list: this.props.visibleEntries.get('others'), title: otherListTitle }) } />)
+                AbstractLists.push(<AbstractList {...Object.assign({}, passDown, { list: this.props.visibleEntries.get('others'), title: otherListTitle }) } />)
             }
         }
         return (
             <div id={sty['entries']} >
-                <Search>
-                </Search>
+                <Search deactivateSearch={this.props.deactivateSearch} search={this.props.search} />
                 {AbstractLists}
             </div>
         )

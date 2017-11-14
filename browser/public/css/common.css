@@ -51,6 +51,6 @@ body,
     width: 100%;
 }
 
-.is-hidden{
-    display: none
+.is-hidden {
+    display: none !important
 }

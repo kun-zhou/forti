@@ -12,9 +12,9 @@ export default class Sections extends React.PureComponent {
                         sec_idx={idx}
                         title={section.get('title')}
                         fields={section.get('fields')}
-                        updateField={this.updateField}
-                        deleteField={this.deleteField}
-                        addField={this.addField}
+                        updateField={this.props.updateField}
+                        deleteField={this.props.deleteField}
+                        addField={this.props.addField}
                         addSection={this.props.addSection}
                         updateSectionTitle={this.props.updateSectionTitle}
                     />
@@ -26,9 +26,9 @@ export default class Sections extends React.PureComponent {
                     sec_idx={idx}
                     title={section.get('title')}
                     fields={section.get('fields')}
-                    updateField={this.updateField}
-                    deleteField={this.deleteField}
-                    addField={this.addField}
+                    updateField={this.props.updateField}
+                    deleteField={this.props.deleteField}
+                    addField={this.props.addField}
                     updateSectionTitle={this.props.updateSectionTitle}
                 />
             )

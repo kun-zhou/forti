@@ -167,7 +167,6 @@ function getTemplate(template_name) { // NEED to ADD USER TEMPLATE
     var template_file_name = null
     for (var template of defaultTemplates) {
         if (template.name === template_name) {
-            console.log('matched')
             return JSON.parse(fs.readFileSync(path.join(pathDefaultTemplates, template.file_name), 'utf8'))
             break;
         }

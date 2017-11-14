@@ -2,17 +2,17 @@ import React from 'react'
 import sty from './dropup.cssm'
 import makeAutohide from 'public/components/Autohide/Autohide.jsx'
 
-function Entry({ entry, callback }) {
+function Entry({ entry, icon, callback }) {
     return (
         <div className={sty['entry-wrapper']} onClick={() => { callback(entry) }}>
-            {entry}
+            <i className={'far fa-fw fa-lg ' + icon} />{entry}
         </div >
     )
 }
 
 function Dropup({ entries, callback }) {
     var entriesNodes = entries.map(
-        (entry) => (<Entry entry={entry} callback={callback} />)
+        (icon, entry) => (<Entry entry={entry} icon={icon} callback={callback} />)
     )
     return (
         <div className={sty['dropup']}>

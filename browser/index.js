@@ -3,9 +3,11 @@ import { render } from 'react-dom'
 import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 import rootReducer from 'reducers'
 import config from './utils/config'
+
+import logger from './logger'
 
 import AppWrapper from './app.jsx'
 import { SET_COLOR_SCHEME } from './actions'
@@ -38,10 +40,9 @@ var initialState = {
     searchActive: false,
     activeInfo: null,
   },
-  //logger: {}
 }
 
-const store = createStore(rootReducer, fromJS(initialState), applyMiddleware(thunk))
+const store = createStore(rootReducer, fromJS(initialState), applyMiddleware(thunk, logger))
 
 store.dispatch(SET_COLOR_SCHEME(config.getDefaultColorScheme()))
 

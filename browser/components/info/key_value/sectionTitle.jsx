@@ -15,9 +15,10 @@ class SectionTitle extends React.PureComponent {
     }
 
     toggleSecTitleEdit = (e) => {
+        //console.log(e.target.tagName, 'tagname')
         if (e.target.tagName === 'INPUT') {
             if (this.props.title !== this.state.title) {
-                this.props.editSectionTitle(this.state.title)
+                this.props.toggleSecTitleEdit(this.props.sec_idx, this.state.title)
             }
         }
         this.setState({ title_editing: !this.state.title_editing })
@@ -32,7 +33,7 @@ class SectionTitle extends React.PureComponent {
                     value={this.state.title}
                     placeholder={'untitled section'}
                     onChange={this.editLocalSecTitle}
-                    onBlur={this.props.toggleSecTitleEdit}
+                    onBlur={this.toggleSecTitleEdit}
                 />
             </div>
         )

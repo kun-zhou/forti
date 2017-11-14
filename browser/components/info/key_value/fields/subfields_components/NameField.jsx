@@ -15,7 +15,7 @@ class NameField extends React.PureComponent {
             )
         } else {
             return (
-                <OutsideAlerter handleClickOutside={this.props.toggleNameEdit}>
+                <OutsideAlerter handleClickOutside={this.props.toggleNameEdit} bindOnMount={true}>
                     <input
                         className={sty['field-name-input']}
                         type='text'

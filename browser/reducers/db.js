@@ -47,7 +47,6 @@ export default function dataReducer(state, action) {
         // delete section if empty
         case 'ADD_FIELD':
             return state.withMutations((state) => {
-                console.log('add_field', action.idx, state.getIn(['entries', action.id, 'sections']).toJS())
                 state.updateIn(['entries', action.id, 'sections', action.idx, 'fields'],
                     (list) => list.push(action.field_id))
                 state.setIn(['entries', action.id, 'user_defined', action.field_id], List(['', '', action.field_type]))

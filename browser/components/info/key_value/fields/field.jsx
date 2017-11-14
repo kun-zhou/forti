@@ -19,33 +19,35 @@ class Field extends React.Component {
             type: props.field.get(2)
         }
         // edit* is for local state updates, updated on each keystroke
-        // toggle* update on field input status change and pushes the local data to redux store
+
+        /*// toggle* update on field input status change and pushes the local data to redux store
         this.editLocalName = this.editLocalName.bind(this)
         this.editLocalContent = this.editLocalContent.bind(this)
 
         this.toggleNameEdit = this.toggleNameEdit.bind(this)
         this.toggleContentEdit = this.toggleContentEdit.bind(this)
         this.delField = this.delField.bind(this)
+        */
     }
 
-    editLocalName(e) { //name, content, type
+    editLocalName = (e) => { //name, content, type
         this.setState({ local_name: e.target.value })
     }
 
-    editLocalContent(e) {
+    editLocalContent = (e) => {
         this.setState({ local_content: e.target.value })
     }
 
-    toggleNameEdit(e) {
+    toggleNameEdit = (e) => {
         if (this.state.name_editing) {
-            this.props.updateField(this.props.field_idx, 0, this.state.local_name)
+            this.props.updateField(this.props.sec_idx, this.props.field_idx, 0, this.state.local_name)
         }
         this.setState({ name_editing: !this.state.name_editing })
     }
 
-    toggleContentEdit(e) {
+    toggleContentEdit = (e) => {
         if (this.state.content_editing) {
-            this.props.updateField(this.props.field_idx, 1, this.state.local_name)
+            this.props.updateField(this.props.sec_idx, this.props.field_idx, 1, this.state.local_content)
         }
         this.setState({
             content_editing: !this.state.content_editing,
@@ -53,8 +55,8 @@ class Field extends React.Component {
         })
     }
 
-    delField() {
-        this.props.deleteField(this.props.field_idx)
+    delField = () => {
+        this.props.deleteField(this.props.sec_idx, this.props.field_idx)
     }
 
     render() {

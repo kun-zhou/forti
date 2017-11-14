@@ -15,7 +15,7 @@ import { Map, List, OrderedMap, fromJS } from 'immutable'
  * STATUS, [db]
  * location: path to vault folder
  */
-export const ATTEMPT_UNLOCK = (location, password) => { //idx signals which database
+export const ATTEMPT_UNLOCK = (location, password) => (dispatch) => { //idx signals which database
     var action = { type: 'ATTEMPT_UNLOCK', location, password }
     var { success, message, key } = dataAPI.init(location, password)
     action.success = success
@@ -26,13 +26,9 @@ export const ATTEMPT_UNLOCK = (location, password) => { //idx signals which data
     cacheManager.init(fromJS(dataAPI.readCache().cache))
     action.key = key
     // Create categories_count item
-    action.manifest = Map({
-        categories: OrderedMap(fromJS(config.getCategories())), // key is cateogyr and value is icon
-        categories_count: cacheManager.getCategoryCounts(),
-        tags: OrderedMap(config.appendTagColors(cacheManager.getTags()))// will be a orderedmap
-    })
+    dispatch(UPDATE_NAV())
     action.status = 'UNLOCKED'
-    return action
+    dispatch(action)
 }
 
 /** 2. CREATE_DB
@@ -65,45 +61,30 @@ export const NAV_ENTRY_CLICK = (navTab, navTabType) => (dispatch, getState) => {
 export const ENTRY_CLICK = (id) => ({
     type: 'ENTRY_CLICK',
     sEntryId: id,
-    info: dataAPI.readSecret(id).secret
+    info: fromJS(dataAPI.readSecret(id).secret)
 })
 
 // 3. Search Entries
-export const SEARCH_ENTRIES = (ids, keywords) => (dispatch, getState) => {
-    dispatch({ type: 'SEARCH_ENTRIES_LOADING' })
+export const SEARCH_SECRETS = (keywords) => (dispatch, getState) => {
+    dispatch({ type: 'SEARCH_LOADING' })
     var guiState = getState().get('gui')
-    var dbState = getState().get('db')
-    var navTabType = guiState.get('activeNavTabType')
-    var navTab = guiState.get('activeNavTab')
-
-    var location = getKeysLoc(navTabType, navTab)
-    var releventIds = getState().getIn(location)
-    var matchedEntries = []
-
-    var keywords_s = keywords.split(' ')
-    releventIds.forEach(
-        (id) => {
-            var match = keywords_s.reduce(
-                (acc, keyword) => {
-                    return acc + Number(dbState.getIn(['entries', id, 'title']).includes(keyword) || JSON.stringify(dbState.getIn(['entries', id, 'user_defined'])).includes(keyword))
-                }, 0
-            )
-
-            if (match === keywords_s.length) {
-                matchedEntries.push(id)
-            }
-        }
-    )
+    var search_results = cacheManager.searchInTab(guiState.get('activeNavTabType'), guiState.get('activeNavTab'), keywords)
     dispatch({
-        type: 'SEARCH_ENTRIES_DONE',
-        entries: List(matchedEntries),
+        type: 'SEARCH_COMPLETED',
+        search_results
     })
 }
+// 3. Search Entries
+export const DEACTIVATE_SEARCH = () => ({
+    type: 'DEACTIVATE_SEARCH'
+})
+
 
 // 4. Create Entry
 export const CREATE_SECRET = (category) => (dispatch, getState) => {
     // Switch to category view
     var secret = {
+        "id": dataAPI.getUID(),
         "title": "",
         "attachment": false,
         "snippet": "",
@@ -112,10 +93,10 @@ export const CREATE_SECRET = (category) => (dispatch, getState) => {
         "user_defined": [],
         "snapshots": {}
     }
-    template = Object.assign(template, config.getTemplate(category))
-    var { secret, message } = dataAPI.createSecret(template) // return secret with dates and id
+    secret = Object.assign(secret, config.getTemplate(category))
+    var { secret, message } = dataAPI.createSecret(secret) // return secret with dates and id
     // Add to cache
-    cacheManager.addSecret(secret)
+    cacheManager.addSecret(fromJS(secret))
     //return action
     dispatch({
         type: 'CREATE_SECRET',
@@ -126,16 +107,27 @@ export const CREATE_SECRET = (category) => (dispatch, getState) => {
 }
 
 export const TRASH_SECRET = (secret) => { // move to trash
-    dataAPI.saveSecret
 }
 
-export const DELETE_SECRET = (id) => { // permenantly delete
+export const DELETE_SECRET = () => (dispatch, getState) => { // permenantly delete
+    var id = getState().getIn(['gui', 'activeInfo', 'id'])
     // dataAPi
     dataAPI.deleteSecret(id)
-    dispath({
-        type: 'DELETE_SECRET',
-        id
+    cacheManager.deleteSecret(id)
+    dispatch({
+        type: 'DELETE_SECRET'
     })
+    dispatch(UPDATE_NAV())
+}
+
+export const UPDATE_NAV = () => {
+    var action = { type: 'UPDATE_NAV' }
+    action.nav = Map({
+        categories: OrderedMap(fromJS(config.getCategories())), // key is cateogyr and value is icon
+        categories_count: cacheManager.getCategoryCounts(),
+        tags: OrderedMap(config.appendTagColors(cacheManager.getTags()))// will be a orderedmap
+    })
+    return action
 }
 
 // 6. UPDATE_INFO
@@ -146,39 +138,43 @@ export const DELETE_SECRET = (id) => { // permenantly delete
 // in both cases, I need date_updated returned.
 //  1. from dataAPI
 //  2. directly written in action creators
-export const UPDATE_META = (id, field, new_value) => (dispatch, getState) => {
+export const UPDATE_META = (operation, params) => (dispatch, getState) => {
     var action = {
         type: 'UPDATE_META',
-        id,
-        field,
-        new_value
+        operation,
+        params
     }
     dispatch(action)
-    var new_info = getState.getIn(['gui', 'activeInfo'])
-    dispatch(SAVE_SECRET(new_info))
-    cacheManager.updateSecret(new_info)
+    cacheManager.updateSecret(getState().getIn(['gui', 'activeInfo', 'id']), action)
+    dispatch(SAVE_SECRET())
+    if (operation.includes('TAG')) {
+        dispatch(UPDATE_NAV())
+    }
 }
 
 // updates user_defined custom data
-export const UPDATE_CUSTOM = (id, operation, params) => (dispatch, getState) => {
+export const UPDATE_CUSTOM = (operation, params) => (dispatch, getState) => {
     var action = {
         type: 'UPDATE_CUSTOM',
         operation,
         params
     }
     dispatch(action)
-    dispatch(SAVE_SECRET(getState.getIn(['gui', 'activeInfo'])))
+    dispatch(SAVE_SECRET())
 }
 
 // SAVE_SECRET
-export const SAVE_SECRET = (info) => {
-    // cahnge immutable to mutable
-    dataAPI.saveSecret(info)
+export const SAVE_SECRET = () => (dispatch, getState) => {
+    // change immutable to mutable
+    dataAPI.saveSecret(getState().getIn(['gui', 'activeInfo']).toJS())
     return { type: 'SAVE_SECRET' }
+
 }
 
-export const SAVE_DB = () => (dispatch, getState) => {
-
+export const CLOSE_DB = () => (dispatch, getState) => {
+    dataAPI.closeVault(cacheManager.getCache().toJS())
+    require('fs').writeFileSync('./f.s', '123')
+    dispatch({ type: 'DB_CLOSED' })
 }
 
 // COLOR SCHEME

@@ -1,5 +1,5 @@
 // Using Object destructing to load modules
-const { app, BrowserWindow } = require('electron')
+const { app, shell, BrowserWindow, Notification } = require('electron')
 const path = require('path')
 // Keep a reference to mainWindow to avoid window object being garbadged collected
 let mainWindow
@@ -31,11 +31,16 @@ function createWindow() {
 
   // load loading.html
   mainWindow.loadURL(path.join('file://', __dirname, '/index.html'))
-
-//mainWindow.webContents.openDevTools()
+  //mainWindow.webContents.openDevTools()
   // save before close
   // on close
   mainWindow.on('closed', function () { mainWindow = null })
+
+  mainWindow.webContents.on('will-navigate', function (e, url) {
+    e.preventDefault();
+    shell.openExternal(url);
+  })
+
   /*const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer')
 
   installExtension(REACT_DEVELOPER_TOOLS).then((name) => {

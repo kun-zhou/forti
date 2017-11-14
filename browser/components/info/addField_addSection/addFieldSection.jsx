@@ -6,13 +6,21 @@ class AddFieldSection extends React.PureComponent {
         super(props)
     }
 
+    addField = () => {
+        this.props.addField(this.props.sec_idx)
+    }
+
+    addSection = () => {
+        this.props.addSection()
+    }
+
     render() {
         return (
             <div className={sty['btn-wrapper']}>
                 <div className={sty['add-field']}>
                     <div
                         className={sty['btn-add-left']}
-                        onClick={this.props.addField}
+                        onClick={this.addField}
                     >
                         + Field
                     </div>

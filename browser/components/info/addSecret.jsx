@@ -3,6 +3,8 @@ import IconButton from 'material-ui/IconButton';
 import Menu, { MenuItem } from 'material-ui/Menu';
 import Add from 'material-ui-icons/Add';
 import sty from './info.cssm'
+
+
 class CategoryItem extends React.Component {
     handleClick = () => {
         this.props.createSecret(this.props.category.name)

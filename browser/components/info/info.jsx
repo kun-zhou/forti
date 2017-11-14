@@ -9,11 +9,10 @@ import AddField from './addField_addSection/addField.jsx'
 import AddSecret from './addSecret.jsx'
 import Sections from './key_value/sections.jsx'
 
-
-import { debounce } from 'lodash'
+import Dropup from '../../public/components/dropup/dropup.jsx'
 
 class Info extends React.PureComponent {
-    constructor() {
+    constructor(props) {
         super()
     }
 
@@ -22,75 +21,97 @@ class Info extends React.PureComponent {
     }
 
     deleteSecret = () => {
-        this.props.deleteSecret(this.props.info.id)
+        this.props.deleteSecret()
     }
 
     updateTitle = (content) => {
-        this.props.updateMeta(this.props.info.id, 'title', content)
+        this.props.updateMeta('UPDATE_TITLE', { key: 'title', new_value: content })
     }
 
-    addSection = () => {
-        this.props.udpateCustom(this.props.info.id, 'ADD_SECTION')
+    markFav = () => {
+        this.props.updateMeta('UPDATE_FAV', { key: 'favorite', new_value: true })
     }
 
-    updateSectionTitle = (sec_idx, new_value) => {
-        this.props.udpateCustom(this.props.info.id, 'UPDATE_SECTION_TITLE', { sec_idx, new_value })
-    }
-
-    updateField = (section_idx, field_idx, content_idx) => {
-        this.props.udpateCustom(this.props.info.id, 'UPDATE_FIELD', { section_idx, field_idx, content_idx })
-    }
-
-    deleteField = (section_idx, field_idx) => {
-        this.props.udpateCustom(this.props.info.id, 'DELETE_FIELD', { section_idx, field_idx })
-    }
-
-    addField = (section_idx, field_idx) => {
-        this.props.udpateCustom(this.props.info.id, 'ADD_FIELD', { section_idx })
-    }
-
-    updateFav = (operation) => { //operation can be add 1 or edit 0 or del -1
-        this.props.updateFav(this.props.info.id, operation)
+    unmarkFav = () => {
+        this.props.updateMeta('UPDATE_FAV', { key: 'favorite', new_value: false })
     }
 
     addTag = (tag) => {
-        this.props.addTag(this.props.info.id, tag)
+        this.props.updateMeta('ADD_TAG', { key: 'tags', new_value: tag })
     }
 
     deleteTag = (tag) => {
-        this.props.deleteTag(this.props.info.id, tag)
+        this.props.updateMeta('DELETE_TAG', { key: 'tags', new_value: tag })
     }
 
+    addSection = () => {
+        this.props.updateCustom('ADD_SECTION')
+    }
+
+    updateSectionTitle = (sec_idx, new_value) => {
+        this.props.updateCustom('UPDATE_SECTION_TITLE', { sec_idx, new_value })
+    }
+
+    updateField = (sec_idx, field_idx, content_idx, new_value) => {
+        this.props.updateCustom('UPDATE_FIELD', { sec_idx, field_idx, content_idx, new_value })
+    }
+
+    deleteField = (sec_idx, field_idx) => {
+        this.props.updateCustom('DELETE_FIELD', { sec_idx, field_idx })
+    }
+
+    addField = (sec_idx, field_idx) => {
+        this.props.updateCustom('ADD_FIELD', { sec_idx })
+    }
+
+
     render() {
+        var addEntryDropup = <Dropup
+            entries={this.props.categories}
+            callback={this.props.createSecret}
+        />
+
         var info = this.props.info
+
         if (!info) {
-            return <div id={sty['info']}><AddSecret categories={this.props.categories} createSecret={this.createSecret} /></div>
+            return <div id={sty['info']}>
+                {addEntryDropup}
+            </div>
         }
-        var id = info.id
+        //<AddSecret categories={this.props.categories} createSecret={this.createSecret} />
+        var id = info.get('id')
 
         return (
             <div id={sty['info']} key={id}>
                 <Toolbar
-                    id={id}
-                    favorite={info.get('favorite')}
-                    updateFav={this.updateFav}
+                    markFav={this.markFav}
+                    unmarkFav={this.unmarkFav}
                     deleteSecret={this.deleteSecret}
+
+                    favorite={info.get('favorite')}
                 />
                 <Title
-                    id={id}
-                    title={info.get('title')}
                     updateTitle={this.updateTitle}
-                />
 
+                    title={info.get('title')}
+                />
+                <Tags
+                    addTag={this.addTag}
+                    deleteTag={this.deleteTag}
+
+                    id={id}
+                    tags={info.get('tags')}
+                />
                 <Sections
-                    sections={info.get('user_defined')}
                     addSection={this.addSection}
                     updateSectionTitle={this.updateSectionTitle}
                     updateField={this.updateField}
                     deleteField={this.deleteField}
                     addField={this.addField}
+
+                    sections={info.get('user_defined')}
                 />
-                <AddSecret categories={this.props.categories} createSecret={this.createSecret} />
+                {addEntryDropup}
             </div>
         )
     }
@@ -99,10 +120,5 @@ class Info extends React.PureComponent {
 export default Info
 
 /**
- *                 <Tags
-                    id={id}
-                    tags={info.get('tags')}
-                    addTag={this.addTag}
-                    delTag={this.deleteTag}
-                />
+ *                 
  */

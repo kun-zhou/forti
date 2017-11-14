@@ -19,6 +19,7 @@
     "fs-extra": "^4.0.1",
     "hashbow": "^1.1.1",
     "immutable": "^3.8.2",
+    "lodash": "^4.17.4",
     "material-ui": "^1.0.0-beta.20",
     "material-ui-icons": "^1.0.0-beta.17",
     "react": "^15.6.1",
@@ -29,6 +30,7 @@
     "react-transition-group": "^2.2.1",
     "redux": "^3.7.2",
     "redux-immutable": "^4.0.0",
+    "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
     "sqlite3": "^3.1.13",
     "uuid": "^3.1.0"

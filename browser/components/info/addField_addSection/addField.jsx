@@ -2,8 +2,9 @@ import React from 'react'
 import sty from './sty.cssm'
 
 class AddField extends React.PureComponent {
-    constructor(props) {
-        super(props)
+
+    addField = () => {
+        this.props.addField(this.props.sec_idx)
     }
 
     render() {
@@ -12,7 +13,7 @@ class AddField extends React.PureComponent {
                 <div className={sty['add-field']}>
                     <div
                         className={sty['btn-add-field']}
-                        onClick={this.props.addField}
+                        onClick={this.addField}
                     >
                         + Field
                     </div>

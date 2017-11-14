@@ -70,8 +70,8 @@ class CategoryList extends React.PureComponent {
                             activePane={this.props.activePane}
                             navTabClick={this.props.navTabClick}
 
-                            key={'_category_' + category_name.name}
-                            name={category_name.name}
+                            key={'_category_' + category_name}
+                            name={category_name}
                             type='category'
                             icon={<i className={['fal', 'fa-fw', category_icon].join(' ')} />}
                         />
@@ -95,17 +95,17 @@ class TagList extends React.PureComponent {
         }
         return (
             <NavList title={'Tags'}>
-                {this.props.tag.map((tag_color, tag_name) => (
+                {this.props.tags.map((tag_color, tag_name) => (
                     <NavItem
                         activeNavTab={this.props.activeNavTab}
                         activeNavTabType={this.props.activeNavTabType}
                         activePane={this.props.activePane}
                         navTabClick={this.props.navTabClick}
 
-                        key={'_tag_' + tag}
+                        key={'_tag_' + tag_name}
                         name={tag_name}
                         type='tag'
-                        icon={<i className='fas fa-fw fa-tag' style={{ 'color': tag_colorƒ }} />}
+                        icon={<i className='fas fa-fw fa-tag' style={{ 'color': tag_color }} />}
                     />
                 ))}
             </NavList>
@@ -119,7 +119,6 @@ class Nav extends React.PureComponent {
     }
 
     render() {
-        console.log(this.props.categories)
         return (
             <div id={sty['nav']}>
                 <div className={sty['header-wrapper']} >

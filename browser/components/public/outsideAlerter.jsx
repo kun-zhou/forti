@@ -1,39 +1,48 @@
 import React from 'react'
+// takes args bindOnMoun
 export default class OutsideAlerter extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.setWrapperRef = this.setWrapperRef.bind(this);
-        this.handleClickOutside = this.handleClickOutside.bind(this);
-    }
-
     componentDidMount() {
-        document.addEventListener('mousedown', this.handleClickOutside);
+        if (this.props.bindOnMount) {
+            document.addEventListener('click', this.handleClickOutside)
+            window.addEventListener('blur', this.handleWindowBlur)
+        }
     }
-
     componentWillUnmount() {
-        document.removeEventListener('mousedown', this.handleClickOutside);
+        document.removeEventListener('click', this.handleClickOutside)
+        window.removeEventListener('blur', this.handleWindowBlur)
     }
-
     /**
      * Set the wrapper ref
      */
-    setWrapperRef(node) {
+    addClickListener = () => {
+        document.addEventListener('click', this.handleClickOutside)
+        window.addEventListener('blur', this.handleWindowBlur)
+    }
+
+    setWrapperRef = (node) => {
         this.wrapperRef = node;
     }
 
     /**
      * Alert if clicked on outside of element
      */
-    handleClickOutside(event) {
+    handleClickOutside = (event) => {
         if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
             this.props.handleClickOutside()
+            document.removeEventListener('click', this.handleClickOutside)
+            window.removeEventListener('blur', this.handleClickOutside)
         }
+    }
+
+    handleWindowBlur = () => {
+        this.props.handleClickOutside()
+        document.removeEventListener('click', this.handleClickOutside)
+        window.removeEventListener('blur', this.handleClickOutside)
     }
 
     render() {
         return (
-            <div ref={this.setWrapperRef}>
+            <div className={this.props.className} ref={this.setWrapperRef} onClick={this.addClickListener}>
                 {this.props.children}
             </div>
         );

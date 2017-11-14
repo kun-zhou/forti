@@ -6,9 +6,7 @@
  */
 
 import statusReducer from './status'
-import manifestReducer from './manifest'
 import guiReducer from './gui'
-import logger from './logger'
 import { combineReducers } from 'redux-immutable'
 
 
