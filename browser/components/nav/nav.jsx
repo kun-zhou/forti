@@ -105,7 +105,7 @@ class TagList extends React.PureComponent {
                         key={'_tag_' + tag_name}
                         name={tag_name}
                         type='tag'
-                        icon={<i className='fas fa-fw fa-tag' style={{ 'color': tag_color }} />}
+                        icon={<i className='fal fa-hashtag' style={{ 'color': 'grey' }} />}
                     />
                 ))}
             </NavList>
@@ -125,6 +125,7 @@ class Nav extends React.PureComponent {
                     <div></div>
                 </div>
                 <div className={sty['section-fixed']}>
+                   {/*
                     <NavItem
                         key="favorites"
                         name="Favorites"
@@ -135,6 +136,7 @@ class Nav extends React.PureComponent {
                         activePane={this.props.activePane}
                         icon={(<i className='far fa-fw fa-star' />)}
                     />
+                    */}
                     <NavItem
                         key="all"
                         name="All Items"

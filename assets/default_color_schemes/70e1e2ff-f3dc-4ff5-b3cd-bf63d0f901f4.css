@@ -1,0 +1,56 @@
+:root {
+    /* Overall Color and Misc*/
+    --color-main: #273144;
+    --color-warning: rgb(206, 86, 84);
+    --color-border: rgb(222, 222, 222);
+    /* For Navigation Pane*/
+    --color-bg-nav: #273144;
+    --color-selected-nav: #474f5f;
+    --color-active-nav: #474f5f;
+    --color-font-nav: #bfc1c8;
+    --color-selected-font-nav: #ffffff;
+    --color-active-font-nav: #ffffff;
+    /* For Abstracts Pane*/
+    --color-bg-list: rgb(251, 251, 251);
+    --color-selected-bg-entry: #ecedee;
+    --color-active-bg-entry: #e7f2fb;
+    --color-selected-entry-filler: #ecedee;
+    --color-active-entry-filler: #e7f2fb;
+    --color-selected-border-entry: rgb(222, 222, 222);
+    --color-active-border-entry: #8cc7fc;
+    /* abstract title */
+    --color-border-abstract-title: #006994;
+    /* search*/
+    --color-border-search: rgb(222, 222, 222);
+    --color-active-border-search: #006994;
+    --color-search-cancel-icon: #9E9E9E;
+    /* For Info Pane */
+    --color-bg-info: #f6f6f7;
+    --color-bg-dropdown: rgb(240, 240, 240);
+    /* title */
+    --color-border-title: rgb(222, 222, 222);
+    --color-active-border-title: #fecf02;
+    /* meta */
+    --color-snippet: #3e81de;
+    --color-info-tag: grey;
+    --color-bg-info-tag: black;
+    /* section */
+    --color-border-section: rgb(222, 222, 222);
+    --color-active-border-section: #fecf02;
+    /* field */
+    --color-field-name: #98979B;
+    --color-field-content: black;
+    --color-field-name-bottom: #fecf02;
+    --color-field-content-bottom: #fecf02;
+    /* add field*/
+    --color-bg-addField: #872642;
+    --color-bg-addSec: #948D38;
+    /*
+     * Font Weight
+     */
+    --font-weight-title: 500;
+    --font-weight-field: 300;
+    --font-weight-section: 400;
+    --font-weight-abstract-title: 500;
+    --font-weight-abstract-snippet: 400;
+}

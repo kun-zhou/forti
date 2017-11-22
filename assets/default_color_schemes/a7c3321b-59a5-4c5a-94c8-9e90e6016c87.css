@@ -1,16 +1,23 @@
 :root {
+    /* Overall Color and Misc*/
     --color-main: rgb(247, 188, 65);
+
     --color-warning: rgb(206, 86, 84);
+    --color-border: rgb(222, 222, 222);
+
+    /* For Navigation Pane*/
     --color-bg-nav: rgb(247, 188, 65);
     --color-selected-nav: rgb(237, 181, 62);
     --color-active-nav: rgb(230, 175, 60);
-    --color-font-nav: rbg(0, 0, 0);
+
+    /* For Abstracts Pane*/
     --color-bg-list: rgb(251, 251, 251);
-    --color-bg-info: rgb(251, 251, 251);
-    --color-border: rgb(222, 222, 222);
     --color-selected-bg-entry: rgb(239, 239, 239);
     --color-active-bg-entry: rgb(255, 255, 255);
     --color-selected-entry-filler: rgb(237, 181, 62);
     --color-active-entry-filler: rgb(237, 181, 62);
+
+    /* For Info Pane */
+    --color-bg-info: rgb(251, 251, 251);
     --color-bg-dropdown: rgb(240, 240, 240)
 }

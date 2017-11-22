@@ -1,6 +1,8 @@
 // Using Object destructing to load modules
-const { app, shell, BrowserWindow, Notification } = require('electron')
+const { app, shell, BrowserWindow, Notification, Menu } = require('electron')
 const path = require('path')
+const menu = require('./menus/menu.js')
+
 // Keep a reference to mainWindow to avoid window object being garbadged collected
 let mainWindow
 
@@ -22,10 +24,12 @@ app.on('activate', whenActivated)
  * * (using hoisting)  *
  * * * * * * * * * * * */
 function createWindow() {
+  // set menu
+  Menu.setApplicationMenu(menu)
 
   // new Window
   mainWindow = new BrowserWindow({
-    width: 1000, height: 600, minWidth: 600, minHeight: 300,
+    width: 500, height: 600,
     titleBarStyle: "hidden-inset"
   })
 

@@ -5,7 +5,7 @@ import makeAutohide from 'public/components/Autohide/Autohide.jsx'
 function Entry({ entry, icon, callback }) {
     return (
         <div className={sty['entry-wrapper']} onClick={() => { callback(entry) }}>
-            <i className={'far fa-fw fa-lg ' + icon} />{entry}
+            <i className={'fal fa-fw fa-lg ' + icon + ' ' + sty['icon']} />{entry}
         </div >
     )
 }
@@ -59,7 +59,7 @@ class DropupWithBtn extends React.PureComponent {
                     className={sty['btn-add']}
                     onClick={this.toggleDropup}
                 >
-                    <i className='far fa-fw fa-lg fa-plus' />
+                    <i className='fal fa-fw fa-lg fa-plus' />
                 </button>
             </div>
         )

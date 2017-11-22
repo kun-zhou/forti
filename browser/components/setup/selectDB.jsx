@@ -73,7 +73,7 @@ class NewDBDialog extends React.PureComponent {
 function DB({ db, highlighted_db, handleDBClick }) {
     var classNameList = [sty['db-block']]
     if (highlighted_db === db.location) {
-        classNameList.push(sty['highlight'])
+        classNameList.push(sty['is-selected'])
     }
     return (
         <div
@@ -100,6 +100,7 @@ class SelectDB extends React.PureComponent {
     }
 
     unlockDB = (e) => {
+        console.log(this.state.highlighted_db)
         if (this.state.highlighted_db) {
             this.props.unlockDB(this.state.highlighted_db, this.state.passwd)
         } else {
@@ -123,9 +124,9 @@ class SelectDB extends React.PureComponent {
         )
         var message = this.props.status
         return (
-            <div className={sty['wrapper-row']}>
+            <div className={sty['wrapper-select-db']}>
                 <Button
-                    style={{ position: 'absolute', left: '20px', bottom: '20px', color: 'grey' }}
+                    style={{ position: 'absolute', top: '20px', right: '20px', color: 'grey' }}
                     onClick={this.toggleNewDB}
                 >
                     Add New Vault
@@ -136,19 +137,23 @@ class SelectDB extends React.PureComponent {
                     setupDB={this.props.setupDB}
                 />
                 <div className={sty['database-list']}>
-                    <h3>Choose a database</h3>
+                    <h2 className={sty['database-list-header']}>Vaults</h2>
                     {listOfDB}
                 </div>
                 <div className={sty['unlock-panel']}>
                     <div className={sty['unlock-password-prompt']}>
                         <TextField
                             margin='dense'
-                            label='Master Password Please'
+                            label='Master Password'
                             type='password'
                             onChange={this.updatePassword}
+                            FormHelperTextProps={{
+                                error: true
+                            }}
+                            helperText={message === 'PASSWORD_ERROR' ? 'WRONG PASSWORD' : null}
                             fullWidth
                         />
-                        <Button onClick={this.unlockDB}>Submit</Button>
+                        <Button classes={{ root: sty['btn-confirm-password'] }} raised color="primary" onClick={this.unlockDB}>UNLOCK</Button>
                     </div>
                 </div>
             </div>

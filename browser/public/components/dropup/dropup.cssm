@@ -24,13 +24,21 @@
     border-radius: 4px;
     z-index: 20
 }
-
+.entry-wrapper:first-child{
+    border-radius: 4px 4px 0 0;
+}
+.entry-wrapper:last-child{
+    border-radius: 0 0 4px 4px;
+}
 .entry-wrapper {
-    padding: 4px 5px 4px 18px;
+    padding: 4px 5px 4px 10px;
     height: 28px;
     width: 160px;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 500;
+}
+.icon{
+    margin-right: 6px;
 }
 
 .entry-wrapper:hover {

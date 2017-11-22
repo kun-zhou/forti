@@ -23,7 +23,7 @@ class Title extends React.PureComponent {
         if (!this.state.title_editing) return (
             <div id={sty['title-wrapper']}>
                 <div id={sty['title-content-display']} onClick={this.toggleTitleEdit}>
-                    {this.state.title}
+                    {this.state.title ? this.state.title : <span>'Untitled'</span>}
                 </div>
             </div>
         )

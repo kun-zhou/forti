@@ -7,7 +7,7 @@ import dataAPI from '../lib/dataAPI'
 import cacheManager from '../lib/cacheManager'
 import { debounce } from 'lodash'
 import { Map, List, OrderedMap, fromJS } from 'immutable'
-
+import { remote } from 'electron'
 /// CONFIGURATION & DATABASE ACTIONS
 // 0. SAVE_DB
 
@@ -16,19 +16,22 @@ import { Map, List, OrderedMap, fromJS } from 'immutable'
  * location: path to vault folder
  */
 export const ATTEMPT_UNLOCK = (location, password) => (dispatch) => { //idx signals which database
-    var action = { type: 'ATTEMPT_UNLOCK', location, password }
-    var { success, message, key } = dataAPI.init(location, password)
+    var action = { type: 'ATTEMPT_UNLOCK', location }
+    var { success, message} = dataAPI.init(location, password)
     action.success = success
-    if (!success) {
+    if (success !== 0) {
         action.status = message
-        return action
+        dispatch(action)
+    } else {
+        cacheManager.init(fromJS(dataAPI.readCache().cache))
+        // Create categories_count item
+        dispatch(UPDATE_NAV())
+        action.status = 'UNLOCKED'
+        var win = remote.getCurrentWindow()
+        win.setSize(1000, 600, true)
+        win.center()
+        dispatch(action)
     }
-    cacheManager.init(fromJS(dataAPI.readCache().cache))
-    action.key = key
-    // Create categories_count item
-    dispatch(UPDATE_NAV())
-    action.status = 'UNLOCKED'
-    dispatch(action)
 }
 
 /** 2. CREATE_DB
@@ -36,7 +39,10 @@ export const ATTEMPT_UNLOCK = (location, password) => (dispatch) => { //idx sign
  */
 export const CREATE_DB = (name, passwd) => {
     var action = { type: 'CREATE_DB' }
-    var { location } = dataAPI.createDemoVault(name, passwd)
+    var { success, message, location } = dataAPI.createVault(name, passwd)
+    if (success !== 0) {
+        throw message
+    }
     config.addDB(name, location)
     return action
 }
@@ -173,14 +179,12 @@ export const SAVE_SECRET = () => (dispatch, getState) => {
 
 export const CLOSE_DB = () => (dispatch, getState) => {
     dataAPI.closeVault(cacheManager.getCache().toJS())
-    require('fs').writeFileSync('./f.s', '123')
     dispatch({ type: 'DB_CLOSED' })
 }
 
 // COLOR SCHEME
 export const SET_COLOR_SCHEME = (scheme) => (dispatch) => {
     var css = config.getColorScheme(scheme)
-    css = css ? css : config.getColorScheme('Red Graphite')
     var head = document.head
     if (!document.getElementById('color-scheme')) { // if color scheme is not in place
         var sheet = document.createElement('style')

@@ -2,7 +2,7 @@
     font-family: 'Font Awesome 5 Solid';
     font-style: normal;
     font-weight: 900;
-    src: url("fontawesome-solid-900.woff2");
+    src: url("fontawesome-pro-solid-900.woff2") format("woff2")
 }
 
 .fa,

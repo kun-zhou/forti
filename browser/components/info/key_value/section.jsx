@@ -31,7 +31,7 @@ export default class Section extends React.PureComponent {
             }
         )
         return (
-            <div>
+            <div className={sty['section']}>
                 <SectionTitle
                     toggleSecTitleEdit={this.props.updateSectionTitle}
 

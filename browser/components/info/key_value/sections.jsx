@@ -33,6 +33,6 @@ export default class Sections extends React.PureComponent {
                 />
             )
         })
-        return <div id={sty['content-wrapper']} >{sections_jsx}</div>
+        return <div >{sections_jsx}</div>
     }
 }

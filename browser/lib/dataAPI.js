@@ -17,26 +17,36 @@ export default {
     closeVault
 }
 import uuid from 'uuid/v4'
-import { readCryptSync, writeCryptSync, generateNewKeys } from './crypto'
 import path from 'path'
 import fs from 'fs-extra'
+import _crypto from './crypto'
 import crypto from 'crypto'
 import * as app_path from '../utils/paths'
 import { debounce } from 'lodash'
 
 var vault_path = null,
-    passwd = null,
-    key = null
+    keyfile_loc = null,
+    salt_and_iv_loc = null,
+    cache_loc = null,
+    secrets_loc = null,
+    att_loc = null,
+    enc_key = null
 var debouncedFuncs = {}
 
 function init(_vault_path, _passwd) { //return abstracts of notes
     // decrypt keyfile and verify
     vault_path = _vault_path
-    passwd = _passwd
-    // read Cache
-    validateCache(vault_path, passwd)
-
-    return { success: true, message: 'UNLOCKED', key: '' }
+    keyfile_loc = path.join(vault_path, 'keyfile')
+    salt_and_iv_loc = path.join(vault_path, 'salt_and_iv')
+    cache_loc = path.join(vault_path, 'cache')
+    secrets_loc = path.join(vault_path, 'secrets')
+    try {
+        enc_key = _crypto.getMasterKey(_passwd, fs.readFileSync(keyfile_loc), fs.readFileSync(salt_and_iv_loc))
+    } catch (e) {
+        console.log(e)
+        return { success: 1, message: 'PASSWORD_ERROR' }
+    }
+    return { success: 0, message: 'UNLOCKED' }
 }
 
 function getUID() {
@@ -64,14 +74,14 @@ function flushDebouncedFuncs() {
 }
 
 function readCache() {
-    return { cache: JSON.parse(fs.readFileSync(path.join(vault_path, 'cache.json'))) }
-    //var secretsCache = JSON.parse(readCryptSync(path.join(vault_path, 'cache.cjson'), passwd))
+    console.log('cacje_;')
+    console.log(cache_loc)
+    return { cache: JSON.parse(_crypto.readCryptSync(enc_key, cache_loc)) }
 }
 
 function readSecret(uid) {
     flushDebouncedFuncs()
-    return { secret: JSON.parse(fs.readFileSync(path.join(vault_path, 'secrets', uid), 'utf8')) }
-    //return JSON.parse(readCryptSync(path.join(vault_path, 'secrets', uid), passwd))
+    return { secret: JSON.parse(_crypto.readCryptSync(enc_key, path.join(secrets_loc, uid))) }
 }
 
 function createSecret(secret) {
@@ -92,7 +102,6 @@ function saveSecret(secret) { // create id if not exist
     try {
         !debouncedFuncs[secret.id] ? debouncedFuncs[secret.id] = debounce(writeSecretToFile, 1000) : {}
         debouncedFuncs[secret.id](secret)
-        //writeCryptSync(path.join(vault_path, 'secrets', uid), JSON.stringify(secret), passwd)
     } catch (e) {
         return { success: 1, message: e }
     }
@@ -100,7 +109,7 @@ function saveSecret(secret) { // create id if not exist
 }
 
 function writeSecretToFile(secret) {
-    fs.writeFileSync(path.join(vault_path, 'secrets', secret.id), JSON.stringify(secret))
+    _crypto.writeCryptSync(JSON.stringify(secret), enc_key, path.join(secrets_loc, secret.id))
 }
 
 function deleteSecret(id) {
@@ -117,32 +126,47 @@ function saveAttachment(vault_path, uid, attachment_loc, passwd) {
 }
 
 function saveCache(cache) {
-    fs.writeFileSync(path.join(vault_path, 'cache.json'), JSON.stringify(cache))
+    _crypto.writeCryptSync(JSON.stringify(cache), enc_key, path.join(vault_path, 'cache'), )
 }
 
 function createDemoVault(name, passwd) {
     var vault_path = path.join(app_path.pathConfigDir, 'databases', uuid())
-    var demo_vault_path = path.join('assets', 'default_dbs', 'Demo')
+    var demo_vault_path = path.join(require('electron').remote.app.getAppPath(), 'assets', 'default_dbs', 'Demo')
     fs.copySync(demo_vault_path, vault_path)
     return { location: vault_path }
 }
 
 function createVault(name, passwd) {
-    var vault_dir_name = uuid()
+    if (!passwd || passwd.length < 5) {
+        return { success: 1, message: "password too short or corrupted" }
+    }
+    var vault_path = path.join(app_path.pathConfigDir, 'databases', uuid())
+    // generate new encryption keyfile and keyss
+    var response = _crypto.generateNewKeys(passwd)
+    if (response.success !== 0) {
+        return { success: 1, message: "failed to create keyfile" }
+    }
 
-    var vault_path = path.join(pathInitialization, 'databases', vault_dir_name)
-    /*
-    var secrets_path = path.join(vault_path, 'secrets')
-    var attachments_path = path.join(vault_path, 'attachments')
+    // generate fresh cache
+    try {
+        var cache = generateCache()
+    } catch (e) {
+        return { success: 1, message: "failed to generate cache" + e }
+    }
+
+    // write new keyfile and salt and iv, and directory structure
     fs.mkdirSync(vault_path)
-    fs.mkdirSync(secrets_path)
-    fs.mkdirSync(attachments_path)
-    var cache = '{}'
-    var manifest = '{}'
-    fs.writeFileSync(vault_path, JSON.stringify(cache))
-    */
-    fs.copySync(pathInitialization, vault_path)
-    return { location: vault_path }
+    fs.mkdirSync(path.join(vault_path, 'secrets'))
+    fs.mkdirSync(path.join(vault_path, 'attachments'))
+    _crypto.writeCryptSync(JSON.stringify(cache), response.enc_key, path.join(vault_path, 'cache'))
+    fs.writeFileSync(path.join(vault_path, 'keyfile'), response.keyfile_encrypted)
+    fs.writeFileSync(path.join(vault_path, 'salt_and_iv'), response.salt_and_iv)
+    return { success: 0, location: vault_path }
+}
+
+function generateCache(vault_path) {
+    // for now, just implement generate cache for empty vault
+    return JSON.parse(fs.readFileSync(app_path.pathCacheTemplate, 'utf8'))
 }
 
 function validateCache() { // regenerate if does timestamp passed

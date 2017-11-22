@@ -2,7 +2,7 @@
     font-family: 'Font Awesome 5 Regular';
     font-style: normal;
     font-weight: 400;
-    src: url("fontawesome-regular-400.woff2");
+    src: url("fontawesome-pro-regular-400.woff2") format("woff2")
 }
 
 .far {

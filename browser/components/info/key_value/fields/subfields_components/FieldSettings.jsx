@@ -64,7 +64,7 @@ class FieldSettings extends React.PureComponent {
                     className={sty['btn-add']}
                     onClick={this.toggleDropdown}
                 >
-                    <i className={boldness + ' fa-fw fa-lg fa-cog'} />
+                    <i className={boldness + ' fa-fw fa-cog'} />
                 </button>
             </div>
         )

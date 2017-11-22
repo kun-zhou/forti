@@ -10,14 +10,12 @@ class AddField extends React.PureComponent {
     render() {
         return (
             <div className={sty['btn-wrapper']}>
-                <div className={sty['add-field']}>
-                    <div
-                        className={sty['btn-add-field']}
-                        onClick={this.addField}
-                    >
-                        + Field
+                <div
+                    className={sty['btn'] }
+                    onClick={this.addField}
+                >
+                    + Field
                     </div>
-                </div>
             </div>
         )
     }

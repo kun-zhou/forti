@@ -1,19 +1,33 @@
-.section-name-wrapper {
-    min-height: 20px
+.section {
+    background-color: #ffffff;
+    border-radius: 3px;
+    box-shadow: 0 0 5px #dededf;
+    padding: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    position: relative;
 }
 
+.section-meta {
+    background-color: #ffffff;
+    border-radius: 3px;
+    box-shadow: 0 0 5px blue;
+}
+
+.section-name-wrapper {
+    min-height: 20px;
+    font-weight: var(--font-weight-section)
+}
 
 input.section-name {
-    outline: none;
-    font-size:inherit;
     color: grey;
     display: inline-block;
-    border-bottom: 2px gainsboro solid;
+    border-bottom: 2px var(--color-border-section) solid;
     width: 28%;
 }
 
-input.section-name:focus{
-    border-bottom: 2px #318CE7 solid !important;
+input.section-name:focus {
+    border-bottom: 2px var(--color-active-border-section) solid !important;
 }
 
 .field {
@@ -22,14 +36,14 @@ input.section-name:focus{
     display: flex;
     margin: 5px 0 5px 0;
     font-size: 13px;
-    font-weight: 500;
+    font-weight: var(--font-weight-field);
     position: relative;
 }
 
 .field-name {
     width: 30%;
     padding-right: 16px;
-    color: rgb(159, 159, 159);
+    color: var(--color-field-name);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -39,6 +53,7 @@ input.section-name:focus{
 .field-content {
     /*font-family: Consolas, monaco, monospace;*/
     width: 70%;
+    color: var(--color-field-content);
     font-size: 14px;
     padding-right: 20px;
     display: flex;
@@ -54,20 +69,23 @@ input.section-name:focus{
     font-size: 13px;
     text-align: right;
     padding-right: 5px;
-    padding-bottom: 2px;
+    padding-top: 3px;
+    padding-bottom: 3px;
     background-color: inherit;
     color: inherit;
     font-family: inherit;
     font-size: inherit;
-    border-bottom: 1px solid var(--color-active-nav);
+    border: 1px solid var(--color-field-name-bottom);
+    border-radius: 3px;
 }
 
 .field-name-display {
     min-height: 20px;
     width: 100%;
     text-align: right;
-    padding-right: 5px;
-    padding-bottom: 3px;
+    padding-right: 6px;
+    padding-top: 4px;
+    padding-bottom: 4px;
     font-size: 13px;
     white-space: pre;
 }
@@ -78,11 +96,13 @@ input.section-name:focus{
     background-color: inherit;
     text-align: left;
     padding-left: 5px;
-    padding-bottom: 2px;
+    padding-top: 3px;
+    padding-bottom: 3px;
     color: inherit;
     font-family: inherit;
     font-size: inherit;
-    border-bottom: 1px solid var(--color-active-nav);
+    border: 1px solid var(--color-field-content-bottom);
+    border-radius: 3px;
 }
 
 .field-content-display {
@@ -90,8 +110,9 @@ input.section-name:focus{
     width: 100%;
     text-align: left;
     background-color: inherit;
-    padding-left: 5px;
-    padding-bottom: 3px;
+    padding-left: 6px;
+    padding-top: 4px;
+    padding-bottom: 4px;
     overflow: hidden;
     display: flex;
     white-space: pre-wrap;
@@ -101,7 +122,7 @@ input.section-name:focus{
 .field-setting {
     position: absolute;
     right: 0;
-    top: 4px;
+    top: 9px;
     color: grey;
 }
 
@@ -113,7 +134,6 @@ input.section-name:focus{
 .div-placeholder {
     color: rgb(205, 202, 202)
 }
-
 
 .btn-add {
     width: 25px;
@@ -140,9 +160,8 @@ input.section-name:focus{
     padding: 2px 3px 2px 10px;
     width: 60px;
     font-size: 12px;
-    font-weight: 500;
 }
 
 .entry-wrapper:hover {
-    background-color: rgb(239,239,239)
+    background-color: rgb(239, 239, 239)
 }

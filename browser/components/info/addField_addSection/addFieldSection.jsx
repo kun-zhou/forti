@@ -17,22 +17,18 @@ class AddFieldSection extends React.PureComponent {
     render() {
         return (
             <div className={sty['btn-wrapper']}>
-                <div className={sty['add-field']}>
-                    <div
-                        className={sty['btn-add-left']}
-                        onClick={this.addField}
-                    >
-                        + Field
+                <div
+                    className={sty['btn-left']}
+                    onClick={this.addField}
+                >
+                    + Field
                     </div>
-                </div>
-                <div className={sty['add-section']}>
-                    <div
-                        className={sty['btn-add-right']}
-                        onClick={this.props.addSection}
-                    >
-                        + Section
+                <div
+                    className={sty['btn-right']}
+                    onClick={this.props.addSection}
+                >
+                    + Section
                     </div>
-                </div>
             </div>
         )
     }

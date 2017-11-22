@@ -2,7 +2,7 @@
     font-family: 'Font Awesome 5 Light';
     font-style: normal;
     font-weight: 300;
-    src: url("fontawesome-light-300.woff2");
+    src:  url("fontawesome-pro-light-300.woff2") format("woff2")
 }
 
 .fal {

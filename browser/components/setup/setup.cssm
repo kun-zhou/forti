@@ -1,7 +1,7 @@
-.wrapper-col {
+.wrapper-select-db {
     height: 100%;
-    width: 100%;
-    margin: 20px 20px 20px 20px;
+    width: 350px;
+    margin-top: 90px;
     display: flex;
     flex-direction: column;
 }
@@ -9,13 +9,14 @@
 .wrapper-row {
     height: 100%;
     width: 100%;
-    padding: 20px 20px 20px 20px;
+    padding: 20px 10% 20px 10%;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .header-setup {
+    margin-bottom: 20px;
     display: flex;
     flex-direction: column;
     padding: 10px 30px 10px 0;
@@ -28,7 +29,7 @@
 }
 
 .app-title-footnote {
-    text-align: justify;
+    margin-left: 5px;
     font-size: 13px;
     max-width: 120px;
 }
@@ -45,6 +46,7 @@
 }
 
 .setup-section p {
+    line-height: 1.6;
     font-size: 15px;
     margin-bottom: 10px;
 }
@@ -52,14 +54,14 @@
 .about-vault h2 {
     text-align: center;
     color: hsl(222, 53%, 50%);
-    font-size: 22px;
+    font-size: 18px;
     margin: 12px;
 }
 
 .getting-started h2 {
     text-align: center;
     color: hsl(330, 65%, 55%);
-    font-size: 22px;
+    font-size: 18px;
     margin: 12px;
 }
 
@@ -69,23 +71,37 @@
 }
 
 .database-list {
-    margin-right: 40px;
-    min-width: 35%;
-    padding-right: 10px;
-    border-right: 1px solid hsl(0, 0%, 88%);
+    margin: 10% 0 8px 0;
+    padding-bottom: 5px;
+    line-height: 1.6;
+    border-bottom: 1px solid hsl(0, 0%, 88%);
 }
 
-.unlock-panel {
-    width: 40%;
+.database-list-header {
+    padding-bottom: 8px;
+    margin-bottom: 5px;
+    border-bottom: 1px solid hsl(0, 0%, 88%);
 }
 
+.unlock-panel {}
+.btn-confirm-password{
+    margin-top: 20px;
+}
 .unlock-password-prompt {
     display: flex;
+    flex-direction: column;
 }
 
 .db-block {
-    margin: 10px;
-    height: 30px;
+    border-left: 4px solid white;
+    padding: 4px 0 4px 8px;
+    font-size: 16px;
+    color: rgba(94, 91, 91, 0.719)
+}
+
+.is-selected {
+    border-left: 4px solid #006994;
+    color: black;
 }
 
 .highlight {

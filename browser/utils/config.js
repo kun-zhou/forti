@@ -11,7 +11,6 @@ export default {
     getDefaultDBLocation: getDefaultDBLocation,
     // color schemes related
     appendTagColors: appendTagColors,
-    getDefaultColorScheme: getDefaultColorScheme,
     setDefaultColorScheme: setDefaultColorScheme,
     getColorSchemeList: getColorSchemeList,
     getColorScheme: getColorScheme,
@@ -32,14 +31,15 @@ const crypto = require('crypto')
 import _ from 'lodash'
 const lockit_crypto = require('./lockit_crypto')
 
+const appPath = require('electron').remote.app.getAppPath()
 const pathConfigDir = path.join(require('electron').remote.app.getPath('appData'), 'lockit')
 const pathConfig = path.join(pathConfigDir, 'config.json')
-const pathInitialization = path.join('assets', 'user_content_dir')
+const pathInitialization = path.join(appPath, 'assets', 'user_content_dir')
 const pathColorSchemes = path.join(pathConfigDir, 'color_schemes')
 const pathTemplates = path.join(pathConfigDir, 'templates')
 
-const pathDefaultColorSchemes = path.join('assets', 'default_color_schemes')
-const pathDefaultTemplates = path.join('assets', 'default_templates')
+const pathDefaultColorSchemes = path.join(appPath, 'assets', 'default_color_schemes')
+const pathDefaultTemplates = path.join(appPath, 'assets', 'default_templates')
 
 var defaultColorSchemes = JSON.parse(fs.readFileSync(path.join(pathDefaultColorSchemes, 'manifest.json'), 'utf8'))
 var defaultTemplates = JSON.parse(fs.readFileSync(path.join(pathDefaultTemplates, 'manifest.json'), 'utf8'))
@@ -109,12 +109,8 @@ function addColorScheme(scheme) {
     //fs.writeFileSync(path.join(pathColorSchemes, ))
 }
 
-function getDefaultColorScheme() {
-    return config.color_scheme
-}
-
 function setDefaultColorScheme(scheme_file_name) {
-    config.color_scheme = scheme_file_name
+    return fs.readFileSync(path.join(pathDefaultColorSchemes, defaultColorSchemes[0].file_name), 'utf8')
 }
 
 function getColorSchemeList() {
@@ -149,7 +145,7 @@ function addTemplate() {
 function appendTagColors(tags) { //tags is an iterator
     var tag_and_color = []
     for (var tag of tags) {
-        tag_and_color.push([tag,hashbow(tag)])
+        tag_and_color.push([tag, '#A0D3F9'])
     }
     return new Map(tag_and_color)
 }

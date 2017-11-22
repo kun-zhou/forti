@@ -3,7 +3,7 @@
     "user_defined": [
        {
            "title":"Basic Info",
-           "fields": [["Software Name","","text"], ["Licensed to","", "text"], ["Registered Email", "","number"],["License","","text"],["Website","","code"]]
+           "fields": [["Software Name","","text"], ["Licensed to","", "text"], ["Registered Email", "","number"],["License","","text"],["Website","","link"]]
        }
     ]
 }

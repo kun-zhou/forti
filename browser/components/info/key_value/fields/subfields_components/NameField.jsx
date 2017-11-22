@@ -22,6 +22,7 @@ class NameField extends React.PureComponent {
                         value={this.props.local_name}
                         placeholder={'field name'}
                         onChange={this.props.editLocalName}
+                        ref={(e) => e ? e.focus() : {}}
                     />
                 </OutsideAlerter>
             )

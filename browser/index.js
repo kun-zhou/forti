@@ -14,12 +14,11 @@ import { SET_COLOR_SCHEME } from './actions'
 
 // Load fonts and master css
 require('./public/css/common.css')
-require('./public/fonts/font-awesome/font-awesome-core.css')
-require('./public/fonts/font-awesome/font-awesome-light.css')
-require('./public/fonts/font-awesome/font-awesome-regular.css')
-require('./public/fonts/font-awesome/font-awesome-solid.css')
-require('./public/fonts/font-awesome/font-awesome-solid.css')
-require('./public/fonts/lato.css')
+require('./public/fonts/font-awesome/fontawesome-pro-core.css')
+require('./public/fonts/font-awesome/fontawesome-pro-light.css')
+require('./public/fonts/font-awesome/fontawesome-pro-regular.css')
+require('./public/fonts/font-awesome/fontawesome-pro-solid.css')
+require('./public/fonts/quicksand.css')
 
 var status = config.initialize().status
 
@@ -44,7 +43,7 @@ var initialState = {
 
 const store = createStore(rootReducer, fromJS(initialState), applyMiddleware(thunk, logger))
 
-store.dispatch(SET_COLOR_SCHEME(config.getDefaultColorScheme()))
+store.dispatch(SET_COLOR_SCHEME())
 
 render(
   <Provider store={store}>

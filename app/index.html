@@ -12,11 +12,6 @@
 
     <script>
         start = performance.now()
-        window.onclick = function (e) {
-            if (e.target.localName == 'a') {
-                console.log('a tag clicked!');
-            }
-        }​
     </script>
     <script src="renderer/bundle.js"></script>
     <script>console.log('total init time', performance.now() - start)</script>

@@ -5,7 +5,6 @@ import _ from 'lodash'
 import Input, { InputAdornment } from 'material-ui/Input';
 import { List } from 'immutable'
 import OutsideAlerter from '../public/outsideAlerter.jsx'
-import Clear from 'material-ui-icons/Clear';
 
 class Entry extends React.Component {
     handleEntryClick = () => {
@@ -27,25 +26,24 @@ class Entry extends React.Component {
         var tag_field = []
         for (let tag of this.props.entry.get('tags')) {
             tag_field.push(
-                <div className={sty['tag']} style={{ 'backgroundColor': this.props.tag_colors.get(tag) }}>
-                    {tag}
-                </div>
+                <span className={sty['tag']}><i className={['far', 'fa-hashtag'].join(' ')} />{tag}</span>
             )
         }
-
+        /**<div className={sty['tag']} style={{ 'backgroundColor': this.props.tag_colors.get(tag) }}>
+                    {tag}
+            </div>*/
         // Render
         return (
             <div className={entryClassNames} onClick={this.handleEntryClick} >
-                <div className={sty['entry-filler']}></div>
-                <div className={sty['entry-content']}>
-                    <div className={sty['entry-content-title']} >
-                        <span className={sty['entry-content-title-icon']}><i className={'fal fa-fw ' + this.props.category_icons.get(this.props.entry.get('category'))} /> </span>
+                <div className={sty['entry-left']}>
+                </div>
+                <div className={sty['entry-main']}>
+                    <div className={sty['entry-title']} >
+                        <span className={sty['entry-title-icon']}><i className={'fal fa-fw ' + this.props.category_icons.get(this.props.entry.get('category'))} /> </span>
                         {this.props.entry.get('title')}
                     </div>
-                    <div className={sty['entry-content-snippet']}>
-                        {this.props.entry.get('snippet')}
-                    </div>
-                    <div className={sty['entry-content-tags']}>
+
+                    <div className={sty['entry-tags']}>
                         {tag_field}
                     </div>
                 </div>
@@ -134,8 +132,8 @@ class AbstractList extends React.PureComponent {
             })
         return (
             <div className={sty['abstract-list']}>
-                <div className={sty['list-title']}>
-                    <span className={sty['list-title-wrapper']}>
+                <div className={sty['list-title-wrapper']}>
+                    <span className={sty['list-title']}>
                         {this.props.title}
                     </span>
                 </div>
@@ -168,7 +166,7 @@ class AbstractView extends React.PureComponent {
         return (
             <div id={sty['entries']} >
                 <Search deactivateSearch={this.props.deactivateSearch} search={this.props.search} />
-                {AbstractLists}
+                <div className={sty['abstract-lists']}>{AbstractLists}</div>
             </div>
         )
     }

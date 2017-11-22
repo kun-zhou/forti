@@ -2,7 +2,6 @@ import React from 'react'
 import sty from './sty.cssm'
 import Chip from 'material-ui/Chip';
 
-
 class Tag extends React.PureComponent {
     constructor(props) {
         super(props)
@@ -18,7 +17,7 @@ class Tag extends React.PureComponent {
             <div className={sty['tag']}>
                 {this.props.name}
                 <div
-                    className={[sty['tag-del'], 'far', 'fa-fw', 'fa-times-circle'].join(' ')}
+                    className={[sty['tag-del'], 'fas', 'fa-fw', 'fa-times'].join(' ')}
                     onClick={this.deleteTag}
                 />
             </div>
@@ -59,6 +58,7 @@ class Tags extends React.PureComponent {
         )
         return (
             <div className={sty['tags-wrapper']}>
+                {/* <span className={sty['meta-section-title']}>Tags</span> {ListTags} */}
                 {ListTags}
                 <input
                     className={sty['tag-input']}
@@ -71,4 +71,24 @@ class Tags extends React.PureComponent {
     }
 }
 
-export default Tags
+class Meta extends React.PureComponent {
+    render() {
+        return (
+            <div className={sty['section-meta']}>
+                <Tags
+                    addTag={this.props.addTag}
+                    deleteTag={this.props.deleteTag}
+
+                    tags={this.props.tags}
+                />
+            </div >
+        )
+    }
+}
+/*
+<div className={sty['snippet']}>
+    <span className={sty['meta-section-title']}>Snippet</span> {this.props.snippet}
+</div>
+*/
+
+export default Meta

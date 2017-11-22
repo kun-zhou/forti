@@ -1,5 +1,4 @@
 // Uses immutbale data types
-import hashbow from 'hashbow'
 import { Map, List, fromJS, toJS } from 'immutable'
 var cache = null
 var lastBumped = null

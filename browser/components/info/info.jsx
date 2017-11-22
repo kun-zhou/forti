@@ -2,7 +2,7 @@ import React from 'react'
 import sty from './info.cssm'
 
 import Title from './title/title.jsx'
-import Tags from './tags/tagField.jsx'
+import Meta from './meta/meta.jsx'
 
 import Toolbar from './toolbar/toolbar.jsx'
 import AddField from './addField_addSection/addField.jsx'
@@ -12,10 +12,6 @@ import Sections from './key_value/sections.jsx'
 import Dropup from '../../public/components/dropup/dropup.jsx'
 
 class Info extends React.PureComponent {
-    constructor(props) {
-        super()
-    }
-
     createSecret = (category) => {
         this.props.createSecret(category)
     }
@@ -95,22 +91,24 @@ class Info extends React.PureComponent {
 
                     title={info.get('title')}
                 />
-                <Tags
-                    addTag={this.addTag}
-                    deleteTag={this.deleteTag}
+                <div id={sty['content-wrapper']} >
+                    <Meta
+                        addTag={this.addTag}
+                        deleteTag={this.deleteTag}
 
-                    id={id}
-                    tags={info.get('tags')}
-                />
-                <Sections
-                    addSection={this.addSection}
-                    updateSectionTitle={this.updateSectionTitle}
-                    updateField={this.updateField}
-                    deleteField={this.deleteField}
-                    addField={this.addField}
+                        snippet={info.get('snippet')}
+                        tags={info.get('tags')}
+                    />
+                    <Sections
+                        addSection={this.addSection}
+                        updateSectionTitle={this.updateSectionTitle}
+                        updateField={this.updateField}
+                        deleteField={this.deleteField}
+                        addField={this.addField}
 
-                    sections={info.get('user_defined')}
-                />
+                        sections={info.get('user_defined')}
+                    />
+                </div>
                 {addEntryDropup}
             </div>
         )
