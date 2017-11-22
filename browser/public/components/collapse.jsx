@@ -1,5 +1,5 @@
 import React from 'react'
-export default class Collapse extends React.Component {
+export default class Collapse extends React.PureComponent {
     constructor() {
         super()
         this.wrapperStyle = {

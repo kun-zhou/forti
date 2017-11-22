@@ -6,7 +6,7 @@ import Input, { InputAdornment } from 'material-ui/Input';
 import { List } from 'immutable'
 import OutsideAlerter from '../public/outsideAlerter.jsx'
 
-class Entry extends React.Component {
+class Entry extends React.PureComponent {
     handleEntryClick = () => {
         this.props.entryClick(this.props.entry.get('id'))
     }
@@ -157,10 +157,10 @@ class AbstractView extends React.PureComponent {
                 otherListTitle = 'All'
             }
             if (this.props.visibleEntries.get('favorites').size !== 0) { // if  favorites
-                AbstractLists.push(<AbstractList {...Object.assign({}, passDown, { list: this.props.visibleEntries.get('favorites'), title: 'Favorites' }) } />)
+                AbstractLists.push(<AbstractList key={1} {...Object.assign({}, passDown, { list: this.props.visibleEntries.get('favorites'), title: 'Favorites' }) } />)
             }
             if (this.props.visibleEntries.get('others').size !== 0) {
-                AbstractLists.push(<AbstractList {...Object.assign({}, passDown, { list: this.props.visibleEntries.get('others'), title: otherListTitle }) } />)
+                AbstractLists.push(<AbstractList key={2} {...Object.assign({}, passDown, { list: this.props.visibleEntries.get('others'), title: otherListTitle }) } />)
             }
         }
         return (

@@ -2,7 +2,7 @@ import React from 'react'
 import FieldSettings from './FieldSettings.jsx'
 import sty from '../../sty.cssm'
 
-class InputContent extends React.Component {
+class InputContent extends React.PureComponent {
     constructor(props) {
         super(props)
         this.handleClick = this.handleClick.bind(this)

@@ -1,6 +1,6 @@
 import React from 'react'
 // takes args bindOnMoun
-export default class OutsideAlerter extends React.Component {
+export default class OutsideAlerter extends React.PureComponent {
     componentDidMount() {
         if (this.props.bindOnMount) {
             document.addEventListener('click', this.handleClickOutside)

@@ -14,7 +14,6 @@ function encrypt(text, key, iv) {
 }
 
 function decrypt(buffer, key, iv) {
-    console.log(buffer, key, iv)
     var decipher = crypto.createDecipher(algorithm, key, iv)
     var dec = decipher.update(buffer, 'utf8')
     return dec
@@ -56,7 +55,6 @@ function generateNewKeys(passwd) {
     var { keyfile_key, verification_key } = deriveKey(passwd, salt)
 
     var keyfile = Buffer.concat([verification_key, enc_key])
-    console.log(keyfile)
     var salt_and_iv = Buffer.concat([salt, iv]);
 
     var algorithm = 'aes-256-gcm'
@@ -87,7 +85,6 @@ function readCryptSync(key, path) {
     content.copy(iv, 0, 0, 16)
     content.copy(secret, 0, 16, content.length)
     var secret_plain = decrypt(secret, key, iv)
-    console.log()
     return secret_plain
 }
 

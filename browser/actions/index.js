@@ -17,21 +17,27 @@ import { remote } from 'electron'
  */
 export const ATTEMPT_UNLOCK = (location, password) => (dispatch) => { //idx signals which database
     var action = { type: 'ATTEMPT_UNLOCK', location }
-    var { success, message} = dataAPI.init(location, password)
+    var { success, message, error } = dataAPI.init(location, password)
     action.success = success
     if (success !== 0) {
         action.status = message
+        console.log(error)
         dispatch(action)
     } else {
-        cacheManager.init(fromJS(dataAPI.readCache().cache))
-        // Create categories_count item
-        dispatch(UPDATE_NAV())
-        action.status = 'UNLOCKED'
-        var win = remote.getCurrentWindow()
-        win.setSize(1000, 600, true)
-        win.center()
-        dispatch(action)
+        var res_dc = dataAPI.readCache()
+        if (res_dc.success !== 0) {
+            throw res_dc.message + res_dc.error
+        } else {
+            cacheManager.init(fromJS(res_dc.cache))
+        }
     }
+    // Create categories_count item
+    dispatch(UPDATE_NAV())
+    action.status = 'UNLOCKED'
+    var win = remote.getCurrentWindow()
+    win.setSize(1000, 600, true)
+    win.center()
+    dispatch(action)
 }
 
 /** 2. CREATE_DB
@@ -80,6 +86,7 @@ export const SEARCH_SECRETS = (keywords) => (dispatch, getState) => {
         search_results
     })
 }
+
 // 3. Search Entries
 export const DEACTIVATE_SEARCH = () => ({
     type: 'DEACTIVATE_SEARCH'

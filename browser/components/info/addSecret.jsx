@@ -5,7 +5,7 @@ import Add from 'material-ui-icons/Add';
 import sty from './info.cssm'
 
 
-class CategoryItem extends React.Component {
+class CategoryItem extends React.PureComponent {
     handleClick = () => {
         this.props.createSecret(this.props.category.name)
         this.props.handleRequestClose()
@@ -16,7 +16,7 @@ class CategoryItem extends React.Component {
         </MenuItem>
     }
 }
-class LongMenu extends React.Component {
+class LongMenu extends React.PureComponent {
     state = {
         anchorEl: null,
     };

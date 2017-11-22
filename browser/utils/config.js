@@ -5,7 +5,6 @@ export default {
     getDBList: getDBList,
     getDB: getDB,
     addDB: addDB,
-    saveDB: saveDB,
     dbExists: dbExists,
     setDefaultDB: setDefaultDB,
     getDefaultDBLocation: getDefaultDBLocation,
@@ -29,7 +28,6 @@ const fs = require('fs-extra')
 const path = require('path')
 const crypto = require('crypto')
 import _ from 'lodash'
-const lockit_crypto = require('./lockit_crypto')
 
 const appPath = require('electron').remote.app.getAppPath()
 const pathConfigDir = path.join(require('electron').remote.app.getPath('appData'), 'lockit')
@@ -100,9 +98,6 @@ function setDefaultDB(location) {
     saveConfig()
 }
 
-function saveDB(db, location, passwd) {
-    fs.writeFileSync(location, lockit_crypto.encrypt(JSON.stringify(db), passwd), 'utf8')
-}
 
 // Color Scheme Setup
 function addColorScheme(scheme) {

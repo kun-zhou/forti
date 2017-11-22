@@ -7,7 +7,7 @@ import ContentField from './subfields_components/ContentField.jsx'
  * `edit[A-Z]*` is for local state updates, updated on each keystroke
  * `toggle[A-Z]*` update on field input status change and pushes the local data to redux store
  */
-class Field extends React.Component {
+class Field extends React.PureComponent {
     constructor(props) {
         super(props)
         this.state = {

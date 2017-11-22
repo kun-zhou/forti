@@ -1,7 +1,7 @@
 import React from 'react'
 
 function makeField(WrappedComponent) {
-    return class extends React.Componentd {
+    return class extends React.PureComponentd {
         constructor(props) {
             super(props)
             this.state = {

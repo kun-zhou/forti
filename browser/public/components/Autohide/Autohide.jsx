@@ -8,7 +8,7 @@
 import React from 'react'
 
 function makeAutohide(WrappedComponent) {
-    return class extends React.Component {
+    return class extends React.PureComponent {
         constructor(props) {
             super(props)
             this.handleClick = this.handleClick.bind(this)

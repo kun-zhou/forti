@@ -3,7 +3,7 @@ import TextField from 'material-ui/TextField'
 import FlatButton from 'material-ui/Button'
 import sty from './sty.cssm'
 
-export default class composeNewDB extends React.Component {
+export default class composeNewDB extends React.PureComponent {
     constructor() {
         super()
         this.state = {
