@@ -25,6 +25,7 @@ var status = config.initialize().status
 var initialState = {
   status: {
     status: status,
+    context: status === 'WELCOME' ? 'WELCOME' : 'WELCOME_BACK',
     activeVaultLoc: null,
     activeVaultPasswd: null,
     activeVaultKey: null,

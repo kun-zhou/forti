@@ -6,7 +6,7 @@ export default function statusReducer(state, action) {
     switch (action.type) {
         case 'ATTEMPT_UNLOCK':
             if (action.success !== 0) {
-                return state.set('status', 'PASSWORD_ERROR')
+                return state.set('status', action.status)
             }
             return state.merge({
                 status: action.status,
@@ -15,9 +15,10 @@ export default function statusReducer(state, action) {
                 activeVaultKey: action.key
             })
         case 'CREATE_DB':
-            if (state.get('status') === 'WELCOME')
-                return state.set('status', 'SELECT_DB')
-            return state
+            if (state.get('context') === 'WELCOME' && action.status === 'SELECT_DB') {
+                return state.merge({ 'status': action.status, 'context': 'WELCOME_BACK' })
+            }
+            return state.set('status', action.status)
         default:
             return state
     }

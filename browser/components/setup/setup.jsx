@@ -6,12 +6,14 @@ import WelcomePage from './welcomePage.jsx'
 
 class Setup extends React.PureComponent {
     render() {
-        switch (this.props.status) { // i.e., LOCKED
+        switch (this.props.context) { // i.e., LOCKED
             case 'WELCOME':
                 return <WelcomePage {...this.props} />
-            case 'SELECT_DB':
-            default:
+            case 'WELCOME_BACK':
                 return <SelectDB {...this.props} />
+            default:
+
+
         }
     }
 }

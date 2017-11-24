@@ -177,19 +177,20 @@ function createDemoVault(name, passwd) {
 function createVault(name, passwd) {
     // check if password is too short
     if (!passwd || passwd.length < 8) {
-        return { success: 1, message: "password too short or corrupted" }
+        return { success: 1, message: "PASSWORD_INVALID" }
     }
     var vault_path = path.join(app_path.pathConfigDir, 'databases', uuid())
     // generate new encryption keyfile and keyss
     var response = _crypto.generateNewKeys(passwd)
     if (response.success !== 0) {
-        return { success: 1, message: "failed to create keyfile" }
+        return { success: 1, message: "KEYFILE_UNABLE" }
     }
 
     try { // try and check if directory already exist, if not, create it
+        console.log(vault_path)
         fs.mkdirSync(vault_path)
     } catch (e) {
-        return { success: 1, message: "vault root dir cannot be created", error: e }
+        return { success: 1, message: "VAULT_CREATION_UNABLE", error: e }
     }
 
     try {

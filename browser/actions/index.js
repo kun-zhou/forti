@@ -47,10 +47,13 @@ export const CREATE_DB = (name, passwd) => {
     var action = { type: 'CREATE_DB' }
     var { success, message, location } = dataAPI.createVault(name, passwd)
     if (success !== 0) {
-        throw message
+        action.status = message
+        return action
+    } else {
+        config.addDB(name, location)
+        action.status = 'SELECT_DB'
+        return action
     }
-    config.addDB(name, location)
-    return action
 }
 
 // Responding to UI Changes

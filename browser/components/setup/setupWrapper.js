@@ -5,7 +5,8 @@ import Setup from './setup.jsx'
 
 // Functions
 const mapStateToProps = state => ({
-    status: state.getIn(['status', 'status'])
+    status: state.getIn(['status', 'status']),
+    context: state.getIn(['status', 'context'])
 })
 
 const mapDispatchToProps = dispatch => ({

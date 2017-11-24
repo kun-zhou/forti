@@ -1,13 +1,16 @@
 import React from 'react'
 import sty from './setup.cssm'
-import ComposeNewDB from '../public/composeNewDB/composeNewDB.jsx'
+import ComposeNewDB from './composeNewDB/composeNewDB.jsx'
 
 export default class WelcomePage extends React.PureComponent {
-    constructor() {
-        super()
-    }
-
     render() {
+        var helperText = ' '
+        var status = this.props.status
+        if (status !== 'WELCOME') {
+            if (status === 'PASSWORD_INVALID')
+                helperText = 'Your password must be 8 characters long'
+            else helperText = status
+        }
         return (
             <div className={sty['wrapper-row']}>
                 <div className={sty['header-setup']}>
@@ -24,6 +27,7 @@ export default class WelcomePage extends React.PureComponent {
                         <h2>Getting Started !</h2>
                         <p>Please enter the name and password for your first vault ;-)</p>
                         <ComposeNewDB onSubmit={this.props.setupDB} />
+                        <p style={{ height: '30px',color: 'red' }}>{helperText}</p>
                     </section>
                 </div>
             </div>
