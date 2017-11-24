@@ -9,7 +9,6 @@ export default {
     setDefaultDB: setDefaultDB,
     getDefaultDBLocation: getDefaultDBLocation,
     // color schemes related
-    appendTagColors: appendTagColors,
     setDefaultColorScheme: setDefaultColorScheme,
     getColorSchemeList: getColorSchemeList,
     getColorScheme: getColorScheme,
@@ -22,7 +21,6 @@ export default {
  * For both color schemes and templates,
  * defaults are pulled and appended by user-added entries.
  */
-import hashbow from 'hashbow'
 const uuid = require('uuid/v4');
 const fs = require('fs-extra')
 const path = require('path')
@@ -134,15 +132,6 @@ function getColorScheme(scheme_file_name) { // returns actual css of color schem
 // Font Setup
 function addTemplate() {
 
-}
-
-// append colors for tags
-function appendTagColors(tags) { //tags is an iterator
-    var tag_and_color = []
-    for (var tag of tags) {
-        tag_and_color.push([tag, '#A0D3F9'])
-    }
-    return new Map(tag_and_color)
 }
 
 // get Manifest

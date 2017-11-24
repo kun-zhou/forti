@@ -2,17 +2,17 @@ import React from 'react'
 import sty from './dropup.cssm'
 import makeAutohide from 'public/components/Autohide/Autohide.jsx'
 
-function Entry({ entry, icon, callback }) {
+function Item({ name, icon, callback }) {
     return (
-        <div className={sty['entry-wrapper']} onClick={() => { callback(entry) }}>
-            <i className={'fal fa-fw fa-lg ' + icon + ' ' + sty['icon']} />{entry}
+        <div className={sty['entry-wrapper']} onClick={() => { callback(name) }}>
+            <i className={'fal fa-fw fa-lg ' + icon + ' ' + sty['icon']} />{name}
         </div >
     )
 }
 
 function Dropup({ entries, callback }) {
     var entriesNodes = entries.map(
-        (icon, entry) => (<Entry entry={entry} icon={icon} callback={callback} />)
+        (icon, entry) => (<Item name={entry} icon={icon} callback={callback} />)
     )
     return (
         <div className={sty['dropup']}>
@@ -28,22 +28,27 @@ class DropupWithBtn extends React.PureComponent {
     constructor(props) {
         super(props)
         this.state = {
-            dropup_shown: false
+            open: false
         }
         this.toggleDropup = this.toggleDropup.bind(this)
     }
 
     toggleDropup() {
-        this.setState({ dropup_shown: !this.state.dropup_shown })
+        this.setState({ open: !this.state.open })
+    }
+
+    handleItemClick = (type) => () => {
+        this.props.handleClick(type)
+        this.setState({ open: !this.state.open })
     }
 
     render() {
-        if (this.state.dropup_shown)
+        if (this.state.open)
             return (
-                <div className={sty['btn-add-entry']} ref={e => e ? e.focus() : {}}>
+                <div className={sty['btn-add-entry']}>
                     <AutohideDropup
                         onHide={this.toggleDropup}
-                        callback={(entry) => { this.props.callback(entry); this.toggleDropup() }}
+                        callback={this.handleItemClick}
                         entries={this.props.entries}
                     />
                     <button

@@ -1,57 +1,68 @@
 import React from 'react';
 import IconButton from 'material-ui/IconButton';
-import Menu, { MenuItem } from 'material-ui/Menu';
+import Popover from 'material-ui/Popover';
+import { MenuItem, MenuList } from 'material-ui/Menu'
 import Add from 'material-ui-icons/Add';
 import sty from './info.cssm'
 
 
 class CategoryItem extends React.PureComponent {
     handleClick = () => {
-        this.props.createSecret(this.props.category.name)
+        this.props.createSecret(this.props.name)
         this.props.handleRequestClose()
     }
     render() {
-        return <MenuItem key={this.props.category.name} onClick={this.handleClick} classes={{ root: sty['category-menu'] }}>
-            <i style={{ marginRight: '5px' }} className={['fal', 'fw', this.props.category.icon].join(' ')} />  {this.props.category.name}
+        return <MenuItem key={this.props.name} onClick={this.handleClick} className={sty['category-item']}>
+            <i style={{ marginRight: '5px' }} className={['fal', 'fw', this.props.icon].join(' ')} />  {this.props.name}
         </MenuItem>
     }
 }
+
 class LongMenu extends React.PureComponent {
     state = {
+        open: false,
         anchorEl: null,
-    };
+    }
 
     handleClick = event => {
-        this.setState({ anchorEl: event.currentTarget });
-    };
+        this.setState({ anchorEl: event.currentTarget, open: true })
+    }
 
     handleRequestClose = (e) => {
-        this.setState({ anchorEl: null });
-    };
+        this.setState({ anchorEl: null, open: false });
+    }
 
     render() {
-        const open = Boolean(this.state.anchorEl);
-
+        const open = Boolean(this.state.anchorEl)
+        var menu_items = []
+        for (var category of this.props.categories.keys()) {
+            menu_items.push(<CategoryItem
+                key={category}
+                name={category}
+                icon={this.props.categories.get(category)}
+                createSecret={this.props.createSecret}
+                handleRequestClose={this.handleRequestClose}
+            />)
+        }
         return (
             <div style={{ position: 'absolute', left: '8px', bottom: '8px' }}>
                 <IconButton
                     onClick={this.handleClick}
+                    disableRipple={true}
                 >
                     <Add />
                 </IconButton>
-                <Menu
+                <Popover
                     anchorEl={this.state.anchorEl}
+                    anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+                    transformOrigin={{ vertical: 'bottom', horizontal: 'left' }}
                     open={open}
                     onRequestClose={this.handleRequestClose}
                 >
-                    {this.props.categories.map(category => (
-                        <CategoryItem
-                            category={category}
-                            createSecret={this.props.createSecret}
-                            handleRequestClose={this.props.handleRequestClose}
-                        />
-                    ))}
-                </Menu>
+                    <MenuList className={sty['categories-menu']}>
+                        {menu_items}
+                    </MenuList>
+                </Popover>
             </div>
         );
     }

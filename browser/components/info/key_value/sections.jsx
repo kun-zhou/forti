@@ -1,6 +1,7 @@
 import React from 'react'
 import Section from './section.jsx'
 import sty from '../info.cssm'
+
 export default class Sections extends React.PureComponent {
     render() {
         var last_section_idx = this.props.sections.size - 1
@@ -33,6 +34,6 @@ export default class Sections extends React.PureComponent {
                 />
             )
         })
-        return <div >{sections_jsx}</div>
+        return <div>{sections_jsx}</div>
     }
 }

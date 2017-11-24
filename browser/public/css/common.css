@@ -20,8 +20,7 @@ textarea,
  :focus {
     outline: none;
     font-weight: inherit;
-    font-size:inherit;
-    color: inherit;
+    font-size: inherit;
 }
 
 :not(input):not(textarea),
@@ -38,7 +37,7 @@ body,
     font-size: 14px;
     /*font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
     */
-    font-family:  -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     font-weight: 400;
     height: 100%;
     width: 100%;
@@ -56,4 +55,8 @@ body,
 
 .is-hidden {
     display: none !important
+}
+
+.placeholder {
+    color: #a0a0a0
 }

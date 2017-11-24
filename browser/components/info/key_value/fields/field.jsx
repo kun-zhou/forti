@@ -16,18 +16,9 @@ class Field extends React.PureComponent {
             setting_shown: false,
             local_name: props.field.get(0),
             local_content: props.field.get(1),
-            type: props.field.get(2)
         }
         // edit* is for local state updates, updated on each keystroke
-
-        /*// toggle* update on field input status change and pushes the local data to redux store
-        this.editLocalName = this.editLocalName.bind(this)
-        this.editLocalContent = this.editLocalContent.bind(this)
-
-        this.toggleNameEdit = this.toggleNameEdit.bind(this)
-        this.toggleContentEdit = this.toggleContentEdit.bind(this)
-        this.delField = this.delField.bind(this)
-        */
+        // toggle* update on field input status change and pushes the local data to redux store
     }
 
     editLocalName = (e) => { //name, content, type
@@ -39,14 +30,14 @@ class Field extends React.PureComponent {
     }
 
     toggleNameEdit = (e) => {
-        if (this.state.name_editing) {
+        if (this.state.name_editing && this.state.local_name !== this.props.field.get(0)) {
             this.props.updateField(this.props.sec_idx, this.props.field_idx, 0, this.state.local_name)
         }
         this.setState({ name_editing: !this.state.name_editing })
     }
 
     toggleContentEdit = (e) => {
-        if (this.state.content_editing) {
+        if (this.state.content_editing && this.state.local_content !== this.props.field.get(1)) {
             this.props.updateField(this.props.sec_idx, this.props.field_idx, 1, this.state.local_content)
         }
         this.setState({
@@ -55,8 +46,15 @@ class Field extends React.PureComponent {
         })
     }
 
+    toggleFieldType = (type) => {
+        if (type !== this.props.field.get(2)) {
+            this.props.updateField(this.props.sec_idx, this.props.field_idx, 2, type)
+        }
+    }
+
     delField = () => {
         this.props.deleteField(this.props.sec_idx, this.props.field_idx)
+
     }
 
     render() {
@@ -66,7 +64,9 @@ class Field extends React.PureComponent {
             toggleNameEdit: this.toggleNameEdit,
             toggleContentEdit: this.toggleContentEdit,
             delField: this.delField,
-            toggleTypeText: this.toggleTypeText,
+            toggleFieldType: this.toggleFieldType,
+
+            type: this.props.field.get(2)
         }
         return (
             <div className={sty['field']}>
@@ -74,7 +74,7 @@ class Field extends React.PureComponent {
                     <NameField {...Object.assign({}, this.state, passdownProps) } />
                 </div>
                 <div className={sty['field-content']}>
-                    <ContentField {...Object.assign({}, this.props, this.state, passdownProps) } />
+                    <ContentField {...Object.assign({}, this.state, passdownProps) } />
                 </div>
             </div>
         )

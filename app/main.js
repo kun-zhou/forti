@@ -35,25 +35,8 @@ function createWindow() {
 
   // load loading.html
   mainWindow.loadURL(path.join('file://', __dirname, '/index.html'))
-  //mainWindow.webContents.openDevTools()
-  // save before close
-  // on close
+
   mainWindow.on('closed', function () { mainWindow = null })
-
-  mainWindow.webContents.on('will-navigate', function (e, url) {
-    e.preventDefault();
-    shell.openExternal(url);
-  })
-
-  /*const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer')
-
-  installExtension(REACT_DEVELOPER_TOOLS).then((name) => {
-    console.log(`Added Extension:  ${name}`)
-  })
-    .catch((err) => {
-      console.log('An error occurred: ', err)
-    })
-  l*/
 }
 
 function whenAllWindowsClosed() {

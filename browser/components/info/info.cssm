@@ -16,3 +16,14 @@
     justify-content: center;
     flex: 1;
 }
+
+.category-item {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.categories-menu {
+    padding-top: 9px;
+    padding-bottom: 9px;
+    border-radius: 7px;
+}

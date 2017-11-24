@@ -86,28 +86,19 @@ class CategoryList extends React.PureComponent {
 
 class TagList extends React.PureComponent {
     render() {
-        // 1. Category Items
-        var tag_entries = []
-        for (let tag of this.props.tags) {
-            tag_entries.push(
-
-            )
-        }
         return (
             <NavList title={'Tags'}>
-                {this.props.tags.map((tag_color, tag_name) => (
-                    <NavItem
-                        activeNavTab={this.props.activeNavTab}
-                        activeNavTabType={this.props.activeNavTabType}
-                        activePane={this.props.activePane}
-                        navTabClick={this.props.navTabClick}
+                {this.props.tags.map((tag) => <NavItem
+                    activeNavTab={this.props.activeNavTab}
+                    activeNavTabType={this.props.activeNavTabType}
+                    activePane={this.props.activePane}
+                    navTabClick={this.props.navTabClick}
 
-                        key={'_tag_' + tag_name}
-                        name={tag_name}
-                        type='tag'
-                        icon={<i className='fal fa-hashtag' style={{ 'color': 'grey' }} />}
-                    />
-                ))}
+                    key={'_tag_' + tag}
+                    name={tag}
+                    type='tag'
+                    icon={<i className='fal fa-hashtag' style={{ 'color': 'grey' }} />}
+                />)}
             </NavList>
         )
     }
@@ -125,7 +116,6 @@ class Nav extends React.PureComponent {
                     <div></div>
                 </div>
                 <div className={sty['section-fixed']}>
-                   {/*
                     <NavItem
                         key="favorites"
                         name="Favorites"
@@ -136,7 +126,6 @@ class Nav extends React.PureComponent {
                         activePane={this.props.activePane}
                         icon={(<i className='far fa-fw fa-star' />)}
                     />
-                    */}
                     <NavItem
                         key="all"
                         name="All Items"

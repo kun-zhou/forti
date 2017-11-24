@@ -1,6 +1,5 @@
 import React from 'react'
 import SetupWrapper from './components/setup/setupWrapper'
-import ModalWrapper from './components/modal/ModalWrapper'
 import NavWrapper from './components/nav/navWrapper'
 import EntriesWrapper from './components/entries/entriesWrapper'
 import InfoWrapper from './components/info/infoWrapper'

@@ -21,12 +21,15 @@ module.exports = {
             {
                 test: /\.cssm$/,
                 use: [
-                    'style-loader',
+                    {
+                        loader: 'style-loader',
+                        options: { insertInto: 'body' }
+                    },
                     {
                         loader: 'css-loader',
                         options: {
                             modules: true, // default is false
-                            localIdentName: '[local]-[hash:base64:5]'
+                            localIdentName: '[local]-[hash:base64:5]',
                         }
                     },
                 ]

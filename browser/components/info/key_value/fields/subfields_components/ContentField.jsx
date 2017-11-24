@@ -4,26 +4,15 @@
 const { clipboard } = require('electron')
 import React from 'react'
 import sty from '../../sty.cssm'
-import FieldSettings from './FieldSettings.jsx'
+import TypeSwitcher from './TypeSwitcher.jsx'
 import { toCode, toLink } from './defaultContentDisplay'
 import OutsideAlerter from '../../../../public/outsideAlerter.jsx'
-
-
-class ContentToolbar extends React.PureComponent {
-    render() {
-        return (
-            <div className={sty['field-content-display-btns']}>
-                <i className='far fa-clipboard' onClick={this.props.pasteToSysClipboard} />
-            </div>
-        )
-    }
-}
+import Textarea from "react-textarea-autosize";
 
 class ContentField extends React.PureComponent {
     constructor() {
         super()
-        this.state = { toolbar_shown: false }
-        this.pasteToSysClipboard = this.pasteToSysClipboard.bind(this)
+        this.state = { toolbar_shown: false, toolbar_stick: false }
         this.showToolbar = this.showToolbar.bind(this)
         this.hideToolbar = this.hideToolbar.bind(this)
     }
@@ -34,7 +23,7 @@ class ContentField extends React.PureComponent {
         }
     }
 
-    pasteToSysClipboard(e) {
+    handlePaste = e => {
         e.stopPropagation()
         clipboard.writeText(this.props.local_content)
     }
@@ -47,6 +36,10 @@ class ContentField extends React.PureComponent {
         this.setState({ toolbar_shown: false })
     }
 
+    handleTypeSwitcherClick = () => {
+        this.setState({ toolbar_stick: !this.state.toolbar_stick })
+    }
+
     render() {
         if (!this.props.content_editing) {
             var displayValue = this.props.local_content
@@ -55,6 +48,8 @@ class ContentField extends React.PureComponent {
                     displayValue = toCode(displayValue); break
                 case 'link':
                     displayValue = toLink(displayValue); break
+                case 'note':
+                    displayValue = <p>{displayValue}</p>; break;
                 default:
                     displayValue = <p>{displayValue}</p>
             }
@@ -65,31 +60,50 @@ class ContentField extends React.PureComponent {
                     onMouseEnter={this.showToolbar}
                     onMouseLeave={this.hideToolbar}
                 >
+                    {/* Content */}
                     {
                         this.props.local_content !== '' ? // if content is not empty
                             displayValue :
-                            <span className={sty['div-placeholder']}>field content</span>
+                            <span className={'placeholder'}>field content</span>
                     }
-                    { // show toolbar on hover
-                        this.state.toolbar_shown ? <ContentToolbar pasteToSysClipboard={this.pasteToSysClipboard} /> : null
-                    }
+                    {/* Toolbar */}
+                    <div className={this.state.toolbar_stick || this.state.toolbar_shown ? sty['field-content-display-btns'] : 'is-hidden ' + sty['field-content-display-btns']} >
+                        <i className='fal fa-fw fa-clipboard' onClick={this.handlePaste} />
+                        <TypeSwitcher {...this.props} onClick={this.handleTypeSwitcherClick} />
+                    </div>
                 </div>
             )
         } else {
+            if (this.props.type === 'note') {
+                return (
+                    <OutsideAlerter handleClickOutside={this.props.toggleContentEdit} bindOnMount={true}>
+                        <Textarea
+                            onChange={this.props.editLocalContent}
+                            inputRef={(node) => { node ? node.focus() : {} }}
+
+                            className={sty['field-content-input']}
+                            style={{ 'margin-bottom': '-3px' }}
+                            value={this.props.local_content}
+                            minRows={1}
+                            maxRows={6}
+                        />
+                    </OutsideAlerter>
+                )
+            }
             return (
                 <OutsideAlerter handleClickOutside={this.props.toggleContentEdit} bindOnMount={true}>
                     <input
+                        onChange={this.props.editLocalContent}
+                        ref={(e) => e ? e.focus() : {}}
+
                         className={sty['field-content-input']}
                         value={this.props.local_content}
                         placeholder={'field content'}
-                        onChange={this.props.editLocalContent}
-                        ref={(e) => e ? e.focus() : {}}
                     />
-                    <FieldSettings {...this.props} />
                 </OutsideAlerter>
             )
         }
     }
 }
-
+//         <Textarea className={sty['field-content-input']} minRows={2} maxRows={6} />
 export default ContentField

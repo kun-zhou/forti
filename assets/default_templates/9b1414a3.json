@@ -1,33 +1,23 @@
 {
-    "category": "Software License",
+    "category": "Reward Program",
     "user_defined": [
         {
             "title": "Basic Info",
             "fields": [
                 [
-                    "Software Name",
+                    "Program Name",
                     "",
                     "text"
                 ],
                 [
-                    "Licensed to",
+                    "Card Holder",
                     "",
                     "text"
                 ],
                 [
-                    "Registered Email",
+                    "Card Number",
                     "",
                     "text"
-                ],
-                [
-                    "License",
-                    "",
-                    "text"
-                ],
-                [
-                    "Website",
-                    "",
-                    "link"
                 ]
             ]
         }

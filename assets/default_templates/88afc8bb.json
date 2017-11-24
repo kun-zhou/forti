@@ -1,33 +1,38 @@
 {
-    "category": "Software License",
+    "category": "Identity",
     "user_defined": [
         {
             "title": "Basic Info",
             "fields": [
                 [
-                    "Software Name",
+                    "Identity Kind",
                     "",
                     "text"
                 ],
                 [
-                    "Licensed to",
+                    "Name",
                     "",
                     "text"
                 ],
                 [
-                    "Registered Email",
+                    "ID Number",
                     "",
                     "text"
                 ],
                 [
-                    "License",
+                    "Issued Date",
                     "",
-                    "text"
+                    "date"
                 ],
                 [
-                    "Website",
+                    "Expiration Date",
                     "",
-                    "link"
+                    "date"
+                ],
+                [
+                    "Issuing Authority",
+                    "",
+                    "text"
                 ]
             ]
         }

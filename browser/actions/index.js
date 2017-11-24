@@ -9,7 +9,7 @@ import { debounce } from 'lodash'
 import { Map, List, OrderedMap, fromJS } from 'immutable'
 import { remote } from 'electron'
 /// CONFIGURATION & DATABASE ACTIONS
-// 0. SAVE_DB
+
 
 /** 1. ATTEMPT_UNLOCK
  * STATUS, [db]
@@ -30,14 +30,16 @@ export const ATTEMPT_UNLOCK = (location, password) => (dispatch) => { //idx sign
         } else {
             cacheManager.init(fromJS(res_dc.cache))
         }
+
+        // Create categories_count item
+        config.setDefaultDB(location)
+        dispatch(UPDATE_NAV())
+        action.status = 'UNLOCKED'
+        var win = remote.getCurrentWindow()
+        win.setSize(1000, 600, true)
+        win.center()
+        dispatch(action)
     }
-    // Create categories_count item
-    dispatch(UPDATE_NAV())
-    action.status = 'UNLOCKED'
-    var win = remote.getCurrentWindow()
-    win.setSize(1000, 600, true)
-    win.center()
-    dispatch(action)
 }
 
 /** 2. CREATE_DB
@@ -70,9 +72,10 @@ export const NAV_ENTRY_CLICK = (navTab, navTabType) => (dispatch, getState) => {
 }
 
 // 2. ENTRY_CLICK
-export const ENTRY_CLICK = (id) => ({
+export const ENTRY_CLICK = (id, idx) => ({
     type: 'ENTRY_CLICK',
     sEntryId: id,
+    idx,
     info: fromJS(dataAPI.readSecret(id).secret)
 })
 
@@ -88,9 +91,13 @@ export const SEARCH_SECRETS = (keywords) => (dispatch, getState) => {
 }
 
 // 3. Search Entries
-export const DEACTIVATE_SEARCH = () => ({
-    type: 'DEACTIVATE_SEARCH'
-})
+export const DEACTIVATE_SEARCH = () => (dispatch, getState) => {
+    var gui = getState().get('gui')
+    dispatch({
+        type: 'DEACTIVATE_SEARCH',
+        entries: cacheManager.getEntries(gui.get('activeNavTabType'), gui.get('activeNavTab'))
+    })
+}
 
 
 // 4. Create Entry
@@ -116,32 +123,44 @@ export const CREATE_SECRET = (category) => (dispatch, getState) => {
         categories_count: cacheManager.getCategoryCounts(), // updates categories_count in case things have changed
     })
     dispatch(NAV_ENTRY_CLICK(secret.category, 'category'))
-    dispatch(ENTRY_CLICK(secret.id))
+    dispatch(ENTRY_CLICK(secret.id, 'others', 0))
 }
 
 export const TRASH_SECRET = (secret) => { // move to trash
 }
 
 export const DELETE_SECRET = () => (dispatch, getState) => { // permenantly delete
-    var id = getState().getIn(['gui', 'activeInfo', 'id'])
-    // dataAPi
+    var gui = getState().get('gui')
+    var idx = gui.get('activeIdxInList')
+    var id = gui.getIn(['activeInfo', 'id'])
     dataAPI.deleteSecret(id)
     cacheManager.deleteSecret(id)
     dispatch({
         type: 'DELETE_SECRET'
     })
     dispatch(UPDATE_NAV())
+
+    // change activeInfo
+    var activeEntries = gui.get('activeEntries') // this is old state
+    if (activeEntries.size > idx + 1) {
+        var next_id = gui.getIn(['activeEntries', idx + 1, 'id']) // this is old idx
+        dispatch(ENTRY_CLICK(next_id, idx))// not idx+1 as idx is gone
+    } else if (activeEntries.size !== 1) {
+        var next_id = gui.getIn(['activeEntries', idx - 1, 'id'])
+        dispatch(ENTRY_CLICK(next_id, idx - 1))
+    }
 }
 
-export const UPDATE_NAV = () => {
-    var action = { type: 'UPDATE_NAV' }
-    action.nav = Map({
+export const UPDATE_NAV = () => ({
+    type: 'UPDATE_NAV',
+    nav: Map({
         categories: OrderedMap(fromJS(config.getCategories())), // key is cateogyr and value is icon
         categories_count: cacheManager.getCategoryCounts(),
-        tags: OrderedMap(config.appendTagColors(cacheManager.getTags()))// will be a orderedmap
+        tags: cacheManager.getTags()// will be a orderedmap
     })
-    return action
-}
+})
+
+
 
 // 6. UPDATE_INFO
 // Maybe implement two methods, one is update meta, another is update user_defined.

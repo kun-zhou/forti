@@ -6,17 +6,18 @@ import Entries from './entries.jsx'
 
 const mapStateToProps = state => {
     return {
+        activeNavTabType:state.getIn(['gui', 'activeNavTabType']),
+        activeNavTab:state.getIn(['gui', 'activeNavTab']),
         visibleEntries: state.getIn(['gui', 'activeEntries']),
         activeEntry: state.getIn(['gui', 'activeInfo']) ? state.getIn(['gui', 'activeInfo', 'id']) : null,
         activePane: state.getIn(['gui', 'activePane']),
-        tag_colors: state.getIn(['gui', 'nav', 'tags']),
         category_icons: state.getIn(['gui', 'nav', 'categories'])
     }
 }
 
 const mapDispatchToProps = dispatch => ({
-    entryClick: (entry_id) => {
-        dispatch(ENTRY_CLICK(entry_id))
+    entryClick: (entry_id, idx) => {
+        dispatch(ENTRY_CLICK(entry_id, idx))
     },
     search: (keywords) => {
         dispatch(SEARCH_SECRETS(keywords))

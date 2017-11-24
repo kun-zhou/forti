@@ -8,7 +8,7 @@ import OutsideAlerter from '../public/outsideAlerter.jsx'
 
 class Entry extends React.PureComponent {
     handleEntryClick = () => {
-        this.props.entryClick(this.props.entry.get('id'))
+        this.props.entryClick(this.props.entry.get('id'), this.props.idx)
     }
     render() {
         var entryClassNames = [sty['entry']]
@@ -40,7 +40,7 @@ class Entry extends React.PureComponent {
                 <div className={sty['entry-main']}>
                     <div className={sty['entry-title']} >
                         <span className={sty['entry-title-icon']}><i className={'fal fa-fw ' + this.props.category_icons.get(this.props.entry.get('category'))} /> </span>
-                        {this.props.entry.get('title')}
+                        {this.props.entry.get('title') ? this.props.entry.get('title') : <span className={'placeholder'}>A wonderful new secret</span>}
                     </div>
 
                     <div className={sty['entry-tags']}>
@@ -114,59 +114,80 @@ class Search extends React.PureComponent {
     }
 }
 
-
-class AbstractList extends React.PureComponent {
-    render() {
-        // 1. List of Entries
-        var ListEntries =
-            this.props.list.map((abstract) => {
-                return <Entry
-                    key={abstract.get('id')}
-                    entryClick={this.props.entryClick}
-                    activeEntry={this.props.activeEntry}
-                    activePane={this.props.activePane}
-                    tag_colors={this.props.tag_colors}
-                    category_icons={this.props.category_icons}
-                    entry={abstract}
-                />
-            })
-        return (
-            <div className={sty['abstract-list']}>
-                <div className={sty['list-title-wrapper']}>
-                    <span className={sty['list-title']}>
-                        {this.props.title}
-                    </span>
-                </div>
-                {ListEntries}
-            </div>
-        )
-    }
-}
 class AbstractView extends React.PureComponent {
     //{ visibleEntries, activeEntry, activePane, entries, showAddEntry }
     render() {
-        // 1. Search Bar
-        //var searchBar = <SearchBar search={this.props.search} ids={Object.keys(this.props.allEntries.toJS())} />
-
-        // 2. List of Entries
-        var passDown = this.props // need to be finer
-        var AbstractLists = []
-        var otherListTitle = 'Others'
-        if (this.props.visibleEntries) {// If entries are defined
-            if (this.props.visibleEntries.get('favorites').size === 0 && this.props.visibleEntries.get('others').size !== 0) {
-                otherListTitle = 'All'
-            }
-            if (this.props.visibleEntries.get('favorites').size !== 0) { // if  favorites
-                AbstractLists.push(<AbstractList key={1} {...Object.assign({}, passDown, { list: this.props.visibleEntries.get('favorites'), title: 'Favorites' }) } />)
-            }
-            if (this.props.visibleEntries.get('others').size !== 0) {
-                AbstractLists.push(<AbstractList key={2} {...Object.assign({}, passDown, { list: this.props.visibleEntries.get('others'), title: otherListTitle }) } />)
-            }
+        var entries = this.props.visibleEntries
+        // handle the case if entries are none
+        if (!entries || entries.size === 0) {
+            return (<div id={sty['entries']} >
+                <Search deactivateSearch={this.props.deactivateSearch} search={this.props.search} />
+            </div>)
         }
+        // 1. List of Entries
+        var list = []
+        for (var i = 0; i !== entries.size; i++) {
+            var entry = entries.get(i)
+            list.push(<Entry
+                key={entry.get('id')}
+                entryClick={this.props.entryClick}
+                activeEntry={this.props.activeEntry}
+                activePane={this.props.activePane}
+                category_icons={this.props.category_icons}
+                entry={entry}
+                idx={i}
+            />)
+
+        }
+        /*
+         var favorites_list = []
+         var others_list = []
+ 
+         for (var i = 0; i !== entries.size; i++) {
+             var entry = entries.get(i)
+             if (entry.get('favorite')) {
+                 favorites_list.push(<Entry
+                     key={entry.get('id')}
+                     entryClick={this.props.entryClick}
+                     activeEntry={this.props.activeEntry}
+                     activePane={this.props.activePane}
+                     tag_colors={this.props.tag_colors}
+                     category_icons={this.props.category_icons}
+                     entry={entry}
+                     idx={i}
+                 />)
+             } else {
+                 others_list.push(<Entry
+                     key={entry.get('id')}
+                     entryClick={this.props.entryClick}
+                     activeEntry={this.props.activeEntry}
+                     activePane={this.props.activePane}
+                     tag_colors={this.props.tag_colors}
+                     category_icons={this.props.category_icons}
+                     entry={entry}
+                     idx={i}
+                 />)
+             }
+         }
+          var otherListTitle = 'Others'
+
+        if (favorites_list.length === 0) {
+            otherListTitle = 'All'
+        }
+ */
+       
+
         return (
             <div id={sty['entries']} >
                 <Search deactivateSearch={this.props.deactivateSearch} search={this.props.search} />
-                <div className={sty['abstract-lists']}>{AbstractLists}</div>
+                <div className={sty['abstract-lists']}>
+                    <div className={sty['abstract-list']}>
+                        <div className={sty['list-title-wrapper']}>
+                            <span className={sty['list-title']}>{this.props.activeNavTab}</span>
+                        </div>
+                        {list}
+                    </div>
+                </div>
             </div>
         )
     }

@@ -88,7 +88,8 @@ function DB({ db, highlighted_db, handleDBClick }) {
 class SelectDB extends React.PureComponent {
     constructor() {
         super()
-        this.state = { highlighted_db: null, passwd: '', toggle_new_db: false }
+        var defaultDB = config.getDefaultDBLocation()
+        this.state = { highlighted_db: defaultDB ? defaultDB : null, passwd: '', toggle_new_db: false, message: '' }
     }
 
     toggleNewDB = () => {
@@ -104,7 +105,7 @@ class SelectDB extends React.PureComponent {
         if (this.state.highlighted_db) {
             this.props.unlockDB(this.state.highlighted_db, this.state.passwd)
         } else {
-            console.log('Please choose a db')
+            this.setState({ message: 'Please Select a Vault' })
         }
     }
 
@@ -118,11 +119,16 @@ class SelectDB extends React.PureComponent {
         //this.forceUpdate()
     }
 
+    componentWillUpdate(nextProps) {
+        if (nextProps.status !== 'SELECT_DB')
+            this.setState({ message: nextProps.status })
+    }
+
     render() {
         var listOfDB = config.getDBList().map(
             (db) => <DB db={db} highlighted_db={this.state.highlighted_db} handleDBClick={this.handleDBClick} />
         )
-        var message = this.props.status
+
         return (
             <div className={sty['wrapper-select-db']}>
                 <Button
@@ -150,7 +156,7 @@ class SelectDB extends React.PureComponent {
                             FormHelperTextProps={{
                                 error: true
                             }}
-                            helperText={message === 'PASSWORD_ERROR' ? 'WRONG PASSWORD' : null}
+                            helperText={this.state.message ? this.state.message : null}
                             fullWidth
                         />
                         <Button classes={{ root: sty['btn-confirm-password'] }} raised color="primary" onClick={this.unlockDB}>UNLOCK</Button>

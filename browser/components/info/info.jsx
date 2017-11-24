@@ -71,7 +71,7 @@ class Info extends React.PureComponent {
 
         if (!info) {
             return <div id={sty['info']}>
-                {addEntryDropup}
+                <AddSecret categories={this.props.categories} createSecret={this.createSecret} />
             </div>
         }
         //<AddSecret categories={this.props.categories} createSecret={this.createSecret} />
@@ -109,7 +109,7 @@ class Info extends React.PureComponent {
                         sections={info.get('user_defined')}
                     />
                 </div>
-                {addEntryDropup}
+                <AddSecret categories={this.props.categories} createSecret={this.createSecret} />
             </div>
         )
     }

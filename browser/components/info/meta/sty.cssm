@@ -7,7 +7,7 @@
     margin-bottom: 8px;
 }
 
-.meta-section-title{
+.meta-section-title {
     font-size: 13px;
     padding: 1px 3px 1px 3px;
     border: 1px #d1dff3 solid;
@@ -24,24 +24,21 @@
 }
 
 .tag {
-    display: flex;
-    align-items: center;
-    position: relative;
     height: 20px;
-    line-height: 14px;
-    padding: 2px 4px 2px 6px;
     border-radius: 3px;
     font-size: 12px;
     margin-right: 3px;
     margin-left: 3px;
-    background-color: var(--color-bg-info-tag);
-    opacity: 0.6;
-    font-weight: 400;
-    color: var(--color-info-tag);
 }
 
+.tag-label{
+    padding-left: 8px;
+    padding-right: 8px;
+}
 .tag-del {
-    color: var(--color-info-tag);
+    height: 17px;
+    margin-right: 3px;
+    
 }
 
 .tag-input {

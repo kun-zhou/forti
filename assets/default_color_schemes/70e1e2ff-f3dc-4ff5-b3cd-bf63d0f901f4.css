@@ -32,8 +32,8 @@
     --color-active-border-title: #fecf02;
     /* meta */
     --color-snippet: #3e81de;
-    --color-info-tag: grey;
-    --color-bg-info-tag: black;
+    --color-info-tag: #ffffff;
+    --color-bg-info-tag: #a5afb2;
     /* section */
     --color-border-section: rgb(222, 222, 222);
     --color-active-border-section: #fecf02;
@@ -51,6 +51,6 @@
     --font-weight-title: 500;
     --font-weight-field: 300;
     --font-weight-section: 400;
-    --font-weight-abstract-title: 500;
+    --font-weight-abstract-title: 400;
     --font-weight-abstract-snippet: 400;
 }

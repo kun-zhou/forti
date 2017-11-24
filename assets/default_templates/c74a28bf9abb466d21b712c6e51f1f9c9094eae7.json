@@ -3,7 +3,7 @@
     "user_defined": [
        {
            "title":"Basic Info",
-           "fields": [["Account","","text"], ["Password","", "code"], ["Website", "","link"]]
+           "fields": [["Account","","text"], ["Password","", "code"], ["Website", "","link"],["Note", "","note"]]
        }
     ]
 }

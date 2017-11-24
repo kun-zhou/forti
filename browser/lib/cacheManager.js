@@ -20,7 +20,7 @@ function updateTagsListing() {
 }
 
 function getTags() {
-    return cache.get('tags').keys()
+    return cache.get('tags').keySeq()
 }
 
 function addSecret(secret) {
@@ -109,8 +109,8 @@ function deleteSecret(_id) {
             cache.updateIn(['tags', tag], keys => keys.filter(id => id !== _id))
         })
         // delete tags if they have disappeared
-        updateTagsListing()
     })
+    updateTagsListing()
     // delete tag and category if no more
 
     // delete entry
@@ -151,18 +151,13 @@ function search(ids, keywords) {
 }
 
 function appendAbstracts(keys) {
-    var secrets = Map({ favorites: List(), others: List() })
-    if (!keys) { // if undefined
+    var secrets = List()
+    if (!keys) {
         return secrets
     }
-    var abstract
     secrets = secrets.withMutations((secrets) => {
-        return keys.map((key) => {
-            abstract = cache.getIn(['abstracts', key])
-            if (abstract.get('favorite'))
-                secrets.update('favorites', favs => favs.push(abstract))
-            else
-                secrets.update('others', others => others.push(abstract))
+        keys.forEach((key) => {
+            secrets.push(cache.getIn(['abstracts', key]))
         })
     })
     return secrets

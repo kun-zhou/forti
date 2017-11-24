@@ -1,6 +1,7 @@
 import React from 'react'
 import sty from './sty.cssm'
-import Chip from 'material-ui/Chip';
+import Chip from 'material-ui/Chip'
+import Done from 'material-ui-icons/Done'
 
 class Tag extends React.PureComponent {
     constructor(props) {
@@ -14,13 +15,11 @@ class Tag extends React.PureComponent {
 
     render() {
         return (
-            <div className={sty['tag']}>
-                {this.props.name}
-                <div
-                    className={[sty['tag-del'], 'fas', 'fa-fw', 'fa-times'].join(' ')}
-                    onClick={this.deleteTag}
-                />
-            </div>
+            <Chip
+                classes={{ root: sty['tag'], label: sty['tag-label'], deleteIcon: sty['tag-del'] }}
+                label={this.props.name}
+                onRequestDelete={this.deleteTag}
+            />
         )
     }
 }
@@ -53,12 +52,12 @@ class Tags extends React.PureComponent {
                 <Tag
                     name={tag}
                     deleteTag={this.props.deleteTag}
+                    key={tag}
                 />
             )
         )
         return (
             <div className={sty['tags-wrapper']}>
-                {/* <span className={sty['meta-section-title']}>Tags</span> {ListTags} */}
                 {ListTags}
                 <input
                     className={sty['tag-input']}
