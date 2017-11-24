@@ -36,8 +36,6 @@ export const ATTEMPT_UNLOCK = (location, password) => (dispatch) => { //idx sign
         dispatch(UPDATE_NAV())
         action.status = 'UNLOCKED'
         var win = remote.getCurrentWindow()
-        win.setSize(1000, 600, true)
-        win.center()
         dispatch(action)
     }
 }
