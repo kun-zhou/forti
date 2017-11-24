@@ -56,7 +56,10 @@ function initialize() {
         config = JSON.parse(fs.readFileSync(pathConfig, 'utf8'))
     } catch (e) { // if config non-existent
         // copy default config
-        fs.copySync(pathInitialization, pathConfigDir)
+        fs.writeFileSync(pathConfig, fs.readFileSync(path.join(pathInitialization, 'config.json')))
+        fs.mkdirSync(path.join(pathConfigDir, 'color_schemes'))
+        fs.mkdirSync(path.join(pathConfigDir, 'databases'))
+        fs.mkdirSync(path.join(pathConfigDir, 'templates'))
         config = JSON.parse(fs.readFileSync(pathConfig, 'utf8'))
         return { status: "WELCOME" }
     }
