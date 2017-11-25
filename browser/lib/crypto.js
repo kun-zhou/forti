@@ -63,7 +63,7 @@ function generateNewKeys(passwd) {
     cipher.end()
     var keyfile_encrypted = cipher.read()
 
-    return { success: 0, keyfile_encrypted, salt_and_iv, enc_key }
+    return { success: true, keyfile_encrypted, salt_and_iv, enc_key }
 }
 
 function deriveKey(passwd, salt) {

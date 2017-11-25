@@ -7,46 +7,46 @@ import dataAPI from '../lib/dataAPI'
 import cacheManager from '../lib/cacheManager'
 import { debounce } from 'lodash'
 import { Map, List, OrderedMap, fromJS } from 'immutable'
-import { remote } from 'electron'
-/// CONFIGURATION & DATABASE ACTIONS
-
 
 /** 1. ATTEMPT_UNLOCK
- * STATUS, [db]
  * location: path to vault folder
  */
+
+
 export const ATTEMPT_UNLOCK = (location, password) => (dispatch) => { //idx signals which database
     var action = { type: 'ATTEMPT_UNLOCK', location }
+
+    // START SIDE EFFECTS
     var { success, message, error } = dataAPI.init(location, password)
+    // END
+
     action.success = success
-    if (success !== 0) {
+    if (!success) {
         action.status = message
         console.log(error)
         dispatch(action)
     } else {
         var res_dc = dataAPI.readCache()
-        if (res_dc.success !== 0) {
+        if (!res_dc.success) {
             throw res_dc.message + res_dc.error
-        } else {
-            cacheManager.init(fromJS(res_dc.cache))
         }
 
-        // Create categories_count item
-        config.setDefaultDB(location)
-        dispatch(UPDATE_NAV())
+        action.cache = fromJS(res_dc.cache)
         action.status = 'UNLOCKED'
-        var win = remote.getCurrentWindow()
+
+        config.setDefaultDB(location)
         dispatch(action)
     }
 }
 
 /** 2. CREATE_DB
- * STATUS
+ * vault name and password
  */
 export const CREATE_DB = (name, passwd) => {
     var action = { type: 'CREATE_DB' }
     var { success, message, location } = dataAPI.createVault(name, passwd)
-    if (success !== 0) {
+    action.success = success
+    if (!success) {
         action.status = message
         return action
     } else {
@@ -63,12 +63,10 @@ export const CREATE_DB = (name, passwd) => {
  * And if active entry is not in the currnet nav tab, visibleInfo is set to null. 
  */
 export const NAV_ENTRY_CLICK = (navTab, navTabType) => (dispatch, getState) => {
-    var entries = cacheManager.getEntries(navTabType, navTab)
     dispatch({
         type: 'NAV_ENTRY_CLICK',
         sNavTab: navTab,
         sNavTabType: navTabType,
-        entries: entries
     })
 }
 
@@ -104,7 +102,7 @@ export const DEACTIVATE_SEARCH = () => (dispatch, getState) => {
 // 4. Create Entry
 export const CREATE_SECRET = (category) => (dispatch, getState) => {
     // Switch to category view
-    var secret = {
+    var template = {
         "id": dataAPI.getUID(),
         "title": "",
         "attachment": false,
@@ -114,14 +112,15 @@ export const CREATE_SECRET = (category) => (dispatch, getState) => {
         "user_defined": [],
         "snapshots": {}
     }
-    secret = Object.assign(secret, config.getTemplate(category))
-    var { secret, message } = dataAPI.createSecret(secret) // return secret with dates and id
-    // Add to cache
-    cacheManager.addSecret(fromJS(secret))
-    //return action
+
+    // START SIDE EFFECTS
+    template = Object.assign(template, config.getTemplate(category))
+    var { secret, message } = dataAPI.createSecret(template) // return secret with dates and id
+    // END
+
     dispatch({
         type: 'CREATE_SECRET',
-        categories_count: cacheManager.getCategoryCounts(), // updates categories_count in case things have changed
+        new_secret: fromJS(secret)
     })
     dispatch(NAV_ENTRY_CLICK(secret.category, 'category'))
     dispatch(ENTRY_CLICK(secret.id, 'others', 0))
@@ -134,14 +133,18 @@ export const DELETE_SECRET = () => (dispatch, getState) => { // permenantly dele
     var gui = getState().get('gui')
     var idx = gui.get('activeIdxInList')
     var id = gui.getIn(['activeInfo', 'id'])
+
+    // START SIDE EFFECTS
     dataAPI.deleteSecret(id)
-    cacheManager.deleteSecret(id)
+    // END
+
     dispatch({
-        type: 'DELETE_SECRET'
+        type: 'DELETE_SECRET',
+        id
     })
-    dispatch(UPDATE_NAV())
 
     // change activeInfo
+    /*
     var activeEntries = gui.get('activeEntries') // this is old state
     if (activeEntries.size > idx + 1) {
         var next_id = gui.getIn(['activeEntries', idx + 1, 'id']) // this is old idx
@@ -150,18 +153,8 @@ export const DELETE_SECRET = () => (dispatch, getState) => { // permenantly dele
         var next_id = gui.getIn(['activeEntries', idx - 1, 'id'])
         dispatch(ENTRY_CLICK(next_id, idx - 1))
     }
+    */
 }
-
-export const UPDATE_NAV = () => ({
-    type: 'UPDATE_NAV',
-    nav: Map({
-        categories: OrderedMap(fromJS(config.getCategories())), // key is cateogyr and value is icon
-        categories_count: cacheManager.getCategoryCounts(),
-        tags: cacheManager.getTags()// will be a orderedmap
-    })
-})
-
-
 
 // 6. UPDATE_INFO
 // Maybe implement two methods, one is update meta, another is update user_defined.
@@ -175,14 +168,14 @@ export const UPDATE_META = (operation, params) => (dispatch, getState) => {
     var action = {
         type: 'UPDATE_META',
         operation,
-        params
+        params,
+        id: getState().getIn(['gui', 'activeInfo', 'id'])
     }
     dispatch(action)
-    cacheManager.updateSecret(getState().getIn(['gui', 'activeInfo', 'id']), action)
+
+    // START SIDE EFFECTS
     dispatch(SAVE_SECRET())
-    if (operation.includes('TAG')) {
-        dispatch(UPDATE_NAV())
-    }
+    // END
 }
 
 // updates user_defined custom data
@@ -193,7 +186,10 @@ export const UPDATE_CUSTOM = (operation, params) => (dispatch, getState) => {
         params
     }
     dispatch(action)
+
+    // START SIDE EFFECTS
     dispatch(SAVE_SECRET())
+    // END
 }
 
 // SAVE_SECRET
@@ -201,11 +197,10 @@ export const SAVE_SECRET = () => (dispatch, getState) => {
     // change immutable to mutable
     dataAPI.saveSecret(getState().getIn(['gui', 'activeInfo']).toJS())
     return { type: 'SAVE_SECRET' }
-
 }
 
 export const CLOSE_DB = () => (dispatch, getState) => {
-    dataAPI.closeVault(cacheManager.getCache().toJS())
+    dataAPI.closeVault(getState.get('cache').toJS())
     dispatch({ type: 'DB_CLOSED' })
 }
 
@@ -221,4 +216,13 @@ export const SET_COLOR_SCHEME = (scheme) => (dispatch) => {
     sheet.innerHTML = css
     head.appendChild(sheet)
     dispatch({ type: 'COLOR_SCHEME_UPDATE' })
+}
+
+export const UPDATE_CONFIG = () => {
+    return {
+        type: 'UPDATE_CONFIG',
+        categories: config.getCategories(),
+        listOfDB: config.getDBList(),
+        lastAccessed: config.getDefaultDBLocation()
+    }
 }

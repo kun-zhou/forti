@@ -7,7 +7,7 @@ import config from '../../utils/config'
 const mapStateToProps = state => {
     return {
         info: state.getIn(['gui', 'activeInfo']),
-        categories: state.getIn(['gui', 'nav', 'categories']),
+        categories_config: state.getIn(['config', 'categories']),
     }
 }
 

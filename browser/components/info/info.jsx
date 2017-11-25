@@ -62,19 +62,13 @@ class Info extends React.PureComponent {
 
 
     render() {
-        var addEntryDropup = <Dropup
-            entries={this.props.categories}
-            callback={this.props.createSecret}
-        />
-
         var info = this.props.info
 
         if (!info) {
             return <div id={sty['info']}>
-                <AddSecret categories={this.props.categories} createSecret={this.createSecret} />
+                <AddSecret categories={this.props.categories_config} createSecret={this.createSecret} />
             </div>
         }
-        //<AddSecret categories={this.props.categories} createSecret={this.createSecret} />
         var id = info.get('id')
 
         return (
@@ -109,7 +103,7 @@ class Info extends React.PureComponent {
                         sections={info.get('user_defined')}
                     />
                 </div>
-                <AddSecret categories={this.props.categories} createSecret={this.createSecret} />
+                <AddSecret categories={this.props.categories_config} createSecret={this.createSecret} />
             </div>
         )
     }

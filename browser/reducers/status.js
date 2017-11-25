@@ -5,7 +5,7 @@
 export default function statusReducer(state, action) {
     switch (action.type) {
         case 'ATTEMPT_UNLOCK':
-            if (action.success !== 0) {
+            if (!action.success ) {
                 return state.set('status', action.status)
             }
             return state.merge({

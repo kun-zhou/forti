@@ -5,12 +5,17 @@
  * accessing database state is more like accesing a API over the network.
  */
 
-import statusReducer from './status'
 import guiReducer from './gui'
+import cacheReducer from './cache'
+import statusReducer from './status'
+import configReducer from './config'
+
 import { combineReducers } from 'redux-immutable'
 
 
 export default combineReducers({
-    status: statusReducer,
     gui: guiReducer,
+    cache: cacheReducer,
+    status: statusReducer,
+    config: configReducer,
 })

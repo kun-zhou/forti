@@ -11,10 +11,11 @@ class Entry extends React.PureComponent {
         this.props.entryClick(this.props.entry.get('id'), this.props.idx)
     }
     render() {
+        var props = this.props
         var entryClassNames = [sty['entry']]
         // 1. Highlight
-        if (this.props.activeEntry === this.props.entry.get('id')) {
-            if (this.props.activePane === 'entries') {
+        if (props.activeEntry === props.entry.get('id')) {
+            if (props.activePane === 'entries') {
                 entryClassNames.push(sty['is-active'])
             } else {
                 entryClassNames.push(sty['is-selected'])
@@ -24,14 +25,12 @@ class Entry extends React.PureComponent {
 
         // 2. Tags
         var tag_field = []
-        for (let tag of this.props.entry.get('tags')) {
+        for (let tag of props.entry.get('tags')) {
             tag_field.push(
                 <span className={sty['tag']}><i className={['far', 'fa-hashtag'].join(' ')} />{tag}</span>
             )
         }
-        /**<div className={sty['tag']} style={{ 'backgroundColor': this.props.tag_colors.get(tag) }}>
-                    {tag}
-            </div>*/
+
         // Render
         return (
             <div className={entryClassNames} onClick={this.handleEntryClick} >
@@ -39,8 +38,8 @@ class Entry extends React.PureComponent {
                 </div>
                 <div className={sty['entry-main']}>
                     <div className={sty['entry-title']} >
-                        <span className={sty['entry-title-icon']}><i className={'fal fa-fw ' + this.props.category_icons.get(this.props.entry.get('category'))} /> </span>
-                        {this.props.entry.get('title') ? this.props.entry.get('title') : <span className={'placeholder'}>A wonderful new secret</span>}
+                        <span className={sty['entry-title-icon']}><i className={'fal fa-fw ' + props.categories_config.get(props.entry.get('category'))} /> </span>
+                        {props.entry.get('title') ? props.entry.get('title') : <span className={'placeholder'}>A wonderful new secret</span>}
                     </div>
 
                     <div className={sty['entry-tags']}>
@@ -68,7 +67,7 @@ class Search extends React.PureComponent {
         if (value !== '') {
             this.debouncedSearch(value)
         } else {
-            this.props.deactivateSearch()
+            props.deactivateSearch()
         }
     }
 
@@ -80,7 +79,7 @@ class Search extends React.PureComponent {
         if (this.state.search_string === '') {
             this.setState({ focused: false })
             this.setState({ search_string: '' })
-            this.props.deactivateSearch()
+            props.deactivateSearch()
         }
     }
 
@@ -88,7 +87,7 @@ class Search extends React.PureComponent {
         console.log('cacelled')
         this.setState({ focused: false })
         this.setState({ search_string: '' })
-        this.props.deactivateSearch()
+        props.deactivateSearch()
     }
 
     render() {
@@ -114,82 +113,45 @@ class Search extends React.PureComponent {
     }
 }
 
-class AbstractView extends React.PureComponent {
+const AbstractView = (props) => {
     //{ visibleEntries, activeEntry, activePane, entries, showAddEntry }
-    render() {
-        var entries = this.props.visibleEntries
-        // handle the case if entries are none
-        if (!entries || entries.size === 0) {
-            return (<div id={sty['entries']} >
-                <Search deactivateSearch={this.props.deactivateSearch} search={this.props.search} />
-            </div>)
-        }
-        // 1. List of Entries
-        var list = []
-        for (var i = 0; i !== entries.size; i++) {
-            var entry = entries.get(i)
-            list.push(<Entry
-                key={entry.get('id')}
-                entryClick={this.props.entryClick}
-                activeEntry={this.props.activeEntry}
-                activePane={this.props.activePane}
-                category_icons={this.props.category_icons}
-                entry={entry}
-                idx={i}
-            />)
+    var entries = props.activeEntries
+    // handle the case if entries are none
+    if (!entries || entries.size === 0) {
+        return (<div id={sty['entries']} >
+            <Search deactivateSearch={props.deactivateSearch} search={props.search} />
+        </div>)
+    }
+    // 1. List of Entries
+    var list = []
+    var cachedAbstracts = props.cachedAbstracts
 
-        }
-        /*
-         var favorites_list = []
-         var others_list = []
- 
-         for (var i = 0; i !== entries.size; i++) {
-             var entry = entries.get(i)
-             if (entry.get('favorite')) {
-                 favorites_list.push(<Entry
-                     key={entry.get('id')}
-                     entryClick={this.props.entryClick}
-                     activeEntry={this.props.activeEntry}
-                     activePane={this.props.activePane}
-                     tag_colors={this.props.tag_colors}
-                     category_icons={this.props.category_icons}
-                     entry={entry}
-                     idx={i}
-                 />)
-             } else {
-                 others_list.push(<Entry
-                     key={entry.get('id')}
-                     entryClick={this.props.entryClick}
-                     activeEntry={this.props.activeEntry}
-                     activePane={this.props.activePane}
-                     tag_colors={this.props.tag_colors}
-                     category_icons={this.props.category_icons}
-                     entry={entry}
-                     idx={i}
-                 />)
-             }
-         }
-          var otherListTitle = 'Others'
+    entries.forEach((id, i) => {
+        var entry = cachedAbstracts.get(id)
+        list.push(<Entry
+            key={entry.get('id')}
+            entryClick={props.entryClick}
+            activeEntry={props.activeEntry}
+            activePane={props.activePane}
+            categories_config={props.categories_config}
+            entry={entry}
+            idx={i}
+        />)
+    })
 
-        if (favorites_list.length === 0) {
-            otherListTitle = 'All'
-        }
- */
-       
-
-        return (
-            <div id={sty['entries']} >
-                <Search deactivateSearch={this.props.deactivateSearch} search={this.props.search} />
-                <div className={sty['abstract-lists']}>
-                    <div className={sty['abstract-list']}>
-                        <div className={sty['list-title-wrapper']}>
-                            <span className={sty['list-title']}>{this.props.activeNavTab}</span>
-                        </div>
-                        {list}
+    return (
+        <div id={sty['entries']} >
+            <Search deactivateSearch={props.deactivateSearch} search={props.search} />
+            <div className={sty['abstract-lists']}>
+                <div className={sty['abstract-list']}>
+                    <div className={sty['list-title-wrapper']}>
+                        <span className={sty['list-title']}>{props.activeNavTab}</span>
                     </div>
+                    {list}
                 </div>
             </div>
-        )
-    }
+        </div>
+    )
 }
+
 export default AbstractView

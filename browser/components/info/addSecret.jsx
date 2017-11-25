@@ -35,11 +35,13 @@ class LongMenu extends React.PureComponent {
     render() {
         const open = Boolean(this.state.anchorEl)
         var menu_items = []
-        for (var category of this.props.categories.keys()) {
+        for (var category of this.props.categories) {
+            var name = category[0]
+            var icon = category[1]
             menu_items.push(<CategoryItem
                 key={category}
-                name={category}
-                icon={this.props.categories.get(category)}
+                name={name}
+                icon={icon}
                 createSecret={this.props.createSecret}
                 handleRequestClose={this.handleRequestClose}
             />)

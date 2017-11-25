@@ -60,25 +60,29 @@ class NavList extends React.PureComponent {
 
 class CategoryList extends React.PureComponent {
     render() {
+        var categories_list = []
+        var name, icon
+        for (var category of this.props.categories_config) {
+            name = category[0]
+            icon = category[1]
+            var _cat_list = this.props.categories_cache.get(name)
+            if (_cat_list && _cat_list.size > 0) {
+                categories_list.push(<NavItem
+                    activeNavTab={this.props.activeNavTab}
+                    activeNavTabType={this.props.activeNavTabType}
+                    activePane={this.props.activePane}
+                    navTabClick={this.props.navTabClick}
+
+                    key={'_category_' + name}
+                    name={name}
+                    type='category'
+                    icon={<i className={['fal', 'fa-fw', icon].join(' ')} />}
+                />)
+            }
+        }
         return (
             <NavList title={'Categories'}>
-                {this.props.categories.map((category_icon, category_name) => {
-                    if (this.props.categories_count.get(category_name)) {
-                        return <NavItem
-                            activeNavTab={this.props.activeNavTab}
-                            activeNavTabType={this.props.activeNavTabType}
-                            activePane={this.props.activePane}
-                            navTabClick={this.props.navTabClick}
-
-                            key={'_category_' + category_name}
-                            name={category_name}
-                            type='category'
-                            icon={<i className={['fal', 'fa-fw', category_icon].join(' ')} />}
-                        />
-                    } else {
-                        return null
-                    }
-                })}
+                {categories_list}
             </NavList>
         )
     }
@@ -86,29 +90,29 @@ class CategoryList extends React.PureComponent {
 
 class TagList extends React.PureComponent {
     render() {
+        console.log(this.props.tags.keySeq().toJS())
         return (
             <NavList title={'Tags'}>
-                {this.props.tags.map((tag) => <NavItem
-                    activeNavTab={this.props.activeNavTab}
-                    activeNavTabType={this.props.activeNavTabType}
-                    activePane={this.props.activePane}
-                    navTabClick={this.props.navTabClick}
+                {this.props.tags.keySeq().reduce((acc, tag) => {
+                    acc.push(<NavItem
+                        activeNavTab={this.props.activeNavTab}
+                        activeNavTabType={this.props.activeNavTabType}
+                        activePane={this.props.activePane}
+                        navTabClick={this.props.navTabClick}
 
-                    key={'_tag_' + tag}
-                    name={tag}
-                    type='tag'
-                    icon={<i className='fal fa-hashtag' style={{ 'color': 'grey' }} />}
-                />)}
+                        key={'_tag_' + tag}
+                        name={tag}
+                        type='tag'
+                        icon={<i className='fal fa-hashtag' style={{ 'color': 'grey' }} />}
+                    />)
+                    return acc
+                }, [])}
             </NavList>
         )
     }
 }
 
 class Nav extends React.PureComponent {
-    constructor(props) {
-        super(props)
-    }
-
     render() {
         return (
             <div id={sty['nav']}>
@@ -143,8 +147,8 @@ class Nav extends React.PureComponent {
                     activePane={this.props.activePane}
                     navTabClick={this.props.navTabClick}
 
-                    categories={this.props.categories}
-                    categories_count={this.props.categories_count}
+                    categories_cache={this.props.categories_cache}
+                    categories_config={this.props.categories_config}
                 />
                 <TagList
                     activeNavTab={this.props.activeNavTab}

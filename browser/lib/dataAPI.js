@@ -37,7 +37,7 @@ var debouncedFuncs = {}
 function init(_vault_path, _passwd) { //return abstracts of notes
     // check if vault exist
     if (!fs.existsSync(_vault_path)) {
-        return { success: 1, message: 'VAULT_MISSING' }
+        return { success: false, message: 'VAULT_MISSING' }
     }
     // decrypt keyfile and verify
     vault_path = _vault_path
@@ -60,15 +60,15 @@ function init(_vault_path, _passwd) { //return abstracts of notes
             throw 'attachments missing'
         }
     } catch (e) {
-        return { success: 1, message: 'VAULT_CORRUPTED', error: e }
+        return { success: false, message: 'VAULT_CORRUPTED', error: e }
     }
     // get encryption key
     try {
         enc_key = _crypto.getMasterKey(_passwd, keyfile, salt_and_iv)
     } catch (e) {
-        return { success: 1, message: 'PASSWORD_ERROR', error: e }
+        return { success: false, message: 'PASSWORD_ERROR', error: e }
     }
-    return { success: 0, message: 'UNLOCKED' }
+    return { success: true, message: 'UNLOCKED' }
 }
 
 function getUID() {
@@ -104,7 +104,7 @@ function readCache(force = false) {
     } catch (e) {
         return cacheRefreshRead()
     }
-    return { success: 0, cache }
+    return { success: true, cache }
 }
 
 function cacheRefreshRead() {
@@ -112,9 +112,9 @@ function cacheRefreshRead() {
         var cache = generateCache()
         _crypto.writeCryptSync(JSON.stringify(cache), enc_key, cache_loc)
     } catch (e) {
-        return { success: 1, message: 'force update cache failed', error: e }
+        return { success: false, message: 'force update cache failed', error: e }
     }
-    return { success: 0, cache }
+    return { success: true, cache }
 }
 
 function readSecret(uid) {
@@ -130,20 +130,20 @@ function createSecret(secret) {
     secret.date_modified = current_time
     secret.date_created = current_time
     writeSecretToFile(secret)
-    return { success: 0, secret: secret }
+    return { success: true, secret: secret }
 }
 
 function saveSecret(secret) { // create id if not exist
     if (!secretIsValid()) {
-        return { success: 1, message: 'secret is invalid' }
+        return { success: false, message: 'secret is invalid' }
     }
     try {
         !debouncedFuncs[secret.id] ? debouncedFuncs[secret.id] = debounce(writeSecretToFile, 1000) : {}
         debouncedFuncs[secret.id](secret)
     } catch (e) {
-        return { success: 1, message: e }
+        return { success: false, message: e }
     }
-    return { success: 0 }
+    return { success: true }
 }
 
 function writeSecretToFile(secret) {
@@ -177,20 +177,20 @@ function createDemoVault(name, passwd) {
 function createVault(name, passwd) {
     // check if password is too short
     if (!passwd || passwd.length < 8) {
-        return { success: 1, message: "PASSWORD_INVALID" }
+        return { success: false, message: "PASSWORD_INVALID" }
     }
     var vault_path = path.join(app_path.pathConfigDir, 'databases', uuid())
     // generate new encryption keyfile and keyss
     var response = _crypto.generateNewKeys(passwd)
-    if (response.success !== 0) {
-        return { success: 1, message: "KEYFILE_UNABLE" }
+    if (!response.success) {
+        return { success: false, message: "KEYFILE_UNABLE" }
     }
 
     try { // try and check if directory already exist, if not, create it
         console.log(vault_path)
         fs.mkdirSync(vault_path)
     } catch (e) {
-        return { success: 1, message: "VAULT_CREATION_UNABLE", error: e }
+        return { success: false, message: "VAULT_CREATION_UNABLE", error: e }
     }
 
     try {
@@ -201,9 +201,9 @@ function createVault(name, passwd) {
         fs.writeFileSync(path.join(vault_path, 'salt_and_iv'), response.salt_and_iv)
     } catch (e) {
         fs.removeSync(vault_path) // it is safe here because we already know the directory vault_path is new (becase try fs.mkdir passes), so nothing is in there.
-        return { success: 1, error: e, message: 'vault cannot be created' }
+        return { success: false, error: e, message: 'vault cannot be created' }
     }
-    return { success: 0, location: vault_path }
+    return { success: true, location: vault_path }
 }
 
 function generateCache() { // should be only called in init.

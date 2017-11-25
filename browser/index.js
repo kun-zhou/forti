@@ -7,10 +7,10 @@ import { fromJS } from 'immutable'
 import rootReducer from 'reducers'
 import config from './utils/config'
 
-//import logger from './logger'
+import logger from './logger'
 
 import AppWrapper from './app.jsx'
-import { SET_COLOR_SCHEME } from './actions'
+import { SET_COLOR_SCHEME, UPDATE_CONFIG } from './actions'
 
 // Load fonts and master css
 require('./public/css/common.css')
@@ -31,7 +31,6 @@ var initialState = {
     activeVaultKey: null,
   },
   gui: {
-    nav: null,
     activePane: null, // {string}
     activeNavTab: null, // {string}
     activeNavTabType: null,
@@ -40,12 +39,23 @@ var initialState = {
     searchActive: false,
     activeInfo: null,
   },
+  cache: {
+    favorites: [],
+    categories: {},
+    tags: {},
+    all: [],
+    trash: [],
+    abstracts: {}
+  },
+  config: {
+
+  }
 }
 
-const store = createStore(rootReducer, fromJS(initialState), applyMiddleware(thunk))
+const store = createStore(rootReducer, fromJS(initialState), applyMiddleware(thunk, logger))
 
 store.dispatch(SET_COLOR_SCHEME())
-
+store.dispatch(UPDATE_CONFIG())
 render(
   <Provider store={store}>
     <AppWrapper />

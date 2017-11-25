@@ -139,7 +139,7 @@ function addTemplate() {
 
 // get Manifest
 function getCategories() {
-    return defaultTemplates.map((template) => [template.name, template.icon])
+    return new Map(defaultTemplates.map((template) => [template.name, template.icon]))
 }
 // Get Templates List
 function getTemplateList() {
