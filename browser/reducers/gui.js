@@ -11,6 +11,7 @@ export default function guiReducer(gui, action) {
                 activePane: 'nav',
                 activeNavTab: action.sNavTab, // s shorthand for selected
                 activeNavTabType: action.sNavTabType,
+                activeEntries: action.entries,
                 activeInfo: null
             })
         case 'ENTRY_CLICK':
@@ -59,13 +60,12 @@ export default function guiReducer(gui, action) {
             }
         case 'DELETE_SECRET':
             return gui.set('activeInfo', null)
-        /*case 'SEARCH_COMPLETED':
+        case 'SEARCH_COMPLETED':
             return gui.set('activeEntries', action.search_results)
         case 'DEACTIVATE_SEARCH':
             return gui.merge({
                 activeEntries: action.entries
             })
-            */
         default:
             return gui
     }

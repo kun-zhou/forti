@@ -67,6 +67,7 @@ export const NAV_ENTRY_CLICK = (navTab, navTabType) => (dispatch, getState) => {
         type: 'NAV_ENTRY_CLICK',
         sNavTab: navTab,
         sNavTabType: navTabType,
+        entries: getEntries(navTabType, navTab, getState().get('cache'))
     })
 }
 
@@ -81,11 +82,24 @@ export const ENTRY_CLICK = (id, idx) => ({
 // 3. Search Entries
 export const SEARCH_SECRETS = (keywords) => (dispatch, getState) => {
     dispatch({ type: 'SEARCH_LOADING' })
-    var guiState = getState().get('gui')
-    var search_results = cacheManager.searchInTab(guiState.get('activeNavTabType'), guiState.get('activeNavTab'), keywords)
+    var gui = getState().get('gui')
+    var cache = getState().get('cache')
+    var ids = getEntries(gui.get('activeNavTabType'), gui.get('activeNavTab'), cache)
+    keywords = keywords.split(/\s+/)
+    var results = []
+    ids.forEach((id) => {
+        var match = keywords.reduce((acc, keyword) => {
+            var abstract = cache.getIn(['abstracts', id])
+            return acc + Number(abstract.get('title').includes(keyword) || abstract.get('snippet').includes(keyword))
+        }, 0)
+
+        if (match === keywords.length) {
+            results.push(id)
+        }
+    })
     dispatch({
         type: 'SEARCH_COMPLETED',
-        search_results
+        search_results: results
     })
 }
 
@@ -94,7 +108,7 @@ export const DEACTIVATE_SEARCH = () => (dispatch, getState) => {
     var gui = getState().get('gui')
     dispatch({
         type: 'DEACTIVATE_SEARCH',
-        entries: cacheManager.getEntries(gui.get('activeNavTabType'), gui.get('activeNavTab'))
+        entries: getEntries(gui.get('activeNavTabType'), gui.get('activeNavTab'), getState().get('cache'))
     })
 }
 
@@ -224,5 +238,22 @@ export const UPDATE_CONFIG = () => {
         categories: config.getCategories(),
         listOfDB: config.getDBList(),
         lastAccessed: config.getDefaultDBLocation()
+    }
+}
+
+function getEntries(type, name, cache) {
+    switch (type) {
+        case 'all':
+            return cache.get('all')
+        case 'favorite':
+            return cache.get('favorites')
+        case 'category':
+            return cache.getIn(['categories', name])
+        case 'tag':
+            return cache.getIn(['tags', name])
+        case 'trash':
+            return cache.get('trash')
+        default:
+            return null
     }
 }

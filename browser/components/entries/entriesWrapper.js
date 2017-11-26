@@ -5,15 +5,14 @@ import Entries from './entries.jsx'
 // Helper Functions
 
 const mapStateToProps = state => {
-    var activeNavTab = state.getIn(['gui', 'activeNavTab'])
-    var activeNavTabType = state.getIn(['gui', 'activeNavTabType'])
+    var gui = state.get('gui')
     return {
-        activeNavTab,
-        activeEntry: state.getIn(['gui', 'activeInfo']) ? state.getIn(['gui', 'activeInfo', 'id']) : null,
-        activePane: state.getIn(['gui', 'activePane']),
+        activeNavTab: gui.get('activeNavTab'),
+        activeEntry: gui.get('activeInfo') ? gui.getIn(['activeInfo', 'id']) : null,
+        activePane: gui.get('activePane'),
         categories_config: state.getIn(['config', 'categories']),
         cachedAbstracts: state.getIn(['cache', 'abstracts']),
-        activeEntries: getEntries(activeNavTabType, activeNavTab, state.get('cache'))
+        activeEntries: gui.get('activeEntries')
     }
 }
 
@@ -35,20 +34,3 @@ const EntriesWrapper = connect(
 )(Entries)
 
 export default EntriesWrapper
-
-function getEntries(type, name, cache) {
-    switch (type) {
-        case 'all':
-            return cache.get('all')
-        case 'favorite':
-            return cache.get('favorites')
-        case 'category':
-            return cache.getIn(['categories', name])
-        case 'tag':
-            return cache.getIn(['tags', name])
-        case 'trash':
-            return cache.get('trash')
-        default:
-            return null
-    }
-}

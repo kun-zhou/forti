@@ -67,7 +67,7 @@ class Search extends React.PureComponent {
         if (value !== '') {
             this.debouncedSearch(value)
         } else {
-            props.deactivateSearch()
+            this.props.deactivateSearch()
         }
     }
 
@@ -79,7 +79,7 @@ class Search extends React.PureComponent {
         if (this.state.search_string === '') {
             this.setState({ focused: false })
             this.setState({ search_string: '' })
-            props.deactivateSearch()
+            this.props.deactivateSearch()
         }
     }
 
@@ -87,7 +87,7 @@ class Search extends React.PureComponent {
         console.log('cacelled')
         this.setState({ focused: false })
         this.setState({ search_string: '' })
-        props.deactivateSearch()
+        this.props.deactivateSearch()
     }
 
     render() {

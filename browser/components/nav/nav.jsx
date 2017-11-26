@@ -3,7 +3,7 @@ import sty from './nav.cssm'
 import Collapse from 'material-ui/transitions/Collapse';
 import ExpandLess from 'material-ui-icons/ExpandLess';
 import ExpandMore from 'material-ui-icons/ExpandMore';
-
+import { List } from 'immutable'
 class NavItem extends React.PureComponent {
     constructor(props) {
         super(props)
@@ -60,14 +60,14 @@ class NavList extends React.PureComponent {
 
 class CategoryList extends React.PureComponent {
     render() {
-        var categories_list = []
+        var categories_list = List([])
         var name, icon
         for (var category of this.props.categories_config) {
             name = category[0]
             icon = category[1]
             var _cat_list = this.props.categories_cache.get(name)
             if (_cat_list && _cat_list.size > 0) {
-                categories_list.push(<NavItem
+                categories_list = categories_list.push(<NavItem
                     activeNavTab={this.props.activeNavTab}
                     activeNavTabType={this.props.activeNavTabType}
                     activePane={this.props.activePane}
@@ -80,6 +80,7 @@ class CategoryList extends React.PureComponent {
                 />)
             }
         }
+
         return (
             <NavList title={'Categories'}>
                 {categories_list}
@@ -90,23 +91,21 @@ class CategoryList extends React.PureComponent {
 
 class TagList extends React.PureComponent {
     render() {
-        console.log(this.props.tags.keySeq().toJS())
+        var tags = this.props.tags
+        console.log(tags)
         return (
             <NavList title={'Tags'}>
-                {this.props.tags.keySeq().reduce((acc, tag) => {
-                    acc.push(<NavItem
-                        activeNavTab={this.props.activeNavTab}
-                        activeNavTabType={this.props.activeNavTabType}
-                        activePane={this.props.activePane}
-                        navTabClick={this.props.navTabClick}
+                {tags.keySeq().map((name) => <NavItem
+                    activeNavTab={this.props.activeNavTab}
+                    activeNavTabType={this.props.activeNavTabType}
+                    activePane={this.props.activePane}
+                    navTabClick={this.props.navTabClick}
 
-                        key={'_tag_' + tag}
-                        name={tag}
-                        type='tag'
-                        icon={<i className='fal fa-hashtag' style={{ 'color': 'grey' }} />}
-                    />)
-                    return acc
-                }, [])}
+                    key={'_tag_' + name}
+                    name={name}
+                    type='tag'
+                    icon={<i className='fal fa-hashtag' style={{ 'color': 'grey' }} />}
+                />)}
             </NavList>
         )
     }
