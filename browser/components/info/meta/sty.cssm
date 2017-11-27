@@ -20,7 +20,7 @@
 .tags-wrapper {
     display: flex;
     align-items: center;
-    min-height: 20px
+    min-height: 20px;
 }
 
 .tag {
@@ -31,14 +31,14 @@
     margin-left: 3px;
 }
 
-.tag-label{
+.tag-label {
     padding-left: 8px;
     padding-right: 8px;
 }
+
 .tag-del {
     height: 17px;
     margin-right: 3px;
-    
 }
 
 .tag-input {
@@ -46,4 +46,5 @@
     height: 100%;
     border: none;
     font-size: 14px;
+    width: 100%;
 }

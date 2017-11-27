@@ -24,18 +24,14 @@ var status = config.initialize().status
 
 var initialState = {
   status: {
-    status: status,
-    context: status === 'WELCOME' ? 'WELCOME' : 'WELCOME_BACK',
-    activeVaultLoc: null,
-    activeVaultPasswd: null,
-    activeVaultKey: null,
+    unlock: null,
+    welcome: status === 'WELCOME' ? true : false
   },
   gui: {
     activePane: null, // {string}
     activeNavTab: null, // {string}
     activeNavTabType: null,
     activeEntries: null,
-    activeEntry: null, // id string
     searchActive: false,
     activeInfo: null,
   },
@@ -48,7 +44,6 @@ var initialState = {
     abstracts: {}
   },
   config: {
-
   }
 }
 

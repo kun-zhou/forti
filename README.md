@@ -3,7 +3,7 @@
 **Lockit is an open source formatted content manager built with [Electron](https://github.com/atom/electron), [React](https://facebook.github.io/react/), and [Redux](https://github.com/reactjs/redux)**
 
 <p align="center">
-  <a href="https://youtu.be/TZxJ-n1rRZs"><img src="http://misc.kunzhou.me/lockit.png" style="width: 62%"/></a>
+  <a href="https://youtu.be/UAtPC051eoo"><img src="http://misc.kunzhou.me/lockit.png" style="width: 62%"/></a>
 </p>
 
 *Click the image for a video demo!*
@@ -19,6 +19,14 @@ It provides an easy interface to input your key-value pairs and enforces the nec
 Each vault is encrypted with AES-GCM-256, including cache, and only decrypted in memory.
 
 ## Getting Started
+
+### Users
+
+The pre-realease of Lock.IT is already available. Head over to the <a href="https://github.com/kun-zhou/lockit/releases"/>releases</a> tab to download the latest version. Just know that some functionalities are still lacking (like deleteing the vault), but will be coming very soon. When the first public release comes out, existing secrets will still be intact, so there is nothing to worry about in this regard.
+
+Cheers and enjoy!
+
+### Developers
 
 To build and run, run
 

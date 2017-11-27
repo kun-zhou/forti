@@ -8,21 +8,20 @@ class TypeSwitcher extends React.PureComponent {
     constructor(props) {
         super(props)
         this.state = {
-            open: false,
             anchorEl: null,
         }
         this.types = ['text', 'code', 'link', 'note']
     }
 
     toggleDropdown = (e) => {
-        this.setState({ open: !this.state.open, anchorEl: e.currentTarget })
-        this.props.onClick()
+        this.props.toggleTypeSwitcher()
+        this.setState({ anchorEl: e.currentTarget })
         e.stopPropagation()
     }
 
     handleTypeClick = (type) => () => {
         this.props.toggleFieldType(type)
-        this.setState({ open: !this.state.open, anchorEl: event.currentTarget })
+        this.props.toggleTypeSwitcher()
     }
 
     render() {
@@ -33,7 +32,7 @@ class TypeSwitcher extends React.PureComponent {
                     anchorEl={this.state.anchorEl}
                     anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
                     transformOrigin={{ vertical: 'top', horizontal: 'left' }}
-                    open={this.state.open}
+                    open={this.props.open}
                     onRequestClose={this.toggleDropdown}
                     className={sty['dropdown']}
                 >
@@ -50,7 +49,7 @@ class TypeSwitcher extends React.PureComponent {
                     className={sty['btn-add']}
                     onClick={this.toggleDropdown}
                 >
-                    <i className={(this.state.open ? 'fas' : 'fal') + ' fa-fw fa-cog'} />
+                    <i className={(this.props.open ? 'fas' : 'fal') + ' fa-fw fa-cog'} />
                 </button>
             </div>
         )

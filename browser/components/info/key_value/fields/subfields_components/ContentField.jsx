@@ -12,7 +12,7 @@ import Textarea from "react-textarea-autosize";
 class ContentField extends React.PureComponent {
     constructor() {
         super()
-        this.state = { toolbar_shown: false, toolbar_stick: false }
+        this.state = { toolbar_shown: false, toolbar_stick: false, typeswitcher_shown: false }
         this.showToolbar = this.showToolbar.bind(this)
         this.hideToolbar = this.hideToolbar.bind(this)
     }
@@ -36,8 +36,8 @@ class ContentField extends React.PureComponent {
         this.setState({ toolbar_shown: false })
     }
 
-    handleTypeSwitcherClick = () => {
-        this.setState({ toolbar_stick: !this.state.toolbar_stick })
+    toggleTypeSwitcher = () => {
+        this.setState({ typeswitcher_shown: !this.state.typeswitcher_shown })
     }
 
     render() {
@@ -67,9 +67,9 @@ class ContentField extends React.PureComponent {
                             <span className={'placeholder'}>field content</span>
                     }
                     {/* Toolbar */}
-                    <div className={this.state.toolbar_stick || this.state.toolbar_shown ? sty['field-content-display-btns'] : 'is-hidden ' + sty['field-content-display-btns']} >
+                    <div className={this.state.typeswitcher_shown || this.state.toolbar_shown ? sty['field-content-display-btns'] : 'is-hidden ' + sty['field-content-display-btns']} >
                         <i className='fal fa-fw fa-clipboard' onClick={this.handlePaste} />
-                        <TypeSwitcher {...this.props} onClick={this.handleTypeSwitcherClick} />
+                        <TypeSwitcher {...this.props} toggleTypeSwitcher={this.toggleTypeSwitcher} open={this.state.typeswitcher_shown} />
                     </div>
                 </div>
             )

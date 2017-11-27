@@ -13,7 +13,7 @@ class App extends React.PureComponent {
 
     // Save Cache on Exit
     cleanupBeforeUnload = () => {
-        if (this.props.status === 'UNLOCKED') {
+        if (this.props.unlockStatus === 'UNLOCKED') {
             this.props.closeDB()
         }
     }
@@ -23,7 +23,7 @@ class App extends React.PureComponent {
     }
 
     render() {
-        if (this.props.status === 'UNLOCKED') return (
+        if (this.props.unlockStatus === 'UNLOCKED') return (
             <div id="app">
                 <NavWrapper />
                 <EntriesWrapper />
@@ -40,7 +40,7 @@ class App extends React.PureComponent {
 
 
 const mapStateToProps = state => ({
-    status: state.getIn(['status', 'status'])
+    unlockStatus: state.getIn(['status', 'unlock'])
 })
 
 const mapDispatchToProps = dispatch => ({

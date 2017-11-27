@@ -3,6 +3,28 @@ import sty from './setup.cssm'
 import ComposeNewDB from './composeNewDB/composeNewDB.jsx'
 
 export default class WelcomePage extends React.PureComponent {
+    constructor() {
+        super()
+        this.state = { message: '' }
+    }
+
+    componentWillUpdate(nextProps) {
+        if (nextProps.status === 'DB_CREATED')
+            this.props.triggerWelcomeBack()
+    }
+
+    createVault = (name, passwd) => {
+        var { success, message } = this.props.setupDB(name, passwd)
+        if (success) {
+            this.props.triggerWelcomeBack()
+        } else {
+            message = message === 'PASSWORD_INVALID' ?
+                'Password needs to be at least 8 characters long' :
+                message
+            this.setState({ message })
+        }
+    }
+    
     render() {
         var helperText = ' '
         var status = this.props.status
@@ -26,8 +48,8 @@ export default class WelcomePage extends React.PureComponent {
                     <section className={sty['setup-section'] + ' ' + sty['getting-started']}>
                         <h2>Getting Started !</h2>
                         <p>Please enter the name and password for your first vault ;-)</p>
-                        <ComposeNewDB onSubmit={this.props.setupDB} />
-                        <p style={{ height: '30px',color: 'red' }}>{helperText}</p>
+                        <ComposeNewDB onSubmit={this.createVault} />
+                        <p style={{ height: '30px', color: 'red' }}>{this.state.message}</p>
                     </section>
                 </div>
             </div>

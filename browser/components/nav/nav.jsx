@@ -92,7 +92,6 @@ class CategoryList extends React.PureComponent {
 class TagList extends React.PureComponent {
     render() {
         var tags = this.props.tags
-        console.log(tags)
         return (
             <NavList title={'Tags'}>
                 {tags.keySeq().map((name) => <NavItem

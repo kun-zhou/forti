@@ -61,7 +61,7 @@ class Tags extends React.PureComponent {
                 {ListTags}
                 <input
                     className={sty['tag-input']}
-                    placeholder='add tag'
+                    placeholder='add tag (press return after entering tag name)'
                     onFocus={this.bindHotKey}
                     onBlur={this.unbindHotkey}
                 />

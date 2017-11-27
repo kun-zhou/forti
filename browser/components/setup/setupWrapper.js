@@ -5,13 +5,12 @@ import Setup from './setup.jsx'
 
 // Functions
 const mapStateToProps = state => ({
-    status: state.getIn(['status', 'status']),
-    context: state.getIn(['status', 'context'])
+    status: state.get('status'),
 })
 
 const mapDispatchToProps = dispatch => ({
     setupDB: (name, password) => {
-        dispatch(CREATE_DB(name, password))
+        return dispatch(CREATE_DB(name, password))
     },
     selectDB: (location) => {
         dispatch(SELECT_DB(location))

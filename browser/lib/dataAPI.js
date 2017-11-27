@@ -187,7 +187,6 @@ function createVault(name, passwd) {
     }
 
     try { // try and check if directory already exist, if not, create it
-        console.log(vault_path)
         fs.mkdirSync(vault_path)
     } catch (e) {
         return { success: false, message: "VAULT_CREATION_UNABLE", error: e }

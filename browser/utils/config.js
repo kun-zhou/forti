@@ -3,19 +3,17 @@ export default {
     initialize: initialize,
     // db related
     getDBList: getDBList,
-    getDB: getDB,
     addDB: addDB,
-    dbExists: dbExists,
-    setDefaultDB: setDefaultDB,
+    setDefaultDB:setDefaultDB,
     getDefaultDBLocation: getDefaultDBLocation,
     // color schemes related
-    setDefaultColorScheme: setDefaultColorScheme,
+    setColorScheme: setColorScheme,
     getColorSchemeList: getColorSchemeList,
     getColorScheme: getColorScheme,
     // templates related
-    getCategories: getCategories,
-    getTemplate: getTemplate,
-    getTemplateList: getTemplateList,
+    getCategories: getCategoryIconList,
+    getTemplate: getCategoryTemplate,
+    getTemplateList: getCategoryList,
 }
 /**
  * For both color schemes and templates,
@@ -24,18 +22,18 @@ export default {
 const uuid = require('uuid/v4');
 const fs = require('fs-extra')
 const path = require('path')
-const crypto = require('crypto')
-import _ from 'lodash'
 
+// paths relative to the app
 const appPath = require('electron').remote.app.getAppPath()
-const pathConfigDir = path.join(require('electron').remote.app.getPath('appData'), 'lockit')
-const pathConfig = path.join(pathConfigDir, 'config.json')
 const pathInitialization = path.join(appPath, 'assets', 'user_content_dir')
-const pathColorSchemes = path.join(pathConfigDir, 'color_schemes')
-const pathTemplates = path.join(pathConfigDir, 'templates')
-
 const pathDefaultColorSchemes = path.join(appPath, 'assets', 'default_color_schemes')
 const pathDefaultTemplates = path.join(appPath, 'assets', 'default_templates')
+
+// paths relative to the config
+const pathConfigDir = path.join(require('electron').remote.app.getPath('appData'), 'lockit')
+const pathConfig = path.join(pathConfigDir, 'config.json')
+const pathColorSchemes = path.join(pathConfigDir, 'color_schemes')
+const pathTemplates = path.join(pathConfigDir, 'templates')
 
 var defaultColorSchemes = JSON.parse(fs.readFileSync(path.join(pathDefaultColorSchemes, 'manifest.json'), 'utf8'))
 var defaultTemplates = JSON.parse(fs.readFileSync(path.join(pathDefaultTemplates, 'manifest.json'), 'utf8'))
@@ -44,18 +42,14 @@ var config = null
 /***********************
  ** PUBLIC functions **
  ***********************/
-/**
- * Initialization startup status emitted (only concerns database initialization). If a situation matches the decription of more than one of the following, the first in the list is emitted.
- * "NO_CONFIG" is emitted when the configuration file cannot be retrieved. A new lockit folder will be created in user config dir, and if an old lockit config folder already exist, it is included in the newly created config folder. 
- * "NO_DB_FOUND" is returned when no DBs are specified in the config, dbs
- * "INITIALIZED" is returned when the database file requested is found, along with the configuration of whether default database is selected or not. if selected, the database id (location) is also passed in the status response.
- */
+
 function initialize() {
     // check configuration file existence
     try {
         config = JSON.parse(fs.readFileSync(pathConfig, 'utf8'))
     } catch (e) { // if config non-existent
         // copy default config
+        try { fs.mkdirSync(pathConfigDir) } catch (e) { }
         fs.writeFileSync(pathConfig, fs.readFileSync(path.join(pathInitialization, 'config.json')))
         fs.mkdirSync(path.join(pathConfigDir, 'color_schemes'))
         fs.mkdirSync(path.join(pathConfigDir, 'databases'))
@@ -63,8 +57,7 @@ function initialize() {
         config = JSON.parse(fs.readFileSync(pathConfig, 'utf8'))
         return { status: "WELCOME" }
     }
-
-    return { status: 'SELECT_DB' }
+    return { status: 'WELCOME_BACK' }
 }
 
 // DATABASE RELATED
@@ -75,19 +68,9 @@ function addDB(name, location) {
     saveConfig()
 }
 
-function getDB(location, passwd) { //idx index of the database
-    return io.retrieveDB(location, passwd)
-}
-
 function getDBList() {
     // also return the status
-    return config.dbs.map((db) => {
-        return Object.assign({}, db, { exists: dbExists(db.location) })
-    })
-}
-
-function dbExists(db_loc) {
-    return fs.existsSync(db_loc)
+    return config.dbs.map((db) => db)
 }
 
 function getDefaultDBLocation() {
@@ -99,13 +82,12 @@ function setDefaultDB(location) {
     saveConfig()
 }
 
-
 // Color Scheme Setup
 function addColorScheme(scheme) {
     //fs.writeFileSync(path.join(pathColorSchemes, ))
 }
 
-function setDefaultColorScheme(scheme_file_name) {
+function setColorScheme(scheme_file_name) {
     return fs.readFileSync(path.join(pathDefaultColorSchemes, defaultColorSchemes[0].file_name), 'utf8')
 }
 
@@ -133,20 +115,21 @@ function getColorScheme(scheme_file_name) { // returns actual css of color schem
 }
 
 // Font Setup
-function addTemplate() {
+function addCategory(name, icon, template) {
 
 }
 
 // get Manifest
-function getCategories() {
+function getCategoryIconList() {
     return new Map(defaultTemplates.map((template) => [template.name, template.icon]))
 }
-// Get Templates List
-function getTemplateList() {
+
+//
+function getCategoryList() {
     return defaultTemplates.concat(config.templates)
 }
 
-function getTemplate(template_name) { // NEED to ADD USER TEMPLATE
+function getCategoryTemplate(template_name) { // NEED to ADD USER TEMPLATE
     var template_file_name = null
     for (var template of defaultTemplates) {
         if (template.name === template_name) {
@@ -154,17 +137,16 @@ function getTemplate(template_name) { // NEED to ADD USER TEMPLATE
             break;
         }
     }
-
     return null
 }
 /***********************
  ** private functions **
  ***********************/
 
-function defaultDBExists() {
-    return fs.existsSync(config.default_db)
-}
-
 function saveConfig() {
-    fs.writeFileSync(pathConfig, JSON.stringify(config), 'utf8')
+    if (config !== null) {
+        fs.writeFileSync(pathConfig, JSON.stringify(config), 'utf8')
+    } else {
+        console.log('config corrupted')
+    }
 }

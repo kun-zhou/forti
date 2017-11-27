@@ -42,18 +42,34 @@ export const ATTEMPT_UNLOCK = (location, password) => (dispatch) => { //idx sign
 /** 2. CREATE_DB
  * vault name and password
  */
-export const CREATE_DB = (name, passwd) => {
-    var action = { type: 'CREATE_DB' }
+export const CREATE_DB = (name, passwd) => (dispatch) => {
     var { success, message, location } = dataAPI.createVault(name, passwd)
-    action.success = success
-    if (!success) {
-        action.status = message
-        return action
-    } else {
+    if (success) {
         config.addDB(name, location)
-        action.status = 'SELECT_DB'
-        return action
     }
+    return { success, message }
+    /* 
+     dispatch({ type: 'CREATE_DB_PENDING' })
+     var action = { type: 'CREATE_DB_DONE' }
+     const dbCreation = new Promise((resolve, reject) => {
+         var { success, message, location } = dataAPI.createVault(name, passwd)
+         console.log('promise run')
+         success ? resolve(message, location) : reject(message)
+     })
+ 
+     dbCreation
+         .then((message, location) => {
+             action.success = true
+             config.addDB(name, location)
+             action.status = 'CREATED'
+             dispatch(action)
+         })
+         .catch((message) => {
+             action.success = false
+             action.status = message
+             dispatch(action)
+         })
+         */
 }
 
 // Responding to UI Changes
@@ -214,7 +230,7 @@ export const SAVE_SECRET = () => (dispatch, getState) => {
 }
 
 export const CLOSE_DB = () => (dispatch, getState) => {
-    dataAPI.closeVault(getState.get('cache').toJS())
+    dataAPI.closeVault(getState().get('cache').toJS())
     dispatch({ type: 'DB_CLOSED' })
 }
 
