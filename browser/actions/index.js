@@ -153,7 +153,7 @@ export const CREATE_SECRET = (category) => (dispatch, getState) => {
         new_secret: fromJS(secret)
     })
     dispatch(NAV_ENTRY_CLICK(secret.category, 'category'))
-    dispatch(ENTRY_CLICK(secret.id, 'others', 0))
+    dispatch(ENTRY_CLICK(secret.id, 0))
 }
 
 export const TRASH_SECRET = (secret) => { // move to trash

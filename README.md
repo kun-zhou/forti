@@ -1,6 +1,6 @@
-# LOCK.IT, an open-source sensitive content manager with an elegant UI and effortless workflow
+# Forti, a delightful secrets manager for your passwords, credit cards, and more.
 
-**Lockit is an open source formatted content manager built with [Electron](https://github.com/atom/electron), [React](https://facebook.github.io/react/), and [Redux](https://github.com/reactjs/redux)**
+**Forti is an open source secrets manager built with [Electron](https://github.com/atom/electron), [React](https://facebook.github.io/react/), and [Redux](https://github.com/reactjs/redux)**
 
 <p align="center">
   <a href="https://youtu.be/UAtPC051eoo"><img src="http://misc.kunzhou.me/lockit.png" style="width: 62%"/></a>
@@ -10,13 +10,9 @@
 
 ## What is it
 
-LOCK.IT is a piece of software that securely stores your key-value pairs like website login information, credit cards, ID cards, or even software license (serial number). And it lets you browser them in an easy fashion. Understanding many of these key-value pairs can be very sensitive, LOCK.IT uses industrial standard cryptography to protect your data.
+It a piece of software that securely stores your key-value pairs like website login information, credit cards, driver' license, or even software license (serial number). The idea is to save you from the clutter to find them in your scratchbooks, or trying get hold of your physical credit card just to get the number off of it. Understanding many of these information can be highly sensitive, Forti uses industry standard cryptography to protect your data.
 
-It provides an easy interface to input your key-value pairs and enforces the necessary format so you always remember to give an entry a title, and give your password a website associated.
-
-### Security
-
-Each vault is encrypted with AES-GCM-256, including cache, and only decrypted in memory.
+Forti provides an easy interface to log your key-value pairs and insists that you always give your secret a title, and your value a key, so you never have to wonder what that piece of information is for.
 
 ## Getting Started
 
@@ -40,7 +36,7 @@ To build macOS distributables, run
 yarn dist
 ```
 
-## STATUS
+## Status
 
 This application is still in its Pre-prelease stage, so be cautious when you are using it for production. New features are being actively implemented at the moment. The following features are currently being worked on:
 
@@ -56,9 +52,12 @@ This application is still in its Pre-prelease stage, so be cautious when you are
 
 THe following implemnentation details are being worked on:
 
-* Improve the way it handles unlocking and selecting vaults
 * Use `react-virtualized` to render the middle panel, i.e., list of entries.
 * Refactor CSS and configAPI
+
+### Security
+
+Each vault is encrypted with AES-GCM-256, including the cache, and only decrypted in memory.
 
 ## Contributing
 

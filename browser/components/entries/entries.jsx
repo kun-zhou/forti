@@ -126,7 +126,7 @@ const AbstractView = (props) => {
     var list = []
     var cachedAbstracts = props.cachedAbstracts
 
-    entries.forEach((id, i) => {
+    entries.forEach((id, idx) => {
         var entry = cachedAbstracts.get(id)
         list.push(<Entry
             key={entry.get('id')}
@@ -135,7 +135,7 @@ const AbstractView = (props) => {
             activePane={props.activePane}
             categories_config={props.categories_config}
             entry={entry}
-            idx={i}
+            idx={idx}
         />)
     })
 

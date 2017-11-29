@@ -1,6 +1,6 @@
 {
-  "name": "lockit",
-  "version": "1.0.0",
+  "name": "Forti",
+  "version": "0.1-alpha.1",
   "description": "A formatted content manager",
   "main": "app/main.js",
   "scripts": {
@@ -14,8 +14,8 @@
   "author": "Kun Zhou",
   "license": "ISC",
   "build": {
-    "appId": "me.kunzhou.lockit",
-    "productName": "LOCKIT",
+    "appId": "me.kunzhou.forti",
+    "productName": "Forti",
     "files": [
       "app/**/*",
       "assets/**/*",

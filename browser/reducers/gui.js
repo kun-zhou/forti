@@ -59,7 +59,7 @@ export default function guiReducer(gui, action) {
                 default: throw 'invalid operation fired on UPDATE_CUSTOM'
             }
         case 'DELETE_SECRET':
-            return gui.set('activeInfo', null)
+            return gui.set('activeInfo', null).deleteIn(['activeEntries', gui.get('activeIdxInList')])
         case 'SEARCH_COMPLETED':
             return gui.set('activeEntries', action.search_results)
         case 'DEACTIVATE_SEARCH':
