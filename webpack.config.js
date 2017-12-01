@@ -1,5 +1,4 @@
 const path = require('path')
-const Copy = require('copy-webpack-plugin');
 
 module.exports = {
     target: 'electron-renderer',
@@ -13,7 +12,7 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.jsx$|\.js$/,
+                test: /\.jsx?$/,
                 loader: 'babel-loader',
                 include: path.join(__dirname, 'browser')
             },
@@ -53,11 +52,11 @@ module.exports = {
         ],
     },
     resolve: {
+        extensions: ['.js', '.jsx', '.json'],
         alias: {
             actions: path.resolve(__dirname, 'browser/actions'),
             reducers: path.resolve(__dirname, 'browser/reducers'),
             public: path.resolve(__dirname, 'browser/public')
         }
-    },
-    //plugins: [ ],
+    }
 }
