@@ -42,7 +42,7 @@ body,
     height: 100%;
     width: 100%;
     background-color: white;
-    color: rgb(51, 51, 51)
+    caret-color: var(--color-caret)
 }
 
 #app {

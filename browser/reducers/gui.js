@@ -2,7 +2,10 @@
  * Manages the GUI, and anything that does not directly change the database itself.
  */
 
-import { Map, List, fromJS } from 'immutable'
+import {
+    List,
+    fromJS
+} from 'immutable'
 
 export default function guiReducer(gui, action) {
     switch (action.type) {
@@ -39,7 +42,12 @@ export default function guiReducer(gui, action) {
             switch (action.operation) {
                 case 'ADD_SECTION':
                     return gui
-                        .updateIn(['activeInfo', 'user_defined'], sections => sections.push(fromJS({ title: '', fields: [['', '', 'text']] })))
+                        .updateIn(['activeInfo', 'user_defined'], sections => sections.push(fromJS({
+                            title: '',
+                            fields: [
+                                ['', '', 'text']
+                            ]
+                        })))
                 case 'UPDATE_SECTION_TITLE':
                     return gui
                         .setIn(['activeInfo', 'user_defined', params.sec_idx, 'title'], params.new_value)
@@ -56,7 +64,8 @@ export default function guiReducer(gui, action) {
                 case 'ADD_FIELD':
                     return gui
                         .updateIn(['activeInfo', 'user_defined', params.sec_idx, 'fields'], fields => fields.push(List(['', '', ''])))
-                default: throw 'invalid operation fired on UPDATE_CUSTOM'
+                default:
+                    throw 'invalid operation fired on UPDATE_CUSTOM'
             }
         case 'DELETE_SECRET':
             return gui.set('activeInfo', null).deleteIn(['activeEntries', gui.get('activeIdxInList')])

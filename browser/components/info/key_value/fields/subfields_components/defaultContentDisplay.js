@@ -10,11 +10,11 @@ export function toCode(value) {
 export function toLink(value) {
     return (
         <a href={value} onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
+            e.preventDefault()
+            e.stopPropagation()
             var url = e.target.innerHTML
             if (!/^https?:\/\//i.test(url)) {
-                url = 'https://' + url;
+                url = 'https://' + url
             }
             remote.shell.openExternal(url)
         }}>

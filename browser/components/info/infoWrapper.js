@@ -1,13 +1,12 @@
-import { connect } from 'react-redux'
-import { CREATE_SECRET, DELETE_SECRET, UPDATE_META, UPDATE_CUSTOM } from 'actions'
+import {connect} from 'react-redux'
+import {CREATE_SECRET, DELETE_SECRET, UPDATE_META, UPDATE_CUSTOM} from 'actions'
 import Info from './info.jsx'
-import config from '../../utils/config'
 
 // Helper Functions
 const mapStateToProps = state => {
     return {
         info: state.getIn(['gui', 'activeInfo']),
-        categories_config: state.getIn(['config', 'categories']),
+        categories_config: state.getIn(['config', 'categories'])
     }
 }
 
@@ -23,18 +22,9 @@ const mapDispatchToProps = dispatch => ({
     },
     deleteSecret: () => {
         dispatch(DELETE_SECRET())
-    },
-    addTag: (tag) => {
-        dispatch(ADD_TAG(tag))
-    },
-    deleteTag: (tag) => {
-        dispatch(DEL_TAG(tag))
     }
 })
 
-const InfoWrapper = connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Info)
+const InfoWrapper = connect(mapStateToProps, mapDispatchToProps)(Info)
 
 export default InfoWrapper

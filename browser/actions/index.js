@@ -4,9 +4,8 @@
 
 import config from '../utils/config'
 import dataAPI from '../lib/dataAPI'
-import cacheManager from '../lib/cacheManager'
-import { debounce } from 'lodash'
-import { Map, List, OrderedMap, fromJS } from 'immutable'
+
+import { List, fromJS } from 'immutable'
 
 /** 1. ATTEMPT_UNLOCK
  * location: path to vault folder
@@ -43,7 +42,17 @@ export const ATTEMPT_UNLOCK = (location, password) => (dispatch) => { //idx sign
  * vault name and password
  */
 export const CREATE_DB = (name, passwd) => (dispatch) => {
-    var { success, message, location } = dataAPI.createVault(name, passwd)
+
+    if (process.env.NODE_ENV === 'dev') {
+        var count = Number(name)
+        if (!Number(name) > 1) {
+            var { success, message, location } = dataAPI.createVault(name, passwd)
+        } else {
+            var { success, message, location } = dataAPI.createDemoVault(name, passwd, count)
+        }
+    } else {
+        var { success, message, location } = dataAPI.createVault(name, passwd)
+    }
     if (success) {
         config.addDB(name, location)
     }
@@ -102,7 +111,7 @@ export const SEARCH_SECRETS = (keywords) => (dispatch, getState) => {
     var cache = getState().get('cache')
     var ids = getEntries(gui.get('activeNavTabType'), gui.get('activeNavTab'), cache)
     keywords = keywords.split(/\s+/)
-    var results = []
+    var results = List()
     ids.forEach((id) => {
         var match = keywords.reduce((acc, keyword) => {
             var abstract = cache.getIn(['abstracts', id])
@@ -110,7 +119,7 @@ export const SEARCH_SECRETS = (keywords) => (dispatch, getState) => {
         }, 0)
 
         if (match === keywords.length) {
-            results.push(id)
+            results = results.push(id)
         }
     })
     dispatch({
@@ -130,17 +139,17 @@ export const DEACTIVATE_SEARCH = () => (dispatch, getState) => {
 
 
 // 4. Create Entry
-export const CREATE_SECRET = (category) => (dispatch, getState) => {
+export const CREATE_SECRET = (category) => (dispatch) => {
     // Switch to category view
     var template = {
-        "id": dataAPI.getUID(),
-        "title": "",
-        "attachment": false,
-        "snippet": "",
-        "tags": [],
-        "favorite": false,
-        "user_defined": [],
-        "snapshots": {}
+        'id': dataAPI.getUID(),
+        'title': '',
+        'attachment': false,
+        'snippet': '',
+        'tags': [],
+        'favorite': false,
+        'user_defined': [],
+        'snapshots': {}
     }
 
     // START SIDE EFFECTS
@@ -209,7 +218,7 @@ export const UPDATE_META = (operation, params) => (dispatch, getState) => {
 }
 
 // updates user_defined custom data
-export const UPDATE_CUSTOM = (operation, params) => (dispatch, getState) => {
+export const UPDATE_CUSTOM = (operation, params) => (dispatch) => {
     var action = {
         type: 'UPDATE_CUSTOM',
         operation,
@@ -240,7 +249,7 @@ export const SET_COLOR_SCHEME = (scheme) => (dispatch) => {
     var head = document.head
     if (!document.getElementById('color-scheme')) { // if color scheme is not in place
         var sheet = document.createElement('style')
-        sheet.type = 'text/css';
+        sheet.type = 'text/css'
         sheet.id = 'color-scheme'
     }
     sheet.innerHTML = css

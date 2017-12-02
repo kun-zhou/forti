@@ -1,0 +1,1 @@
+echo "this.$1 = this.$1.bind(this)" |  pbcopy

@@ -1,6 +1,3 @@
-
-import { Map, List, fromJS } from 'immutable'
-
 export default function configReducer(config, action) {
     switch (action.type) {
         case 'UPDATE_CONFIG':

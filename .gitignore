@@ -1,6 +1,9 @@
 node_modules
 promo
 .DS_Store
-dist/**
-app/renderer/**
+dist/*
+app/renderer/*
 historical
+test
+yarn.lock
+elm

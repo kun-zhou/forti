@@ -3,13 +3,15 @@
  */
 const crypto = require('crypto')
 const fs = require('fs')
-const path = require('path')
-const keyfileName = 'keyfile'
 const algorithm = 'aes-256-gcm'
+
 // path represents vault path
 function encrypt(text, key, iv) {
     var cipher = crypto.createCipher(algorithm, key, iv)
-    var crypted = Buffer.concat([cipher.update(text, 'utf8'), cipher.final()]);
+    var crypted = Buffer.concat([
+        cipher.update(text, 'utf8'),
+        cipher.final()
+    ])
     return crypted
 }
 
@@ -29,7 +31,7 @@ function getMasterKey(passwd, keyfile, salt_and_iv) { // keyfile should be buffe
     salt_and_iv.copy(iv, 0, 16, 32)
 
     // get keyfile_key and verification keys
-    var { keyfile_key, verification_key } = deriveKey(passwd, salt)
+    var {keyfile_key, verification_key} = deriveKey(passwd, salt)
 
     // decrypt keyfile
     var algorithm = 'aes-256-gcm'
@@ -52,10 +54,10 @@ function generateNewKeys(passwd) {
     var iv = crypto.randomBytes(16)
     var salt = crypto.randomBytes(16)
 
-    var { keyfile_key, verification_key } = deriveKey(passwd, salt)
+    var {keyfile_key, verification_key} = deriveKey(passwd, salt)
 
     var keyfile = Buffer.concat([verification_key, enc_key])
-    var salt_and_iv = Buffer.concat([salt, iv]);
+    var salt_and_iv = Buffer.concat([salt, iv])
 
     var algorithm = 'aes-256-gcm'
     var cipher = crypto.createCipheriv(algorithm, keyfile_key, iv)
@@ -63,7 +65,7 @@ function generateNewKeys(passwd) {
     cipher.end()
     var keyfile_encrypted = cipher.read()
 
-    return { success: true, keyfile_encrypted, salt_and_iv, enc_key }
+    return {success: true, keyfile_encrypted, salt_and_iv, enc_key}
 }
 
 function deriveKey(passwd, salt) {
@@ -72,10 +74,7 @@ function deriveKey(passwd, salt) {
     var dervied_keys = crypto.pbkdf2Sync(passwd, salt, 8000, 512, 'sha512')
     dervied_keys.copy(keyfile_key, 0, 0, 32)
     dervied_keys.copy(verification_key, 0, 32, 64)
-    return {
-        keyfile_key,
-        verification_key
-    }
+    return {keyfile_key, verification_key}
 }
 
 function readCryptSync(key, path) {
@@ -90,8 +89,11 @@ function readCryptSync(key, path) {
 
 function writeCryptSync(secret, key, path) {
     var iv = crypto.randomBytes(16)
-    var content = Buffer.concat([iv, encrypt(secret, key, iv)])
+    var content = Buffer.concat([
+        iv,
+        encrypt(secret, key, iv)
+    ])
     fs.writeFileSync(path, content)
 }
 
-module.exports = { readCryptSync, writeCryptSync, generateNewKeys, getMasterKey }
+export {readCryptSync, writeCryptSync, generateNewKeys, getMasterKey}
