@@ -15,18 +15,23 @@ class NewDBDialog extends React.PureComponent {
     constructor() {
         super()
         this.state = { name: '', password: '', message: '' }
+        this.handleFormChange = this.handleFormChange.bind(this)
+        this.closeDialog = this.closeDialog.bind(this)
+        this.createVault = this.createVault.bind(this)
     }
 
-    handleFormChange = (field) => (event) => {
-        this.setState({ [field]: event.target.value })
+    handleFormChange(field) {
+        return (event) => {
+            this.setState({ [field]: event.target.value })
+        }
     }
 
-    closeDialog = () => {
+    closeDialog() {
         this.setState({ name: '', password: '', message: '' })
         this.props.toggleDialog()
     }
 
-    createVault = () => {
+    createVault() {
         var { success, message } = this.props.createVault(this.state.name, this.state.password)
         if (success) {
             this.props.toggleDialog()
@@ -35,9 +40,9 @@ class NewDBDialog extends React.PureComponent {
                 'Password needs to be at least 8 characters long' :
                 message
             this.setState({ message })
-            console.log(message)
         }
     }
+
 
     render() {
         return (
@@ -103,17 +108,21 @@ class SelectDB extends React.PureComponent {
             dialog_message: '',
             message: ''
         }
+        this.toggleNewDB = this.toggleNewDB.bind(this)
+        this.handleDBClick = this.handleDBClick.bind(this)
+        this.unlockDB = this.unlockDB.bind(this)
+        this.updatePassword = this.updatePassword.bind(this)
     }
 
-    toggleNewDB = () => {
+    toggleNewDB() {
         this.setState({ dialog_open: !this.state.dialog_open })
     }
 
-    handleDBClick = (location) => {
+    handleDBClick(location) {
         this.setState({ highlighted_db: location })
     }
 
-    unlockDB = (e) => {
+    unlockDB() {
         if (this.state.highlighted_db) {
             this.props.unlockDB(this.state.highlighted_db, this.state.passwd)
         } else {
@@ -121,7 +130,7 @@ class SelectDB extends React.PureComponent {
         }
     }
 
-    updatePassword = (e) => {
+    updatePassword(e) {
         this.setState({ passwd: e.target.value })
     }
 
@@ -134,7 +143,7 @@ class SelectDB extends React.PureComponent {
 
     render() {
         var listOfDB = config.getDBList().map(
-            (db) => <DB db={db} highlighted_db={this.state.highlighted_db} handleDBClick={this.handleDBClick} />
+            (db) => <DB key={db.location} db={db} highlighted_db={this.state.highlighted_db} handleDBClick={this.handleDBClick} />
         )
 
         return (

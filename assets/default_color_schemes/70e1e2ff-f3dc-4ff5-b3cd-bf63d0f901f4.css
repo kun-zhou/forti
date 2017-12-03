@@ -3,6 +3,8 @@
     --color-main: #273144;
     --color-warning: rgb(206, 86, 84);
     --color-border: rgb(222, 222, 222);
+    
+    --color-caret: #065270;
     /* For Navigation Pane*/
     --color-bg-nav: #273144;
     --color-selected-nav: #474f5f;
@@ -41,7 +43,7 @@
     --color-field-name: #98979B;
     --color-field-content: black;
     --color-field-name-bottom: #fecf02;
-    --color-field-content-bottom: #fecf02;
+    --color-field-content-bottom: #8cc7fc;
     /* add field*/
     --color-bg-addField: #872642;
     --color-bg-addSec: #948D38;

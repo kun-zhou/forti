@@ -1,33 +1,27 @@
 import React from 'react'
-import sty from './nav.cssm'
-import Collapse from 'material-ui/transitions/Collapse';
-import ExpandLess from 'material-ui-icons/ExpandLess';
-import ExpandMore from 'material-ui-icons/ExpandMore';
+import Collapse from 'material-ui/transitions/Collapse'
+import ExpandLess from 'material-ui-icons/ExpandLess'
+import ExpandMore from 'material-ui-icons/ExpandMore'
 import { List } from 'immutable'
+import * as s from './styles'
+
 class NavItem extends React.PureComponent {
     constructor(props) {
         super(props)
+        this.navTabClick = this.navTabClick.bind(this)
     }
-    navTabClick = () => {
+
+    navTabClick() {
         this.props.navTabClick(this.props.name, this.props.type)
     }
 
     render() {
-        if (this.props.name === this.props.activeNavTab && this.props.type === this.props.activeNavTabType) {
-            if (this.props.activePane === 'nav')
-                var classNames = [sty['entry'], sty['is-active']].join(' ')
-            else
-                var classNames = [sty['entry'], sty['is-selected']].join(' ')
-        } else var classNames = sty['entry']
-        return (
-            <div
-                className={classNames}
-                onClick={this.navTabClick}
-                onContextMenu={this.handleNavEntryContext}
-            >
-                {this.props.icon} {this.props.name}
-            </div>
-        )
+        return <s.Button
+            selected={this.props.name === this.props.activeNavTab && this.props.type === this.props.activeNavTabType}
+            active={this.props.activePane === 'nav'}
+            onClick={this.navTabClick}>{this.props.icon} {this.props.name}
+        </s.Button>
+
     }
 }
 
@@ -35,22 +29,23 @@ class NavList extends React.PureComponent {
     constructor(props) {
         super(props)
         this.state = {
-            collapse: false
+            open: true
         }
+        this.toggleDisplay = this.toggleDisplay.bind(this)
     }
 
-    toggleCollapse = () => {
-        this.setState({ collapse: !this.state.collapse })
+    toggleDisplay() {
+        this.setState({ open: !this.state.open })
     }
 
     render() {
         return (
-            <div className={sty['categories-wrapper']}>
-                <div className={sty['section-header']} onClick={this.toggleCollapse}>
+            <div>
+                <s.Header onClick={this.toggleDisplay}>
                     {this.props.title}
-                    {this.state.collapse ? <ExpandMore /> : <ExpandLess />}
-                </div>
-                <Collapse in={!this.state.collapse} >
+                    {this.state.open ? <ExpandMore /> : <ExpandLess />}
+                </s.Header>
+                <Collapse in={this.state.open} >
                     {this.props.children}
                 </Collapse>
             </div>
@@ -58,9 +53,41 @@ class NavList extends React.PureComponent {
     }
 }
 
+
+class FixedList extends React.PureComponent {
+    render() {
+        return (
+            <div>
+                <NavItem
+                    navTabClick={this.props.navTabClick}
+                    activeNavTab={this.props.activeNavTab}
+                    activeNavTabType={this.props.activeNavTabType}
+
+                    key="favorites"
+                    name="Favorites"
+                    type="favorite"
+                    activePane={this.props.activePane}
+                    icon={(<i className='far fa-fw fa-star' />)}
+                />
+                <NavItem
+                    navTabClick={this.props.navTabClick}
+                    activeNavTab={this.props.activeNavTab}
+                    activeNavTabType={this.props.activeNavTabType}
+
+                    key="all"
+                    name="All Items"
+                    type="all"
+                    activePane={this.props.activePane}
+                    icon={(<i className='far fa-fw fa-badge' />)}
+                />
+            </div>
+        )
+    }
+}
+
 class CategoryList extends React.PureComponent {
     render() {
-        var categories_list = List([])
+        var categories_list = List()
         var name, icon
         for (var category of this.props.categories_config) {
             name = category[0]
@@ -113,32 +140,14 @@ class TagList extends React.PureComponent {
 class Nav extends React.PureComponent {
     render() {
         return (
-            <div id={sty['nav']}>
-                <div className={sty['header-wrapper']} >
-                    <div></div>
-                </div>
-                <div className={sty['section-fixed']}>
-                    <NavItem
-                        key="favorites"
-                        name="Favorites"
-                        type="favorite"
-                        navTabClick={this.props.navTabClick}
-                        activeNavTab={this.props.activeNavTab}
-                        activeNavTabType={this.props.activeNavTabType}
-                        activePane={this.props.activePane}
-                        icon={(<i className='far fa-fw fa-star' />)}
-                    />
-                    <NavItem
-                        key="all"
-                        name="All Items"
-                        type="all"
-                        navTabClick={this.props.navTabClick}
-                        activeNavTab={this.props.activeNavTab}
-                        activeNavTabType={this.props.activeNavTabType}
-                        activePane={this.props.activePane}
-                        icon={(<i className='far fa-fw fa-badge' />)}
-                    />
-                </div>
+            <s.Pane>
+                <s.TopPlaceholder />
+                <FixedList
+                    navTabClick={this.props.navTabClick}
+                    activeNavTab={this.props.activeNavTab}
+                    activeNavTabType={this.props.activeNavTabType}
+                    activePane={this.props.activePane}
+                />
                 <CategoryList
                     activeNavTab={this.props.activeNavTab}
                     activeNavTabType={this.props.activeNavTabType}
@@ -156,7 +165,7 @@ class Nav extends React.PureComponent {
 
                     tags={this.props.tags}
                 />
-            </div>
+            </s.Pane>
         )
     }
 }

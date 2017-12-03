@@ -3,7 +3,7 @@ import sty from './sty.cssm'
 
 class Title extends React.PureComponent {
     constructor(props) {
-        super(props)
+        super()
         this.state = {
             title_editing: false,
             title: props.title

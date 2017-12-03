@@ -1,26 +1,26 @@
 import React from 'react'
 import sty from './entries.cssm'
 import _ from 'lodash'
-//import AddEntryDropdown from './addEntry.jsx'
 import Input, { InputAdornment } from 'material-ui/Input';
-import { List } from 'immutable'
 import OutsideAlerter from '../public/outsideAlerter.jsx'
+import * as s from './styles'
+import { List, AutoSizer } from 'react-virtualized'
 
 class Entry extends React.PureComponent {
-    handleEntryClick = () => {
+    constructor() {
+        super()
+        this.handleEntryClick = this.handleEntryClick.bind(this)
+    }
+
+    handleEntryClick() {
         this.props.entryClick(this.props.entry.get('id'), this.props.idx)
     }
+
     render() {
         var props = this.props
         var entryClassNames = [sty['entry']]
+        var id = this.props.entry.get('id')
         // 1. Highlight
-        if (props.activeEntry === props.entry.get('id')) {
-            if (props.activePane === 'entries') {
-                entryClassNames.push(sty['is-active'])
-            } else {
-                entryClassNames.push(sty['is-selected'])
-            }
-        }
         entryClassNames = entryClassNames.join(' ')
 
         // 2. Tags
@@ -33,20 +33,28 @@ class Entry extends React.PureComponent {
 
         // Render
         return (
-            <div className={entryClassNames} onClick={this.handleEntryClick} >
-                <div className={sty['entry-left']}>
-                </div>
-                <div className={sty['entry-main']}>
-                    <div className={sty['entry-title']} >
-                        <span className={sty['entry-title-icon']}><i className={'fal fa-fw ' + props.categories_config.get(props.entry.get('category'))} /> </span>
+            <s.Abstract
+                selected={props.selected}
+                active={props.active}
+                onClick={this.handleEntryClick}
+                style={this.props.style}
+            >
+                <s.AbstractIndicator />
+                <s.AbstractMain
+                    selected={props.selected}
+                    active={props.active}
+                >
+                    <s.AbstractTitle >
+                        <s.AbstractIcon>
+                            <i className={'fal fa-fw ' + props.categories_config.get(props.entry.get('category'))} />
+                        </s.AbstractIcon>
                         {props.entry.get('title') ? props.entry.get('title') : <span className={'placeholder'}>A wonderful new secret</span>}
-                    </div>
-
-                    <div className={sty['entry-tags']}>
+                    </s.AbstractTitle>
+                    <s.AbstractTagsWrapper>
                         {tag_field}
-                    </div>
-                </div>
-            </div>
+                    </s.AbstractTagsWrapper>
+                </s.AbstractMain>
+            </s.Abstract>
         )
     }
 }
@@ -54,7 +62,7 @@ class Entry extends React.PureComponent {
 class Search extends React.PureComponent {
     constructor(props) {
         super()
-        this.debouncedSearch = _.debounce(props.search, 600)
+        this.debouncedSearch = _.debounce(props.search, 300)
         this.state = {
             focused: false,
             search_string: ''
@@ -84,7 +92,6 @@ class Search extends React.PureComponent {
     }
 
     handleCancel = () => {
-        console.log('cacelled')
         this.setState({ focused: false })
         this.setState({ search_string: '' })
         this.props.deactivateSearch()
@@ -113,45 +120,69 @@ class Search extends React.PureComponent {
     }
 }
 
-const AbstractView = (props) => {
-    //{ visibleEntries, activeEntry, activePane, entries, showAddEntry }
-    var entries = props.activeEntries
-    // handle the case if entries are none
-    if (!entries || entries.size === 0) {
-        return (<div id={sty['entries']} >
-            <Search deactivateSearch={props.deactivateSearch} search={props.search} />
-        </div>)
+
+class AbstractView extends React.PureComponent {
+    constructor() {
+        super()
+        this.rowRenderer = this.rowRenderer.bind(this)
     }
-    // 1. List of Entries
-    var list = []
-    var cachedAbstracts = props.cachedAbstracts
 
-    entries.forEach((id, idx) => {
-        var entry = cachedAbstracts.get(id)
-        list.push(<Entry
-            key={entry.get('id')}
-            entryClick={props.entryClick}
-            activeEntry={props.activeEntry}
-            activePane={props.activePane}
-            categories_config={props.categories_config}
+    rowRenderer({ index, style }) {
+        var id = this.props.activeEntries.get(index)
+        var entry = this.props.cachedAbstracts.get(id)
+        return <Entry
+            selected={this.props.activeEntry === id}
+            active={this.props.activePane === 'entries'}
+            key={id}
+            entryClick={this.props.entryClick}
+            categories_config={this.props.categories_config}
             entry={entry}
-            idx={idx}
-        />)
-    })
+            idx={index}
+            style={style}
+        />
+    }
 
-    return (
-        <div id={sty['entries']} >
-            <Search deactivateSearch={props.deactivateSearch} search={props.search} />
-            <div className={sty['abstract-lists']}>
-                <div className={sty['abstract-list']}>
-                    <div className={sty['list-title-wrapper']}>
-                        <span className={sty['list-title']}>{props.activeNavTab}</span>
+    render() {
+        var props = this.props
+        //{ visibleEntries, activeEntry, activePane, entries, showAddEntry }
+        var entries = props.activeEntries
+        // handle the case if entries are none
+        if (!entries || entries.size === 0) {
+            return (<div id={sty['entries']} >
+                <Search deactivateSearch={props.deactivateSearch} search={props.search} />
+            </div>)
+        }
+
+        return (
+            <div id={sty['entries']} >
+                <Search deactivateSearch={props.deactivateSearch} search={props.search} />
+                <div className={sty['abstract-lists']}>
+                    <div className={sty['abstract-list']}>
+                        <div className={sty['list-title-wrapper']}>
+                            <span className={sty['list-title']}>{props.activeNavTab}</span>
+                        </div>
+                        <AutoSizer >
+                            {({ width, height }) => (
+                                <List
+                                    height={height}
+                                    width={width}
+                                    rowCount={entries.size}
+                                    rowHeight={80}
+                                    rowRenderer={this.rowRenderer}
+                                    overscanRowCount={20}
+
+                                    cache={props.cachedAbstracts}
+                                    activeEntries={props.activeEntries}
+                                    activeEntry={props.activeEntry}
+                                    activePane={props.activePane}
+                                />
+                            )}
+                        </AutoSizer >
                     </div>
-                    {list}
                 </div>
             </div>
-        </div>
-    )
+        )
+    }
 }
 
 export default AbstractView

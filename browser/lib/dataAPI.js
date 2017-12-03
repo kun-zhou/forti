@@ -19,7 +19,7 @@ export default {
 import uuid from 'uuid/v4'
 import path from 'path'
 import fs from 'fs-extra'
-import _crypto from './crypto'
+import * as _crypto from './crypto'
 import crypto from 'crypto'
 import * as app_path from '../utils/paths'
 import { debounce } from 'lodash'
@@ -164,14 +164,17 @@ function saveAttachment(vault_path, uid, attachment_loc, passwd) {
 }
 
 function saveCache(cache) {
-    _crypto.writeCryptSync(JSON.stringify(cache), enc_key, path.join(vault_path, 'cache'), )
+    _crypto.writeCryptSync(JSON.stringify(cache), enc_key, path.join(vault_path, 'cache'))
 }
 
-function createDemoVault(name, passwd) {
-    var vault_path = path.join(app_path.pathConfigDir, 'databases', uuid())
-    var demo_vault_path = path.join(require('electron').remote.app.getAppPath(), 'assets', 'default_dbs', 'Demo')
-    fs.copySync(demo_vault_path, vault_path)
-    return { location: vault_path }
+function createDemoVault(name, passwd, counts) { // will be large in nature
+    var response = createVault(name, passwd)
+    if (!response.success) return response
+    init(response.location, passwd)
+    for (var i = 0; i < counts; i++) {
+        createSecret(Object.assign({ id: getUID() }, demoTemplate))
+    }
+    return response
 }
 
 function createVault(name, passwd) {
@@ -248,4 +251,32 @@ function validateCache() { // regenerate if does timestamp passed
 
 function secretIsValid() {
     return true
+}
+
+const demoTemplate = {
+    "title": "Gmail Development Account",
+    "attachment": false,
+    "snippet": "john.dev@gmail.com",
+    "category": "Login",
+    "tags": [
+        "work"
+    ],
+    "favorite": true,
+    "time_created": 100,
+    "time_modified": 1000,
+    "user_defined": [
+        {
+            "title": "Basic Info",
+            "fields": [
+                ["Account", "john.dev@gmail.com", "text"],
+                ["Password", "[aq,]F?wK|9812(s", "code"],
+                ["Website", "https://mail.google.com", "link"]
+            ]
+        },
+        {
+            "title": "Extras",
+            "fields": [["Note", "Gmail account for work at XYZ corp.", "note"]]
+        }
+    ],
+    "snapshots": {}
 }

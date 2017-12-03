@@ -1,15 +1,15 @@
 import React from 'react'
 import sty from './info.cssm'
 
-import Title from './title/title.jsx'
-import Meta from './meta/meta.jsx'
+import Title from './title/title'
+import Meta from './meta/meta'
 
-import Toolbar from './toolbar/toolbar.jsx'
-import AddField from './addField_addSection/addField.jsx'
-import AddSecret from './addSecret.jsx'
-import Sections from './key_value/sections.jsx'
+import Toolbar from './toolbar/toolbar'
+import AddField from './addField_addSection/addField'
+import AddSecret from './addSecret'
+import Sections from './key_value/sections'
 
-import Dropup from '../../public/components/dropup/dropup.jsx'
+import Dropup from '../../public/components/dropup/dropup'
 
 class Info extends React.PureComponent {
     createSecret = (category) => {

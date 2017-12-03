@@ -75,16 +75,15 @@ input.section-name:focus {
     color: inherit;
     font-family: inherit;
     font-size: inherit;
-    border: 1px solid var(--color-field-name-bottom);
-    border-radius: 3px;
+    border-bottom: 1px solid var(--color-field-name-bottom);
 }
 
 .field-name-display {
     min-height: 20px;
     width: 100%;
     text-align: right;
-    padding-right: 6px;
-    padding-top: 4px;
+    padding-right: 5px;
+    padding-top: 3px;
     padding-bottom: 4px;
     font-size: 13px;
     white-space: pre;
@@ -100,16 +99,15 @@ input.section-name:focus {
     color: inherit;
     font-family: inherit;
     font-size: inherit;
-    border: 1px solid var(--color-field-content-bottom);
-    border-radius: 3px;
+    border-bottom: 1px solid var(--color-field-content-bottom);
 }
 
 .field-content-display {
     width: 100%;
     text-align: left;
     background-color: inherit;
-    padding-left: 6px;
-    padding-top: 4px;
+    padding-left: 5px;
+    padding-top: 3px;
     padding-bottom: 4px;
     overflow: hidden;
     display: flex;

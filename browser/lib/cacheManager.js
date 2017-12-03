@@ -41,23 +41,23 @@ function updateSecret(id, action) { // add or modify
     // update tags if necessary
     var new_value = action.params.new_value
     switch (action.operation) {
-        // need to handle the sepcial case of tags since it is a List but only the tag updated or delested is reported
-        case 'ADD_TAG':
-            cache = cache.updateIn(['abstracts', id, 'tags'], tags => tags.push(new_value))
-            cache = cache.updateIn(['tags', new_value], (tag) => {
-                return !tag ? List([id]) : tag.push(id)
-            })
-            updateTagsListing()
-            break
-        case 'DELETE_TAG':
-            cache = cache.updateIn(['abstracts', id, 'tags'], tags => tags.filter((tag) => tag !== new_value))
-            cache = cache.updateIn(['tags', new_value], (tag) => {
-                return !tag ? List([id]) : tag.filter((key) => key !== id)
-            })
-            updateTagsListing()
-            break
-        default:
-            cache = cache.setIn(['abstracts', id, action.params.key], new_value)
+    // need to handle the sepcial case of tags since it is a List but only the tag updated or delested is reported
+    case 'ADD_TAG':
+        cache = cache.updateIn(['abstracts', id, 'tags'], tags => tags.push(new_value))
+        cache = cache.updateIn(['tags', new_value], (tag) => {
+            return !tag ? List([id]) : tag.push(id)
+        })
+        updateTagsListing()
+        break
+    case 'DELETE_TAG':
+        cache = cache.updateIn(['abstracts', id, 'tags'], tags => tags.filter((tag) => tag !== new_value))
+        cache = cache.updateIn(['tags', new_value], (tag) => {
+            return !tag ? List([id]) : tag.filter((key) => key !== id)
+        })
+        updateTagsListing()
+        break
+    default:
+        cache = cache.setIn(['abstracts', id, action.params.key], new_value)
     }
     if (action.operation === 'UPDATE_FAV') {
         cache = new_value ? cache.update('favorites', favs => favs.unshift(id)) : cache.update('favorites', favs => favs.filter(key => key !== id))
@@ -74,18 +74,18 @@ function getCache() {
 
 function getEntries(type, name, sort) {
     switch (type) {
-        case 'all':
-            return appendAbstracts(cache.get('all'))
-        case 'favorite':
-            return appendAbstracts(cache.get('favorites'))
-        case 'category':
-            return appendAbstracts(cache.getIn(['categories', name]))
-        case 'tag':
-            return appendAbstracts(cache.getIn(['tags', name]))
-        case 'trash':
-            return appendAbstracts(cache.get('trash'))
-        default:
-            return null
+    case 'all':
+        return appendAbstracts(cache.get('all'))
+    case 'favorite':
+        return appendAbstracts(cache.get('favorites'))
+    case 'category':
+        return appendAbstracts(cache.getIn(['categories', name]))
+    case 'tag':
+        return appendAbstracts(cache.getIn(['tags', name]))
+    case 'trash':
+        return appendAbstracts(cache.get('trash'))
+    default:
+        return null
     }
 }
 
@@ -119,18 +119,18 @@ function deleteSecret(_id) {
 
 function searchInTab(type, name, keywords) {
     switch (type) {
-        case 'all':
-            return search(cache.get('all'), keywords)
-        case 'favorite':
-            return search(cache.get('favorites'), keywords)
-        case 'category':
-            return search(cache.getIn(['categories', name]), keywords)
-        case 'tag':
-            return search(cache.getIn(['tags', name]), keywords)
-        case 'trash':
-            return search(cache.get('trash'), keywords)
-        default:
-            return null
+    case 'all':
+        return search(cache.get('all'), keywords)
+    case 'favorite':
+        return search(cache.get('favorites'), keywords)
+    case 'category':
+        return search(cache.getIn(['categories', name]), keywords)
+    case 'tag':
+        return search(cache.getIn(['tags', name]), keywords)
+    case 'trash':
+        return search(cache.get('trash'), keywords)
+    default:
+        return null
     }
 }
 

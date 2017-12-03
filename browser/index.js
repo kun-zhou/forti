@@ -7,9 +7,9 @@ import { fromJS } from 'immutable'
 import rootReducer from 'reducers'
 import config from './utils/config'
 
-import logger from './logger'
+//import logger from './logger'
 
-import AppWrapper from './app.jsx'
+import AppWrapper from './app'
 import { SET_COLOR_SCHEME, UPDATE_CONFIG } from './actions'
 
 // Load fonts and master css
@@ -23,37 +23,37 @@ require('./public/fonts/quicksand.css')
 var status = config.initialize().status
 
 var initialState = {
-  status: {
-    unlock: null,
-    welcome: status === 'WELCOME' ? true : false
-  },
-  gui: {
-    activePane: null, // {string}
-    activeNavTab: null, // {string}
-    activeNavTabType: null,
-    activeEntries: null,
-    searchActive: false,
-    activeInfo: null,
-  },
-  cache: {
-    favorites: [],
-    categories: {},
-    tags: {},
-    all: [],
-    trash: [],
-    abstracts: {}
-  },
-  config: {
-  }
+    status: {
+        unlock: null,
+        welcome: status === 'WELCOME' ? true : false
+    },
+    gui: {
+        activePane: null, // {string}
+        activeNavTab: null, // {string}
+        activeNavTabType: null,
+        activeEntries: null,
+        searchActive: false,
+        activeInfo: null,
+    },
+    cache: {
+        favorites: [],
+        categories: {},
+        tags: {},
+        all: [],
+        trash: [],
+        abstracts: {}
+    },
+    config: {
+    }
 }
 
-const store = createStore(rootReducer, fromJS(initialState), applyMiddleware(thunk, logger))
+const store = createStore(rootReducer, fromJS(initialState), applyMiddleware(thunk))
 
 store.dispatch(SET_COLOR_SCHEME())
 store.dispatch(UPDATE_CONFIG())
 render(
-  <Provider store={store}>
-    <AppWrapper />
-  </Provider>,
-  document.getElementById('root')
+    <Provider store={store}>
+        <AppWrapper />
+    </Provider>,
+    document.getElementById('root')
 )
