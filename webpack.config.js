@@ -14,7 +14,14 @@ module.exports = {
             {
                 test: /\.jsx?$/,
                 loader: 'babel-loader',
-                include: path.join(__dirname, 'browser')
+                include: path.join(__dirname, 'browser'),
+                // exclude: [/elm-stuff/]
+                exclude: [/elm-stuff/, /node_modules/]
+            },
+            {
+                test: /\.elm$/,
+                exclude: [/elm-stuff/, /node_modules/],
+                loader: 'elm-webpack-loader'
             },
             // Load Global CSS Modules
             {
@@ -50,9 +57,10 @@ module.exports = {
                 }
             }
         ],
+        noParse: /\.elm$/
     },
     resolve: {
-        extensions: ['.js', '.jsx', '.json'],
+        extensions: ['.js', '.jsx', '.json', '.elm'],
         alias: {
             actions: path.resolve(__dirname, 'browser/actions'),
             reducers: path.resolve(__dirname, 'browser/reducers'),

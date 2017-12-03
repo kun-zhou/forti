@@ -6,6 +6,10 @@ import InfoWrapper from './components/info/infoWrapper'
 import { connect } from 'react-redux'
 import { CLOSE_DB } from 'actions'
 
+import Elm from 'react-elm-components'
+import { Test } from './Test.elm'
+console.log('Test', Test);
+
 class App extends React.PureComponent {
     constructor(props) {
         super(props)
@@ -22,12 +26,15 @@ class App extends React.PureComponent {
         window.addEventListener('beforeunload', this.cleanupBeforeUnload)
     }
 
+    // <InfoWrapper />
     render() {
+        const flags = 'wss://echo.websocket.org';
+
         if (this.props.unlockStatus === 'UNLOCKED') return (
             <div id="app">
                 <NavWrapper />
                 <EntriesWrapper />
-                <InfoWrapper />
+                <Elm src={Test}/>
             </div>
         )
         else return (
