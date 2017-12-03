@@ -1,6 +1,10 @@
-import {connect} from 'react-redux'
-import {CREATE_SECRET, DELETE_SECRET, UPDATE_META, UPDATE_CUSTOM} from 'actions'
-import Info from './info.jsx'
+import { connect } from 'react-redux'
+import { CREATE_SECRET, DELETE_SECRET, UPDATE_META, UPDATE_CUSTOM } from 'actions'
+//import Info from './info.jsx' currently being replaced by the elm version
+import React from 'react'
+import Elm from 'react-elm-components'
+import { Test } from '../../Test.elm'
+console.log('Test', Test)
 
 // Helper Functions
 const mapStateToProps = state => {
@@ -25,6 +29,30 @@ const mapDispatchToProps = dispatch => ({
     }
 })
 
+class Info extends React.Component {
+    constructor() {
+        super()
+        this.state = {}
+        this.setupPorts = this.setupPorts.bind(this)
+    }
+    /*
+        componentWillReceiveProps(nextProps){
+            this.state.setupPorts.
+        }
+    */
+    setupPorts(ports) {
+        this.setState({ ports })
+        ports.logPassword.subscribe(function (password) {
+            console.log(password)
+            ports.newInfo.send(password)
+        })
+
+    }
+
+    render() {
+        return <Elm src={Test} ports={this.setupPorts} />
+    }
+}
 const InfoWrapper = connect(mapStateToProps, mapDispatchToProps)(Info)
 
 export default InfoWrapper

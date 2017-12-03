@@ -2,7 +2,7 @@
 -- https://guide.elm-lang.org/architecture/user_input/forms.html
 
 
-module Test exposing (main)
+port module Test exposing (main)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -10,11 +10,19 @@ import Html.Events exposing (onInput)
 
 
 main =
-    Html.beginnerProgram
-        { model = model
+    Html.program
+        { init = init
         , view = view
         , update = update
+        , subscriptions = subscriptions
         }
+
+
+
+-- Ports
+
+
+port logPassword : String -> Cmd msg
 
 
 
@@ -28,9 +36,9 @@ type alias Model =
     }
 
 
-model : Model
-model =
-    Model "" "" ""
+init : ( Model, Cmd Msg )
+init =
+    ( Model "" "" "", Cmd.none )
 
 
 
@@ -43,17 +51,17 @@ type Msg
     | PasswordAgain String
 
 
-update : Msg -> Model -> Model
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Name name ->
-            { model | name = name }
+            ( { model | name = name }, Cmd.none )
 
         Password password ->
-            { model | password = password }
+            ( { model | password = password }, logPassword model.password )
 
         PasswordAgain password ->
-            { model | passwordAgain = password }
+            ( { model | passwordAgain = password }, Cmd.none )
 
 
 
@@ -65,7 +73,7 @@ view model =
     div []
         [ h1 [] [ text "yay Elm is working" ]
         , br [] []
-        , input [ type_ "text", placeholder "Name", onInput Name ] []
+        , input [ type_ "text", placeholder "Name", value model.password, onInput Name ] []
         , input [ type_ "password", placeholder "Password", onInput Password ] []
         , input [ type_ "password", placeholder "Re-enter Password", onInput PasswordAgain ] []
         , viewValidation model
@@ -82,3 +90,15 @@ viewValidation model =
                 ( "red", "Passwords do not match!" )
     in
         div [ style [ ( "color", color ) ] ] [ text message ]
+
+
+
+--Subscriptions
+
+
+port newInfo : (String -> msg) -> Sub msg
+
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    newInfo Name

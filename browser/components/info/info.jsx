@@ -11,6 +11,8 @@ import Sections from './key_value/sections'
 
 import Dropup from '../../public/components/dropup/dropup'
 
+
+
 class Info extends React.PureComponent {
     createSecret = (category) => {
         this.props.createSecret(category)

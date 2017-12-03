@@ -1,6 +1,6 @@
 import React from 'react'
 import sty from './entries.cssm'
-import _ from 'lodash'
+import { debounce } from 'lodash'
 import Input, { InputAdornment } from 'material-ui/Input';
 import OutsideAlerter from '../public/outsideAlerter.jsx'
 import * as s from './styles'
@@ -62,7 +62,7 @@ class Entry extends React.PureComponent {
 class Search extends React.PureComponent {
     constructor(props) {
         super()
-        this.debouncedSearch = _.debounce(props.search, 300)
+        this.debouncedSearch = debounce(props.search, 300)
         this.state = {
             focused: false,
             search_string: ''
