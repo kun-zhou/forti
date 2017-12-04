@@ -73,14 +73,15 @@ function init(_vault_path, _passwd) { //return abstracts of notes
 
 function getUID() {
     flushDebouncedFuncs()// flushing is necessary so UID of the pending write does not get obtained
+    /*
     var ids = fs.readdirSync(path.join(vault_path, 'secrets')),
         length = 5
     var id = crypto.randomBytes(length).toString('hex')
     while (ids.includes(id)) {
         length++
         id = crypto.randomBytes(length).toString('hex')
-    }
-    return id
+    }*/
+    return uuid()
 }
 
 function closeVault(cache) {

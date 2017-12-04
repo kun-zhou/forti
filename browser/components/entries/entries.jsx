@@ -156,18 +156,18 @@ class AbstractView extends React.PureComponent {
         return (
             <div id={sty['entries']} >
                 <Search deactivateSearch={props.deactivateSearch} search={props.search} />
-                <div className={sty['abstract-lists']}>
-                    <div className={sty['abstract-list']}>
-                        <div className={sty['list-title-wrapper']}>
-                            <span className={sty['list-title']}>{props.activeNavTab}</span>
-                        </div>
+                <div className={sty['abstract-list']}>
+                    <div className={sty['list-title-wrapper']}>
+                        <span className={sty['list-title']}>{props.activeNavTab}</span>
+                    </div>
+                    <div className={sty['list-content']}>
                         <AutoSizer >
                             {({ width, height }) => (
                                 <List
                                     height={height}
                                     width={width}
                                     rowCount={entries.size}
-                                    rowHeight={80}
+                                    rowHeight={79}
                                     rowRenderer={this.rowRenderer}
                                     overscanRowCount={20}
 

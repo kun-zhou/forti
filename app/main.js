@@ -30,7 +30,8 @@ function createWindow() {
   // new Window
   mainWindow = new BrowserWindow({
     width: 1000, height: 600,
-    titleBarStyle: "hidden-inset"
+    titleBarStyle: "hidden-inset",
+    webPreferences: {backgroundThrottling: false}
   })
 
   // load loading.html

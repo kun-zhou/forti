@@ -9,11 +9,6 @@
     background-color: var(--color-bg-list);
 }
 
-.abstract-lists {
-    flex: 1;
-    overflow-y: scroll;
-}
-
 .abstract-list::before {
     content: '';
     background-color: #f0f0f2;
@@ -22,7 +17,14 @@
 }
 
 .abstract-list {
-    height: 100%;
+    flex: 1;
+    flex-direction: column;
+    display: flex;
+    overflow-y: scroll;
+}
+
+.list-content {
+    flex: 1;
 }
 
 

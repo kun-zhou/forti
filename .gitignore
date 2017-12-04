@@ -6,4 +6,4 @@ app/renderer/*
 historical
 test
 yarn.lock
-elm
+elm-stuff/**/*
