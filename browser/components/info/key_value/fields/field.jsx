@@ -27,6 +27,7 @@ class Field extends React.PureComponent {
 
     editLocalContent = (e) => {
         this.setState({ local_content: e.target.value })
+        this.props.updateField(this.props.sec_idx, this.props.field_idx, 1, e.target.value)
     }
 
     toggleNameEdit = (e) => {

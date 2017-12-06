@@ -1,5 +1,5 @@
-import {connect} from 'react-redux'
-import {CREATE_SECRET, DELETE_SECRET, UPDATE_META, UPDATE_CUSTOM} from 'actions'
+import { connect } from 'react-redux'
+import { CREATE_SECRET, DELETE_SECRET, UPDATE_META, UPDATE_CUSTOM } from 'actions'
 import Info from './info.jsx'
 
 // Helper Functions

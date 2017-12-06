@@ -30,6 +30,7 @@ export default class Section extends React.PureComponent {
                 )
             }
         )
+        
         return (
             <div className={sty['section']}>
                 <SectionTitle

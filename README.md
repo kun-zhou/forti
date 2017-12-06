@@ -8,7 +8,7 @@
 
 ## What is it
 
-It is a piece of software that securely stores your key-value pairs like website login information, credit cards,software licences, and much more. Forti provides an easy interface to log them and insists that you always give your secret a title, and your value a key, so you never have to wonder what that piece of password is for. The idea is to save you the trouble of scrolling up a thousand photos just to find the one for that AMEX card so you can order that pizza over the phone.
+It is a piece of software that securely stores your key-value pairs like website login information, credit cards,software licences, and much more. Forti provides an easy interface to log them and insists that you always give your secret a title, and your value a key, so you never have to wonder what that piece of password is for. The idea is to save you the trouble of scrolling up a thousand photos just to find the one for that AMEX card so you can order that pizza over the phone. Forti is also able to handle hundreds of thousands of secrets at ease.
 
 Understanding many of these information can be highly sensitive, Forti uses industry standard cryptography suite to protect your data, so no one can peak into your secrets without your password. And unlike popular alternatives like 1Password, Dashlane, etc, Forti is completely open source, so anyone can check its source code and make sure Forti lives up to its promise.
 

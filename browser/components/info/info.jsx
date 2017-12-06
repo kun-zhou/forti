@@ -70,7 +70,7 @@ class Info extends React.PureComponent {
             </div>
         }
         var id = info.get('id')
-
+        
         return (
             <div id={sty['info']} key={id}>
                 <Toolbar
