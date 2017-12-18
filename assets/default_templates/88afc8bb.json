@@ -1,39 +1,33 @@
 {
     "category": "Identity",
-    "user_defined": [
+    "sections": [
         {
             "title": "Basic Info",
             "fields": [
-                [
-                    "Identity Kind",
-                    "",
-                    "text"
-                ],
-                [
-                    "Name",
-                    "",
-                    "text"
-                ],
-                [
-                    "ID Number",
-                    "",
-                    "text"
-                ],
-                [
-                    "Issued Date",
-                    "",
-                    "date"
-                ],
-                [
-                    "Expiration Date",
-                    "",
-                    "date"
-                ],
-                [
-                    "Issuing Authority",
-                    "",
-                    "text"
-                ]
+                {
+                    "key": "Identity Kind",
+                    "type": "text"
+                },
+                {
+                    "key": "Name",
+                    "type": "text"
+                },
+                {
+                    "key": "ID Number",
+                    "type": "text"
+                },
+                {
+                    "key": "Issued Date",
+                    "type": "text"
+                },
+                {
+                    "key": "Expiration Date",
+                    "type": "text"
+                },
+                {
+                    "key": "Issuing Authority",
+                    "type": "text"
+                }
             ]
         }
     ]

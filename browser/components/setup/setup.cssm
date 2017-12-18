@@ -84,9 +84,11 @@
 }
 
 .unlock-panel {}
-.btn-confirm-password{
+
+.btn-confirm-password {
     margin-top: 20px;
 }
+
 .unlock-password-prompt {
     display: flex;
     flex-direction: column;
@@ -96,7 +98,15 @@
     border-left: 4px solid white;
     padding: 4px 0 4px 8px;
     font-size: 16px;
-    color: rgba(94, 91, 91, 0.719)
+    color: rgba(94, 91, 91, 0.719);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+
+.toolbar {
+
 }
 
 .is-selected {

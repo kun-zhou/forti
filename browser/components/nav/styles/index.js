@@ -5,17 +5,17 @@ const Pane = styled.div`
     width: 20%;
     height: 100%;
     overflow: hidden;
-    background-color: var(--color-bg-nav);
+    background: linear-gradient(160deg, var(--color-bg-nav-top), var(--color-bg-nav-bottom));
     color: var(--color-font-nav);
 `
-
+/*background-color: var(--color-bg-nav);*/
 const TopPlaceholder = styled.div`
-width: 100%;
-height: 48px;
-display: flex;
-align-items: center;
-justify-content: flex-end;
--webkit-app-region: drag;
+    width: 100%;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    -webkit-app-region: drag;
 `
 
 const Header = styled.div`

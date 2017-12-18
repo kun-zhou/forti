@@ -21,43 +21,71 @@ class Info extends React.PureComponent {
     }
 
     updateTitle = (content) => {
-        this.props.updateMeta('UPDATE_TITLE', { key: 'title', new_value: content })
+        this.props.updateMeta('UPDATE_TITLE', {
+            key: 'title',
+            new_value: content
+        })
     }
 
     markFav = () => {
-        this.props.updateMeta('UPDATE_FAV', { key: 'favorite', new_value: true })
+        this.props.updateMeta('UPDATE_FAV', {
+            key: 'favorite',
+            new_value: true
+        })
     }
 
     unmarkFav = () => {
-        this.props.updateMeta('UPDATE_FAV', { key: 'favorite', new_value: false })
+        this.props.updateMeta('UPDATE_FAV', {
+            key: 'favorite',
+            new_value: false
+        })
     }
 
     addTag = (tag) => {
-        this.props.updateMeta('ADD_TAG', { key: 'tags', new_value: tag })
+        this.props.updateMeta('ADD_TAG', {
+            key: 'tags',
+            new_value: tag
+        })
     }
 
     deleteTag = (tag) => {
-        this.props.updateMeta('DELETE_TAG', { key: 'tags', new_value: tag })
+        this.props.updateMeta('DELETE_TAG', {
+            key: 'tags',
+            new_value: tag
+        })
     }
 
     addSection = () => {
         this.props.updateCustom('ADD_SECTION')
     }
 
-    updateSectionTitle = (sec_idx, new_value) => {
-        this.props.updateCustom('UPDATE_SECTION_TITLE', { sec_idx, new_value })
+    updateSectionTitle = (sec_id, new_value) => {
+        this.props.updateCustom('UPDATE_SECTION_TITLE', {
+            sec_id,
+            new_value
+        })
     }
 
-    updateField = (sec_idx, field_idx, content_idx, new_value) => {
-        this.props.updateCustom('UPDATE_FIELD', { sec_idx, field_idx, content_idx, new_value })
+    updateField = (sec_id, field_id, content_id, new_value) => {
+        this.props.updateCustom('UPDATE_FIELD', {
+            sec_id,
+            field_id,
+            content_id,
+            new_value
+        })
     }
 
-    deleteField = (sec_idx, field_idx) => {
-        this.props.updateCustom('DELETE_FIELD', { sec_idx, field_idx })
+    deleteField = (sec_id, field_id) => {
+        this.props.updateCustom('DELETE_FIELD', {
+            sec_id,
+            field_id
+        })
     }
 
-    addField = (sec_idx, field_idx) => {
-        this.props.updateCustom('ADD_FIELD', { sec_idx })
+    addField = (sec_id, field_id) => {
+        this.props.updateCustom('ADD_FIELD', {
+            sec_id
+        })
     }
 
 
@@ -70,7 +98,7 @@ class Info extends React.PureComponent {
             </div>
         }
         var id = info.get('id')
-        
+
         return (
             <div id={sty['info']} key={id}>
                 <Toolbar
@@ -100,7 +128,8 @@ class Info extends React.PureComponent {
                         deleteField={this.deleteField}
                         addField={this.addField}
 
-                        sections={info.get('user_defined')}
+                        section_order={info.get('section_order')}
+                        sections={info.get('sections')}
                     />
                 </div>
                 <AddSecret categories={this.props.categories_config} createSecret={this.createSecret} />
@@ -112,5 +141,5 @@ class Info extends React.PureComponent {
 export default Info
 
 /**
- *                 
+ *
  */

@@ -25,7 +25,7 @@ class SectionTitle extends React.PureComponent {
             if (this.props.title !== this.state.title) {
                 this
                     .props
-                    .toggleSecTitleEdit(this.props.sec_idx, this.state.title)
+                    .toggleSecTitleEdit(this.props.sec_id, this.state.title)
             }
         }
         this.setState({
@@ -40,7 +40,7 @@ class SectionTitle extends React.PureComponent {
                     inputClassName={sty['section-name']}
                     minWidth={'10px'}
                     value={this.state.title}
-                    placeholder={'untitled section'}
+                    placeholder={'untitled'}
                     onChange={this.editLocalSecTitle}
                     onBlur={this.toggleSecTitleEdit}/>
             </div>

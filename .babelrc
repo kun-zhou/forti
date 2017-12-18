@@ -1,7 +1,4 @@
 {
-  "presets": [
-    "flow"
-  ],
   "plugins": [
     "transform-react-jsx",
     "transform-class-properties"

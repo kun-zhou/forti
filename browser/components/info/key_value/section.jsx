@@ -7,53 +7,38 @@ import sty from './sty.cssm'
 import SectionTitle from './sectionTitle.jsx'
 
 export default class Section extends React.PureComponent {
-    constructor(props) {
-        super(props)
-        // edit* is for local state updates, updated on each keystroke
-        // toggle* update on field input status change and pushes the local data to redux store
-    }
-
     render() {
-        var fields_jsx = this.props.fields.map(
-            (field, idx) => {
-                return (
-                    <Field
-                        field={field}
-                        updateField={this.props.updateField}
-                        deleteField={this.props.deleteField}
-                        addField={this.props.addField}
+        var fields_jsx = this.props.section.get('field_order').map(
+            (field_id) => <Field
+                updateField={this.props.updateField}
+                deleteField={this.props.deleteField}
+                addField={this.props.addField}
 
-                        key={idx}
-                        sec_idx={this.props.sec_idx}
-                        field_idx={idx}
-                    />
-                )
-            }
+                key={field_id}
+                field_id={field_id}
+                field={this.props.section.getIn(['fields', field_id])}
+                sec_id={this.props.sec_id}
+            />
         )
-        
-        return (
-            <div className={sty['section']}>
-                <SectionTitle
-                    toggleSecTitleEdit={this.props.updateSectionTitle}
 
-                    sec_idx={this.props.sec_idx}
-                    title={this.props.title}
+        return (< div className={sty['section']} >
+            <SectionTitle
+                toggleSecTitleEdit={this.props.updateSectionTitle}
+                sec_id={this.props.sec_id}
+                title={this.props.title}
+            />
+            {fields_jsx}
+            {this.props.addSection
+                ? <AddFieldSection
+                    addField={this.props.addField}
+                    addSection={this.props.addSection}
+                    sec_id={this.props.sec_id}
                 />
-                {fields_jsx}
-                {this.props.addSection ?
-                    <AddFieldSection
-                        addField={this.props.addField}
-                        addSection={this.props.addSection}
-
-                        sec_idx={this.props.sec_idx}
-                    /> :
-                    <AddField
-                        addField={this.props.addField}
-
-                        sec_idx={this.props.sec_idx}
-                    />
-                }
-            </div>
-        )
+                : < AddField
+                    addField={this.props.addField}
+                    sec_id={this.props.sec_id}
+                />
+            }
+        </div>)
     }
 }

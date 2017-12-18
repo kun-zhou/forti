@@ -1,0 +1,12 @@
+/*!
+ * Font Awesome Pro 5.0.0 by @fontawesome - http://fontawesome.com
+ * License - http://fontawesome.com/license (Commercial License)
+ */
+@font-face {
+  font-family: 'Font Awesome 5 Brands';
+  font-style: normal;
+  font-weight: normal;
+  src: url("../webfonts/fa-brands-400.woff2");
+}
+.fab {
+  font-family: 'Font Awesome 5 Brands'; }

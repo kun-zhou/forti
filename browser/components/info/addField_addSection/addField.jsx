@@ -4,7 +4,7 @@ import sty from './sty.cssm'
 class AddField extends React.PureComponent {
 
     addField = () => {
-        this.props.addField(this.props.sec_idx)
+        this.props.addField(this.props.sec_id)
     }
 
     render() {

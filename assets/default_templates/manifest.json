@@ -1,32 +1,32 @@
 [
     {
         "name": "Login",
-        "icon": "fa-key",
+        "icon": "fal fa-key",
         "file_name": "c74a28bf9abb466d21b712c6e51f1f9c9094eae7.json"
     },
     {
         "name": "Credit Card",
-        "icon": "fa-credit-card",
+        "icon": "fal fa-credit-card",
         "file_name": "f2a1d333617bc6d873b7260d5a9b6ed60be784fd.json"
     },
     {
         "name": "Bank Account",
-        "icon": "fa-money-bill",
+        "icon": "fal fa-suitcase",
         "file_name": "ca8344379782406212370ab76f74803a2fdcea8f.json"
     },
     {
         "name": "Identity",
-        "icon": "fa-id-card",
+        "icon": "fal fa-id-card",
         "file_name": "88afc8bb.json"
     },
     {
         "name": "Reward Program",
-        "icon": "fa-credit-card-blank",
+        "icon": "fal fa-credit-card-blank",
         "file_name": "9b1414a3.json"
     },
     {
         "name": "Software License",
-        "icon": "fa-copyright",
+        "icon": "fab fa-app-store",
         "file_name": "1b7ddab151c8d3a01305cb18d783fa85a2cafbbf.json"
     }
 ]

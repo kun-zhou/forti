@@ -1,0 +1,14 @@
+/*!
+ * Font Awesome Pro 5.0.0 by @fontawesome - http://fontawesome.com
+ * License - http://fontawesome.com/license (Commercial License)
+ */
+@font-face {
+  font-family: 'Font Awesome 5 Pro';
+  font-style: normal;
+  font-weight: 900;
+  src: url("../webfonts/fa-solid-900.woff2");
+}
+.fa,
+.fas {
+  font-family: 'Font Awesome 5 Pro';
+  font-weight: 900; }

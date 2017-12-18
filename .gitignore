@@ -1,9 +1,10 @@
 node_modules
 promo
+test
+scripts
+historical
 .DS_Store
 dist/*
 app/renderer/*
-historical
-test
 yarn.lock
-elm-stuff/**/*
+elm-stuff/**

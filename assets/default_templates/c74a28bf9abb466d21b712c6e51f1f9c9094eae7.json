@@ -1,9 +1,14 @@
 {
     "category": "Login",
-    "user_defined": [
+    "sections": [
        {
            "title":"Basic Info",
-           "fields": [["Account","","text"], ["Password","", "code"], ["Website", "","link"],["Note", "","note"]]
+           "fields": [
+                {"key": "Username", "type": "text"},
+                {"key": "Password", "type": "code"},
+                {"key": "Website", "type": "link"},
+                {"key": "Note", "type": "note"}
+           ]
        }
     ]
 }

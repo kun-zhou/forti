@@ -1,6 +1,7 @@
 import React from 'react'
 import sty from '../../sty.cssm'
-import OutsideAlerter from '../../../../public/outsideAlerter.jsx'
+import OutsideAlerter from '../../../../public/outsideAlerter'
+ // for 'copied' notifications
 
 class NameField extends React.PureComponent {
     render() {
@@ -8,9 +9,9 @@ class NameField extends React.PureComponent {
             return (
                 <div
                     className={sty['field-name-display']}
-                    onClick={this.props.toggleNameEdit}
+                    onClick={this.props.handleNameFieldClick}
                 >
-                    {this.props.local_name ? this.props.local_name : <span className={sty['div-placeholder']}>field name</span>}
+                    {this.props.local_name ? this.props.local_name : <span className={sty['div-placeholder']}>key</span>}
                 </div>
             )
         } else {
@@ -20,7 +21,7 @@ class NameField extends React.PureComponent {
                         className={sty['field-name-input']}
                         type='text'
                         value={this.props.local_name}
-                        placeholder={'field name'}
+                        placeholder={'key'}
                         onChange={this.props.editLocalName}
                         ref={(e) => e ? e.focus() : {}}
                     />

@@ -5,6 +5,7 @@ import Input, { InputAdornment } from 'material-ui/Input';
 import OutsideAlerter from '../public/outsideAlerter.jsx'
 import * as s from './styles'
 import { List, AutoSizer } from 'react-virtualized'
+import HashTag from 'public/svg/hashtag.svg'
 
 class Entry extends React.PureComponent {
     constructor() {
@@ -27,10 +28,13 @@ class Entry extends React.PureComponent {
         var tag_field = []
         for (let tag of props.entry.get('tags')) {
             tag_field.push(
-                <span className={sty['tag']}><i className={['far', 'fa-hashtag'].join(' ')} />{tag}</span>
+                <s.AbstractTag>
+                  <HashTag fill={' rgb(149, 140, 140)'} width={'10px'} style={{marginRight: '1px'}}/>{tag}
+                </s.AbstractTag>
             )
         }
 
+        var icon = props.categories_config.get(props.entry.get('category'))
         // Render
         return (
             <s.Abstract
@@ -46,7 +50,7 @@ class Entry extends React.PureComponent {
                 >
                     <s.AbstractTitle >
                         <s.AbstractIcon>
-                            <i className={'fal fa-fw ' + props.categories_config.get(props.entry.get('category'))} />
+                            <i className={[icon, 'fa-fw'].join(' ')} />
                         </s.AbstractIcon>
                         {props.entry.get('title') ? props.entry.get('title') : <span className={'placeholder'}>A wonderful new secret</span>}
                     </s.AbstractTitle>

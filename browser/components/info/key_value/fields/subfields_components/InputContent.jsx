@@ -32,7 +32,7 @@ class InputContent extends React.PureComponent {
                 <input
                     className={sty['field-content-input']}
                     value={this.props.local_content}
-                    placeholder={'field content'}
+                    placeholder={'content'}
                     onChange={this.props.editLocalContent}
                     ref={(e) => e ? e.focus() : {}}
                 />

@@ -1,11 +1,12 @@
 // Using Object destructing to load modules
-const { app, shell, BrowserWindow, Notification, Menu } = require('electron')
+const {app, shell, BrowserWindow, Notification, Menu} = require('electron')
 const path = require('path')
 const menu = require('./menus/menu.js')
 
-// Keep a reference to mainWindow to avoid window object being garbadged collected
+// Keep a reference to mainWindow to avoid window object being garbadged
+// collected
 let mainWindow
-
+let willQuitApp = false
 /* * * * * * * * * * *
  * * Bootstrapping * *
  * * * * * * * * * * */
@@ -19,6 +20,7 @@ app.on('window-all-closed', whenAllWindowsClosed)
 // Re-create window on activation (macOS only)
 app.on('activate', whenActivated)
 
+app.on('before-quit', () => willQuitApp = true);
 /* * * * * * * * * * * *
  * * Define Functions  *
  * * (using hoisting)  *
@@ -29,15 +31,27 @@ function createWindow() {
 
   // new Window
   mainWindow = new BrowserWindow({
-    width: 1000, height: 600,
-    titleBarStyle: "hidden-inset",
-    webPreferences: {backgroundThrottling: false}
+    width: 1000,
+    height: 600,
+    titleBarStyle: 'hidden-inset'
   })
+  mainWindow.setContentProtection(true)
+  // minimize instead of closing
+  mainWindow.on('close', (e) => {
+    if (!willQuitApp) {
+      e.preventDefault()
+      mainWindow.hide()
+    }
+    /* the user only tried to close the window */
+
+  });
 
   // load loading.html
   mainWindow.loadURL(path.join('file://', __dirname, '/index.html'))
 
-  mainWindow.on('closed', function () { mainWindow = null })
+  mainWindow.on('closed', function() {
+    mainWindow = null
+  })
 }
 
 function whenAllWindowsClosed() {
@@ -53,5 +67,7 @@ function whenActivated() {
   // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) {
     createWindow()
+  } else {
+    mainWindow.show()
   }
 }

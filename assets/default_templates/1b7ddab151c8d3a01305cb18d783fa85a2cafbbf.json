@@ -1,34 +1,29 @@
 {
     "category": "Software License",
-    "user_defined": [
+    "sections": [
         {
             "title": "Basic Info",
             "fields": [
-                [
-                    "Software Name",
-                    "",
-                    "text"
-                ],
-                [
-                    "Licensed to",
-                    "",
-                    "text"
-                ],
-                [
-                    "Registered Email",
-                    "",
-                    "text"
-                ],
-                [
-                    "License",
-                    "",
-                    "text"
-                ],
-                [
-                    "Website",
-                    "",
-                    "link"
-                ]
+                {
+                    "key": "Software Name",
+                    "type": "text"
+                },
+                {
+                    "key":"Licensed to",
+                    "type": "text"
+                },
+                {
+                    "key":"Registered Email",
+                    "type": "text"
+                },
+                {
+                    "key":"License",
+                    "type": "text"
+                },
+                {
+                    "key":"Website",
+                    "type": "link"
+                }
             ]
         }
     ]

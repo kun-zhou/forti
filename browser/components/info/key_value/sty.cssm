@@ -20,7 +20,6 @@
 }
 
 input.section-name {
-    color: grey;
     display: inline-block;
     border-bottom: 2px var(--color-border-section) solid;
     width: 28%;
@@ -68,14 +67,15 @@ input.section-name:focus {
     width: 100%;
     font-size: 13px;
     text-align: right;
-    padding-right: 5px;
-    padding-top: 3px;
+    padding-right: 4px;
+    padding-top: 2px;
     padding-bottom: 3px;
     background-color: inherit;
     color: inherit;
     font-family: inherit;
     font-size: inherit;
-    border-bottom: 1px solid var(--color-field-name-bottom);
+    border: 1px solid var(--color-field-name-bottom);
+    border-radius: 3px;
 }
 
 .field-name-display {

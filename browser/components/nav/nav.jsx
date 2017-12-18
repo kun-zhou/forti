@@ -4,6 +4,7 @@ import ExpandLess from 'material-ui-icons/ExpandLess'
 import ExpandMore from 'material-ui-icons/ExpandMore'
 import { List } from 'immutable'
 import * as s from './styles'
+import HashTag from 'public/svg/hashtag.svg'
 
 class NavItem extends React.PureComponent {
     constructor(props) {
@@ -103,7 +104,7 @@ class CategoryList extends React.PureComponent {
                     key={'_category_' + name}
                     name={name}
                     type='category'
-                    icon={<i className={['fal', 'fa-fw', icon].join(' ')} />}
+                    icon={<i className={[icon, 'fa-fw'].join(' ')} />}
                 />)
             }
         }
@@ -130,7 +131,7 @@ class TagList extends React.PureComponent {
                     key={'_tag_' + name}
                     name={name}
                     type='tag'
-                    icon={<i className='fal fa-hashtag' style={{ 'color': 'grey' }} />}
+                    icon={<HashTag fill={'white'} width={'10px'} style={{rightMargin: '3px'}}/>}
                 />)}
             </NavList>
         )

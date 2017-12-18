@@ -1,7 +1,6 @@
 /**
  * This file should eventually read community defiend content field for display.
  */
-const { clipboard } = require('electron')
 import React from 'react'
 import sty from '../../sty.cssm'
 import TypeSwitcher from './TypeSwitcher.jsx'
@@ -21,11 +20,6 @@ class ContentField extends React.PureComponent {
         if (nextProps.content_editing) {
             this.setState({ toolbar_shown: false })
         }
-    }
-
-    handlePaste = e => {
-        e.stopPropagation()
-        clipboard.writeText(this.props.local_content)
     }
 
     showToolbar() {
@@ -56,7 +50,7 @@ class ContentField extends React.PureComponent {
             return (
                 <div
                     className={sty['field-content-display']}
-                    onClick={this.props.toggleContentEdit}
+                    onClick={this.props.handleContentFieldClick}
                     onMouseEnter={this.showToolbar}
                     onMouseLeave={this.hideToolbar}
                 >
@@ -64,11 +58,10 @@ class ContentField extends React.PureComponent {
                     {
                         this.props.local_content !== '' ? // if content is not empty
                             displayValue :
-                            <span className={'placeholder'}>field content</span>
+                            <span className={'placeholder'}>content</span>
                     }
                     {/* Toolbar */}
                     <div className={this.state.typeswitcher_shown || this.state.toolbar_shown ? sty['field-content-display-btns'] : 'is-hidden ' + sty['field-content-display-btns']} >
-                        <i className='fal fa-fw fa-clipboard' onClick={this.handlePaste} />
                         <TypeSwitcher {...this.props} toggleTypeSwitcher={this.toggleTypeSwitcher} open={this.state.typeswitcher_shown} />
                     </div>
                 </div>
@@ -98,7 +91,7 @@ class ContentField extends React.PureComponent {
 
                         className={sty['field-content-input']}
                         value={this.props.local_content}
-                        placeholder={'field content'}
+                        placeholder={'content'}
                     />
                 </OutsideAlerter>
             )

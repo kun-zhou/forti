@@ -49,7 +49,7 @@
                 {"name": "Basic Info", "fields": ["asd", "asdas", "q212"]},
                 {"name": "extras", "fields": ["as1d"]}
             ],
-            "user_defined":
+            "sections":
             {
                 "asd": ["Account","john.dev@gmail.com","text"], 
                 "asdas": ["Password","[aq,]F?wK|9812(s","code"], 
@@ -72,7 +72,7 @@
             "sections": [
                 {"name": "Basic Info", "fields": ["asd", "asdas", "q212"]}
             ],
-            "user_defined":
+            "sections":
             {
                 "asd": ["Card Holder", "Kun Zhou", "text"], 
                 "asdas": ["Card No.","5124 1386 1214 2483", "code"], 
@@ -95,7 +95,7 @@
                 {"name": "Basic Info", "fields": ["asd", "asdas", "q212"]},
                 {"name": "extras", "fields": ["as1d"]}
             ],
-            "user_defined":
+            "sections":
             {
                 "asd": ["Account", "kunzhou@github.com", "text"], 
                 "asdas": ["Password","a81q,]F?wK|q9812(s", "code"], 
@@ -121,7 +121,7 @@
                     {"name": "Basic Info", "fields": ["asd", "asdas", "q212"]},
                     {"name": "extras", "fields": ["as1d"]}
                 ],
-                "user_defined":
+                "sections":
                 {
                     "asd": ["Account", "kunzhou@github.com", "text"], 
                     "asdas": ["Password","a81q,]F?wK|q9812(s", "code"], 

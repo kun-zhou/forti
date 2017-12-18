@@ -1,24 +1,21 @@
 {
     "category": "Reward Program",
-    "user_defined": [
+    "sections": [
         {
             "title": "Basic Info",
             "fields": [
-                [
-                    "Program Name",
-                    "",
-                    "text"
-                ],
-                [
-                    "Card Holder",
-                    "",
-                    "text"
-                ],
-                [
-                    "Card Number",
-                    "",
-                    "text"
-                ]
+                {
+                    "key": "Program Name",
+                    "type": "text"
+                },
+                {
+                    "key":"Card Holder",
+                    "type": "text"
+                },
+                {
+                    "key":"Card Number",
+                    "type": "text"
+                }
             ]
         }
     ]

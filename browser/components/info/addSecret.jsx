@@ -13,7 +13,7 @@ class CategoryItem extends React.PureComponent {
     }
     render() {
         return <MenuItem key={this.props.name} onClick={this.handleClick} className={sty['category-item']}>
-            <i style={{ marginRight: '5px' }} className={['fal', 'fw', this.props.icon].join(' ')} />  {this.props.name}
+            <i style={{ marginRight: '5px' }} className={[this.props.icon, 'fw'].join(' ')} />  {this.props.name}
         </MenuItem>
     }
 }

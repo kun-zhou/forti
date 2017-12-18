@@ -7,17 +7,18 @@ import { fromJS } from 'immutable'
 import rootReducer from 'reducers'
 import config from './utils/config'
 
-//import logger from './logger'
+import logger from './logger'
 
 import AppWrapper from './app'
 import { SET_COLOR_SCHEME, UPDATE_CONFIG } from './actions'
 
 // Load fonts and master css
 require('./public/css/common.css')
-require('./public/fonts/font-awesome/fontawesome-pro-core.css')
-require('./public/fonts/font-awesome/fontawesome-pro-light.css')
-require('./public/fonts/font-awesome/fontawesome-pro-regular.css')
-require('./public/fonts/font-awesome/fontawesome-pro-solid.css')
+require('./public/fonts/font-awesome/webfonts/fontawesome.css')
+require('./public/fonts/font-awesome/webfonts/fa-brands.css')
+require('./public/fonts/font-awesome/webfonts/fa-light.css')
+require('./public/fonts/font-awesome/webfonts/fa-regular.css')
+require('./public/fonts/font-awesome/webfonts/fa-solid.css')
 require('./public/fonts/quicksand.css')
 
 var status = config.initialize().status
@@ -47,7 +48,7 @@ var initialState = {
     }
 }
 
-const store = createStore(rootReducer, fromJS(initialState), applyMiddleware(thunk))
+const store = createStore(rootReducer, fromJS(initialState), applyMiddleware(thunk, logger))
 
 store.dispatch(SET_COLOR_SCHEME())
 store.dispatch(UPDATE_CONFIG())

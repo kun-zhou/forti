@@ -1,16 +1,15 @@
-
 {
     "category": "Credit Card",
-    "user_defined": [
+    "sections": [
        {
            "title":"Basic Info",
            "fields": [
-               ["Card Holder","","text"],
-               ["Card Type","", "text"], 
-               ["Card Number", "","number"],
-               ["Expiration Date","","date"],
-               ["CVV","","passcode"]
-            ]
+                {"key": "Card Holder", "type": "code"},
+                {"key": "Card Type", "type": "text"},
+                {"key": "Card Number", "type": "text"},
+                {"key": "Expiration Date", "type": "date"},
+                {"key": "CVV", "type": "text"}
+           ]
        }
     ]
 }

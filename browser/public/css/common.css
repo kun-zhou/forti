@@ -31,6 +31,10 @@ textarea,
     cursor: default;
 }
 
+input::-webkit-input-placeholder {
+    color: rgb(202, 202, 202)
+}
+
 html,
 body,
 #root {
@@ -58,5 +62,5 @@ body,
 }
 
 .placeholder {
-    color: #a0a0a0
+    color: rgb(202, 202, 202)
 }

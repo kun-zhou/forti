@@ -43,6 +43,12 @@ class TypeSwitcher extends React.PureComponent {
                             onClick={this.handleTypeClick(type)}>
                             {'To ' + type.charAt(0).toUpperCase() + type.slice(1)}
                         </MenuItem>)}
+                        <MenuItem
+                            key={-1}
+                            className={sty['entry-wrapper']}
+                            onClick={this.props.deleteField}>
+                            <span style={{ color: '#c8474d' }}>DELETE</span>
+                        </MenuItem>
                     </MenuList>
                 </Popover>
                 <button

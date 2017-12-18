@@ -1,15 +1,15 @@
 {
     "category": "Bank Account",
-    "user_defined": [
+    "sections": [
        {
            "title":"Basic Info",
            "fields": [
-               ["Bank Name","","text"],  
-               ["Account Holder","", "text"],  
-               ["Routing Number", "","number"],
-               ["Account Number","","number"],
-               ["PIN","","passcode"]
-            ]
+                {"key": "Bank Name", "type": "text"},
+                {"key": "Account Holder", "type": "code"},
+                {"key": "Routing Number", "type": "link"},
+                {"key": "Account Number", "type": "text"},
+                {"key": "PIN", "type": "text"}
+           ]
        }
     ]
 }
