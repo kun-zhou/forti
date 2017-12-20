@@ -41,7 +41,7 @@ module.exports = {
       {
         test: /\.svg$/,
         loader: 'svg-react-loader',
-        include: path.join( __dirname, 'browser' )
+        include: path.join( __dirname, 'browser' ),
       },
       // Load fonts
       {

@@ -24,13 +24,9 @@ class Toolbar extends React.PureComponent {
         return (
             <div className={sty['info-entry-display-toolbar']}>
                 {fav_icon}
-                <i className={sty['info-tool'] + ' fas fa-lg fa-fw fa-info-circle'} aria-hidden='true'></i>
-                <i className={sty['info-tool'] + ' fas fa-lg fa-fw fa-share-alt'} aria-hidden='true'></i>
-                <i
-                    className={sty['info-tool'] + ' fas fa-lg fa-fw fa-trash-alt'}
-                    aria-hidden='true'
-                    onClick={this.props.deleteSecret}
-                />
+                <i className={sty['info-tool'] + ' fas fa-lg fa-fw fa-info-circle'}/>
+                <i className={sty['info-tool'] + ' fas fa-lg fa-fw fa-share-alt'}/>
+                <i className={sty['info-tool'] + ' fas fa-lg fa-fw fa-trash-alt'}/>                
             </div>
         )
     }

@@ -7,7 +7,7 @@ import { fromJS } from 'immutable'
 import rootReducer from 'reducers'
 import config from './utils/config'
 
-import logger from './logger'
+//import logger from './logger'
 
 import AppWrapper from './app'
 import { SET_COLOR_SCHEME, UPDATE_CONFIG } from './actions'
@@ -48,7 +48,7 @@ var initialState = {
     }
 }
 
-const store = createStore(rootReducer, fromJS(initialState), applyMiddleware(thunk, logger))
+const store = createStore(rootReducer, fromJS(initialState), applyMiddleware(thunk))
 
 store.dispatch(SET_COLOR_SCHEME())
 store.dispatch(UPDATE_CONFIG())

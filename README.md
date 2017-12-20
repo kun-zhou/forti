@@ -52,9 +52,8 @@ Forti is still in the pre-prelease stage, so be cautious when using for producti
 * Implement reordering for sections, fields, and navigation pane
 * More hotkeys
 
-THe following implemnentation details are being worked on:
+THe following implemenntation details are being worked on:
 
-* Use `react-virtualized` to render the middle panel, i.e., list of entries.
 * Refactor CSS and configAPI
 
 ### Security

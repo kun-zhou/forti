@@ -5,7 +5,7 @@
            "title":"Basic Info",
            "fields": [
                 {"key": "Bank Name", "type": "text"},
-                {"key": "Account Holder", "type": "code"},
+                {"key": "Account Holder", "type": "text"},
                 {"key": "Routing Number", "type": "link"},
                 {"key": "Account Number", "type": "text"},
                 {"key": "PIN", "type": "text"}

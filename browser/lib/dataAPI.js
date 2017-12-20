@@ -1,18 +1,22 @@
 /**
 * This API manages data IO and database initialization.
 */
-export default {init, getUID, readSecret, createSecret, deleteSecret, saveSecret, readAttachment, saveAttachment, readCache, saveCache, createVault, deleteVault, createDemoVault, closeVault}
+export default { init, getUID, readSecret, createSecret, deleteSecret, saveSecret, readAttachment, saveAttachment, readCache, saveCache, createVault, deleteVault, createDemoVault, closeVault }
 import uuid from 'uuid/v4'
 import path from 'path'
 import fs from 'fs-extra'
 import * as _crypto from './crypto'
 import crypto from 'crypto'
 import * as app_path from '../utils/paths'
-import {debounce} from 'lodash'
+import { debounce } from 'lodash'
 import _ from 'lodash'
 
+function genId() {
+  return crypto.randomBytes(6).toString('base64')
+}
+
 var vault_path = null, keyfile_loc = null, salt_and_iv_loc = null,
-cache_loc = null, secrets_loc = null, att_loc = null, enc_key = null
+  cache_loc = null, secrets_loc = null, att_loc = null, enc_key = null
 var debouncedFuncs = {}
 
 function init(_vault_path, _passwd) {  // return abstracts of notes
@@ -61,8 +65,7 @@ function init(_vault_path, _passwd) {  // return abstracts of notes
   }
 }
 
-function
-getUID() {
+function getUID() {
   flushDebouncedFuncs()  // flushing is necessary so UID of the pending write
   // does not get obtained
   /*
@@ -73,7 +76,7 @@ getUID() {
   length++
   id = crypto.randomBytes(length).toString('hex')
 }*/
-return uuid()
+  return uuid()
 }
 
 function closeVault(cache) {
@@ -81,8 +84,7 @@ function closeVault(cache) {
   saveCache(cache)
 }
 
-function
-flushDebouncedFuncs() {
+function flushDebouncedFuncs() {
   for (var func in debouncedFuncs) {
     debouncedFuncs[func].flush()
     delete debouncedFuncs.func
@@ -103,8 +105,7 @@ function readCache(force = false) {
   }
 }
 
-function
-cacheRefreshRead() {
+function cacheRefreshRead() {
   try {
     var cache = generateCache()
     _crypto.writeCryptSync(JSON.stringify(cache), enc_key, cache_loc)
@@ -120,9 +121,28 @@ cacheRefreshRead() {
 
 function readSecret(uid) {
   flushDebouncedFuncs()
+  var secret = JSON.parse(_crypto.readCryptSync(enc_key, path.join(secrets_loc, uid)))
+  // if old data format
+  /*if (!secret.section_order) {
+    var user_defined = JSON.parse(JSON.stringify(secret.user_defined)) // new copy
+    secret.section_order = []
+    secret.sections = {}
+    delete secret.user_defined
+    for (var t_sec of user_defined) {
+      var sec_id = genId()
+      secret.section_order.push(sec_id)
+      var sec = { title: t_sec.title, field_order: [], fields: {} }
+      secret.sections[sec_id] = sec
+      for (var t_field of t_sec.fields) {
+        var field_id = genId()
+        sec.field_order.push(field_id)
+        sec.fields[field_id] = { key: t_field[0], value: t_field[1], type: t_field[2] }
+      }
+    }
+    writeSecretToFile(secret)
+  }*/
   return {
-    secret:
-    JSON.parse(_crypto.readCryptSync(enc_key, path.join(secrets_loc, uid)))
+    secret: secret
   }
 }
 
@@ -147,8 +167,8 @@ function saveSecret(secret) {  // create id if not exist
   }
   try {
     !debouncedFuncs[secret.id] ?
-    debouncedFuncs[secret.id] = debounce(writeSecretToFile, 1000) :
-    {}
+      debouncedFuncs[secret.id] = debounce(writeSecretToFile, 1000) :
+      {}
     debouncedFuncs[secret.id](secret)
   } catch (e) {
     return {
@@ -163,170 +183,168 @@ function saveSecret(secret) {  // create id if not exist
 function writeSecretToFile(secret) {
   _crypto.writeCryptSync(
     JSON.stringify(secret), enc_key, path.join(secrets_loc, secret.id))
+}
+
+function deleteSecret(id) {
+  fs.unlinkSync(path.join(vault_path, 'secrets', id))
+}
+
+
+function readAttachment(vault_path, uid, passwd) {
+  return JSON.parse(
+    readCryptSync(path.join(vault_path, 'secrets', uid), passwd))
+}
+
+function saveAttachment(vault_path, uid, attachment_loc, passwd) {
+  // TBD
+}
+
+function saveCache(cache) {
+  _crypto.writeCryptSync(
+    JSON.stringify(cache), enc_key, path.join(vault_path, 'cache'))
+}
+
+function deleteVault(location) {
+  try {
+    fs.removeSync(location)
+    return {
+      success: true
+    }
+  } catch (e) {
+    return {
+      success: false, message: e
+    }
+  }
+}
+
+function createDemoVault(name, passwd, counts) {  // will be large in nature
+  var response = createVault(name, passwd)
+  if (!response.success) return response
+  init(response.location, passwd)
+  for (var i = 0; i < counts; i++) {
+    createSecret(Object.assign({ id: getUID() }, demoTemplate))
+  }
+  return response
+}
+
+function createVault(name, passwd) {
+  // check if password is too short
+  if (!passwd || passwd.length < 8) {
+    return {
+      success: false, message: 'PASSWORD_INVALID'
+    }
+  }
+  var vault_path = path.join(app_path.pathConfigDir, 'databases', uuid())
+  // generate new encryption keyfile and keyss
+  var response = _crypto.generateNewKeys(passwd)
+  if (!response.success) {
+    return {
+      success: false, message: 'KEYFILE_UNABLE'
+    }
   }
 
-  function deleteSecret(id) {
-    fs.unlinkSync(path.join(vault_path, 'secrets', id))
+  try {  // try and check if directory already exist, if not, create it
+    fs.mkdirSync(vault_path)
+  } catch (e) {
+    return {
+      success: false, message: 'VAULT_CREATION_UNABLE', error: e
+    }
   }
 
-
-  function readAttachment(vault_path, uid, passwd) {
-    return JSON.parse(
-      readCryptSync(path.join(vault_path, 'secrets', uid), passwd))
+  try {
+    // write new keyfile and salt and iv, and directory structure
+    fs.mkdirSync(path.join(vault_path, 'secrets'))
+    fs.mkdirSync(path.join(vault_path, 'attachments'))
+    fs.writeFileSync(
+      path.join(vault_path, 'keyfile'), response.keyfile_encrypted)
+    fs.writeFileSync(path.join(vault_path, 'salt_and_iv'), response.salt_and_iv)
+  } catch (e) {
+    fs.removeSync(vault_path)  // it is safe here because we already know the
+    // directory vault_path is new (becase try
+    // fs.mkdir passes), so nothing is in there.
+    return {
+      success: false, error: e, message: 'vault cannot be created'
     }
+  }
+  return {
+    success: true, location: vault_path
+  }
+}
 
-    function saveAttachment(vault_path, uid, attachment_loc, passwd) {
-      // TBD
-    }
-
-    function saveCache(cache) {
-      _crypto.writeCryptSync(
-        JSON.stringify(cache), enc_key, path.join(vault_path, 'cache'))
-      }
-
-      function deleteVault(location) {
-        try {
-          fs.removeSync(location)
-          return {
-            success: true
-          }
-        } catch (e) {
-          return {
-            success: false, message: e
-          }
-        }
-      }
-
-      function createDemoVault(name, passwd, counts) {  // will be large in nature
-        var response = createVault(name, passwd)
-        if (!response.success) return response
-        init(response.location, passwd)
-        for (var i = 0; i < counts; i++) {
-          createSecret(Object.assign({id: getUID()}, demoTemplate))
-        }
-        return response
-      }
-
-      function createVault(name, passwd) {
-        // check if password is too short
-        if (!passwd || passwd.length < 8) {
-          return {
-            success: false, message: 'PASSWORD_INVALID'
-          }
-        }
-        var vault_path = path.join(app_path.pathConfigDir, 'databases', uuid())
-        // generate new encryption keyfile and keyss
-        var response = _crypto.generateNewKeys(passwd)
-        if (!response.success) {
-          return {
-            success: false, message: 'KEYFILE_UNABLE'
-          }
-        }
-
-        try {  // try and check if directory already exist, if not, create it
-          fs.mkdirSync(vault_path)
-        } catch (e) {
-          return {
-            success: false, message: 'VAULT_CREATION_UNABLE', error: e
-          }
-        }
-
-        try {
-          // write new keyfile and salt and iv, and directory structure
-          fs.mkdirSync(path.join(vault_path, 'secrets'))
-          fs.mkdirSync(path.join(vault_path, 'attachments'))
-          fs.writeFileSync(
-            path.join(vault_path, 'keyfile'), response.keyfile_encrypted)
-            fs.writeFileSync(path.join(vault_path, 'salt_and_iv'), response.salt_and_iv)
-          } catch (e) {
-            fs.removeSync(vault_path)  // it is safe here because we already know the
-            // directory vault_path is new (becase try
-            // fs.mkdir passes), so nothing is in there.
-            return {
-              success: false, error: e, message: 'vault cannot be created'
-            }
-          }
-          return {
-            success: true, location: vault_path
-          }
-        }
-
-        function
+function
         generateCache() {  // should be only called in init.
-          var cache = JSON.parse(fs.readFileSync(app_path.pathCacheTemplate, 'utf8'))
-          var secrets = fs.readdirSync(secrets_loc)
+  var cache = JSON.parse(fs.readFileSync(app_path.pathCacheTemplate, 'utf8'))
+  var secrets = fs.readdirSync(secrets_loc)
 
-          // create an array of secrets with time and add them to abstract
-          var modified_dates = {}
-          secrets = secrets.reduce((list, id) => {
-            try {
-              var secret =
-              JSON.parse(_crypto.readCryptSync(enc_key, path.join(secrets_loc, id)))
-            } catch (e) {
-              console.log('encountered invalid secret')
-              return list
-            }
-            cache.abstracts[id] = _.pick(secret, [
-              'id', 'trash', 'title', 'attchment', 'snippet', 'tags', 'category',
-              'favorite'
-            ])
-            modified_dates[id] = secret.time_modified
-            list.push(id)
-            return list
-          }, [])
+  // create an array of secrets with time and add them to abstract
+  var modified_dates = {}
+  secrets = secrets.reduce((list, id) => {
+    try {
+      var secret =
+        JSON.parse(_crypto.readCryptSync(enc_key, path.join(secrets_loc, id)))
+    } catch (e) {
+      console.log('encountered invalid secret')
+      return list
+    }
+    cache.abstracts[id] = _.pick(secret, [
+      'id', 'trash', 'title', 'attchment', 'snippet', 'tags', 'category',
+      'favorite'
+    ])
+    modified_dates[id] = secret.time_modified
+    list.push(id)
+    return list
+  }, [])
 
-          // construct all keys sorted by time
-          cache.all = secrets.sort((a, b) => (modified_dates[b] - modified_dates[a]))
+  // construct all keys sorted by time
+  cache.all = secrets.sort((a, b) => (modified_dates[b] - modified_dates[a]))
 
-          // construct favorites, categories and tags in one go
-          for (let id of cache.all) {
-            var secret =
-            cache.abstracts[id]
-            if (secret.favorite) cache.favorites.push(id)
-            cache.categories[secret.category] ?
-            cache.categories[secret.category].push(id) :
-            cache.categories[secret.category] = [id]
-            for (let tag of secret.tags) {
-              cache.tags[tag] ? cache.tags[tag].push(id) : cache.tags[tag] = [id]
-            }
-          }
-          return cache
-        }
+  // construct favorites, categories and tags in one go
+  for (let id of cache.all) {
+    var secret =
+      cache.abstracts[id]
+    if (secret.favorite) cache.favorites.push(id)
+    cache.categories[secret.category] ?
+      cache.categories[secret.category].push(id) :
+      cache.categories[secret.category] = [id]
+    for (let tag of secret.tags) {
+      cache.tags[tag] ? cache.tags[tag].push(id) : cache.tags[tag] = [id]
+    }
+  }
+  return cache
+}
 
-        function
-        validateCache() {  // regenerate if does timestamp passed
-          // checkTimeStamp
-          // check format
-          return true
-        }
+function validateCache() {  // regenerate if does timestamp passed
+  // checkTimeStamp
+  // check format
+  return true
+}
 
-        function
-        secretIsValid() {
-          return true
-        }
+function secretIsValid() {
+  return true
+}
 
-        const demoTemplate = {
-          'title': 'Gmail Development Account',
-          'attachment': false,
-          'snippet': 'john.dev@gmail.com',
-          'category': 'Login',
-          'tags': ['work'],
-          'favorite': true,
-          'time_created': 100,
-          'time_modified': 1000,
-          'sections': [
-            {
-              'title': 'Basic Info',
-              'fields': [
-                ['Account', 'john.dev@gmail.com', 'text'],
-                ['Password', '[aq,]F?wK|9812(s', 'code'],
-                ['Website', 'https://mail.google.com', 'link']
-              ]
-            },
-            {
-              'title': 'Extras',
-              'fields': [['Note', 'Gmail account for work at XYZ corp.', 'note']]
-            }
-          ],
-          'snapshots': {}
-        }
+const demoTemplate = {
+  'title': 'Gmail Development Account',
+  'attachment': false,
+  'snippet': 'john.dev@gmail.com',
+  'category': 'Login',
+  'tags': ['work'],
+  'favorite': true,
+  'time_created': 100,
+  'time_modified': 1000,
+  'sections': [
+    {
+      'title': 'Basic Info',
+      'fields': [
+        ['Account', 'john.dev@gmail.com', 'text'],
+        ['Password', '[aq,]F?wK|9812(s', 'code'],
+        ['Website', 'https://mail.google.com', 'link']
+      ]
+    },
+    {
+      'title': 'Extras',
+      'fields': [['Note', 'Gmail account for work at XYZ corp.', 'note']]
+    }
+  ],
+  'snapshots': {}
+}

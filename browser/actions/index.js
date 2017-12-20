@@ -110,8 +110,7 @@ export const SEARCH_SECRETS =
     dispatch({ type: 'SEARCH_LOADING' })
     var gui = getState().get('gui')
     var cache = getState().get('cache')
-    var ids = getEntries(
-      gui.get('activeNavTabType'), gui.get('activeNavTab'), cache)
+    var ids = getEntries(gui.get('activeNavTabType'), gui.get('activeNavTab'), cache)
     keywords = keywords.split(/\s+/)
     var results = List()
     ids.forEach((id) => {
@@ -244,8 +243,8 @@ export const UPDATE_CUSTOM =
       dispatch({
         type: 'UPDATE_CUSTOM',
         operation: 'ADD_FIELD',
-        new_id: genId(), 
-        params: {sec_id: action.new_id}
+        new_id: genId(),
+        params: { sec_id: action.new_id }
       })
     }
     // START SIDE EFFECTS
