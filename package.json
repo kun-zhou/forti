@@ -1,6 +1,6 @@
 {
   "name": "forti",
-  "version": "0.1.2",
+  "version": "0.1.0-beta.1",
   "description": "A formatted content manager",
   "main": "app/main.js",
   "scripts": {
