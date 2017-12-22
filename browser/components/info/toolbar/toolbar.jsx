@@ -26,7 +26,11 @@ class Toolbar extends React.PureComponent {
                 {fav_icon}
                 <i className={sty['info-tool'] + ' fas fa-lg fa-fw fa-info-circle'}/>
                 <i className={sty['info-tool'] + ' fas fa-lg fa-fw fa-share-alt'}/>
-                <i className={sty['info-tool'] + ' fas fa-lg fa-fw fa-trash-alt'}/>                
+                <i
+                    className={sty['info-tool'] + ' fas fa-lg fa-fw fa-trash-alt'}
+                    aria-hidden='true'
+                    onClick={this.props.deleteSecret}
+                />          
             </div>
         )
     }
