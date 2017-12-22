@@ -34,7 +34,7 @@ const pathDefaultTemplates = path.join( appPath, 'assets', 'default_templates' )
 // paths relative to the config
 const pathConfigDir =
   path.join( require( 'electron' )
-    .remote.app.getPath( 'appData' ), 'lockit' )
+    .remote.app.getPath( 'appData' ), 'Forti' )
 const pathConfig = path.join( pathConfigDir, 'config.json' )
 const pathColorSchemes = path.join( pathConfigDir, 'color_schemes' )
 const pathTemplates = path.join( pathConfigDir, 'templates' )

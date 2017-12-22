@@ -3,6 +3,7 @@
  */
 
 import { List } from 'immutable'
+
 // TODO: UPDATE TAG LISTINGS
 export default function cacheReducer(cache, action) {
     switch (action.type) {

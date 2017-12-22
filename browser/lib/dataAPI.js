@@ -234,7 +234,7 @@ function createVault(name, passwd) {
       success: false, message: 'PASSWORD_INVALID'
     }
   }
-  var vault_path = path.join(app_path.pathConfigDir, 'databases', uuid())
+  var vault_path = path.join(app_path.pathConfigDir, 'vaults', uuid())
   // generate new encryption keyfile and keyss
   var response = _crypto.generateNewKeys(passwd)
   if (!response.success) {

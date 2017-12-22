@@ -51,9 +51,9 @@
     /*
      * Font Weight
      */
-    --font-weight-title: 600;
+    --font-weight-title: 500;
     --font-weight-field: 300;
     --font-weight-section: 400;
-    --font-weight-abstract-title: 500;
+    --font-weight-abstract-title: 400;
     --font-weight-abstract-snippet: 400;
 }
