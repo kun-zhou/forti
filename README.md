@@ -1,4 +1,4 @@
-* Stay tuned for a native app in Swift, will implement sync via CloudKit *
+*Stay tuned for a native app in Swift, will implement sync via CloudKit*
 
 # Forti, a modern password manager made open source
 
